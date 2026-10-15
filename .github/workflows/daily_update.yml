@@ -11,6 +11,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: daily-update
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -38,6 +42,19 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: python main.py
+
+      - name: Commit archive and history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ public/archive/
+          if git diff --cached --quiet; then
+            echo "No archive changes"
+          else
+            git commit -m "Update deal archive (${{ github.run_id }})"
+            git pull --rebase origin ${{ github.ref_name }}
+            git push origin HEAD:${{ github.ref_name }}
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
