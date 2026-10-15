@@ -12,6 +12,8 @@ AMAZON_TAG = os.getenv("AMAZON_TAG", "your-amazon-tag-22")
 RAKUTEN_AFFILIATE_ID = os.getenv("RAKUTEN_AFFILIATE_ID", "")
 RAKUTEN_APP_ID = os.getenv("RAKUTEN_APP_ID", "")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+GITHUB_MODEL = os.getenv("GITHUB_MODEL") or "openai/gpt-4.1-mini"
 
 JST = timezone(timedelta(hours=9))
 TODAY_STR = datetime.now(JST).strftime("%Y-%m-%d %H:%M")
@@ -104,7 +106,38 @@ def analyze_with_gemini(candidates):
 
     endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
 
-    prompt = f"""
+    payload = {
+        "contents": [{"parts": [{"text": build_prompt(candidates)}]}],
+        "generationConfig": {
+            "responseMimeType": "application/json",
+            "temperature": 0.3
+        }
+    }
+
+    res = requests.post(endpoint, json=payload, timeout=30)
+    res.raise_for_status()
+    result_text = res.json()["candidates"][0]["content"]["parts"][0]["text"]
+    return json.loads(result_text)
+
+
+def analyze_with_github_models(candidates):
+    """GitHub Models（Actionsでは無料枠で利用可能）で注目商品を厳選する"""
+    endpoint = "https://models.github.ai/inference/chat/completions"
+    headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Content-Type": "application/json"}
+    payload = {
+        "model": GITHUB_MODEL,
+        "messages": [{"role": "user", "content": build_prompt(candidates) + "\n配列は {\"deals\": [...]} の形で包んで出力してください。"}],
+        "response_format": {"type": "json_object"},
+        "temperature": 0.3
+    }
+    res = requests.post(endpoint, headers=headers, json=payload, timeout=60)
+    res.raise_for_status()
+    result = json.loads(res.json()["choices"][0]["message"]["content"])
+    return result.get("deals", result) if isinstance(result, dict) else result
+
+
+def build_prompt(candidates):
+    return f"""
 あなたはガジェット・日用品の価格調査およびお買い得判定の専門家です。
 以下の候補リストから、一般消費者が「今チェックしておくと得をする注目商品・セール情報」を最大5件厳選し、JSON配列形式で出力してください。
 
@@ -122,19 +155,6 @@ def analyze_with_gemini(candidates):
 【候補データ】
 {json.dumps(candidates, ensure_ascii=False)}
 """
-
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "responseMimeType": "application/json",
-            "temperature": 0.3
-        }
-    }
-
-    res = requests.post(endpoint, json=payload, timeout=30)
-    res.raise_for_status()
-    result_text = res.json()["candidates"][0]["content"]["parts"][0]["text"]
-    return json.loads(result_text)
 
 
 def build_affiliate_urls(product_name):
@@ -235,12 +255,22 @@ if __name__ == "__main__":
     print(f"   取得件数: {len(raw_candidates)}件")
 
     print("2. AIで買い時判定＆テキスト生成中...")
-    try:
-        selected_deals = analyze_with_gemini(raw_candidates)
-    except Exception as e:
+    selected_deals = None
+    if GEMINI_API_KEY:
+        try:
+            selected_deals = analyze_with_gemini(raw_candidates)
+        except Exception as e:
+            status = getattr(getattr(e, "response", None), "status_code", type(e).__name__)
+            print(f"Gemini APIエラー（{status}）のため、GitHub Modelsを試します。")
+    if selected_deals is None and GITHUB_TOKEN:
+        try:
+            selected_deals = analyze_with_github_models(raw_candidates)
+            print(f"GitHub Models（{GITHUB_MODEL}）で判定しました。")
+        except Exception as e:
+            status = getattr(getattr(e, "response", None), "status_code", type(e).__name__)
+            print(f"GitHub Modelsエラー（{status}）のため、サンプルデータで生成します。")
+    if selected_deals is None:
         # APIエラーでもサイト更新を止めないよう、サンプルデータで続行する
-        status = getattr(getattr(e, "response", None), "status_code", type(e).__name__)
-        print(f"Gemini APIエラー（{status}）のため、サンプルデータで生成します。")
         GEMINI_API_KEY = ""
         selected_deals = analyze_with_gemini(raw_candidates)
 
