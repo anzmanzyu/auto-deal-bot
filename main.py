@@ -124,8 +124,18 @@ def analyze_with_groq(candidates):
     """Groq（クレカ不要の無料枠あり）で注目商品を厳選する"""
     endpoint = "https://api.groq.com/openai/v1/chat/completions"
     headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
+    # 提供モデルは入れ替わるため、指定モデルが無ければ利用可能な文章生成モデルから選ぶ
+    models_res = requests.get("https://api.groq.com/openai/v1/models", headers=headers, timeout=15)
+    models_res.raise_for_status()
+    available = [m["id"] for m in models_res.json().get("data", [])]
+    model = GROQ_MODEL
+    if model not in available:
+        preferred = ["openai/gpt-oss-120b", "llama-3.3-70b-versatile", "qwen/qwen3-32b", "openai/gpt-oss-20b"]
+        text_models = [m for m in available if not any(x in m for x in ("whisper", "tts", "guard", "orpheus", "compound"))]
+        model = next((m for m in preferred if m in available), text_models[0] if text_models else model)
+        print(f"Groq: {GROQ_MODEL} が利用できないため {model} を使用します。")
     payload = {
-        "model": GROQ_MODEL,
+        "model": model,
         "messages": [{"role": "user", "content": build_prompt(candidates) + "\n配列は {\"deals\": [...]} の形で包んで出力してください。"}],
         "response_format": {"type": "json_object"},
         "temperature": 0.3
@@ -265,7 +275,7 @@ if __name__ == "__main__":
     if selected_deals is None and GROQ_API_KEY:
         try:
             selected_deals = analyze_with_groq(raw_candidates)
-            print(f"Groq（{GROQ_MODEL}）で判定しました。")
+            print("Groqで判定しました。")
         except Exception as e:
             status = getattr(getattr(e, "response", None), "status_code", type(e).__name__)
             print(f"Groq APIエラー（{status}）")
