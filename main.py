@@ -235,7 +235,14 @@ if __name__ == "__main__":
     print(f"   取得件数: {len(raw_candidates)}件")
 
     print("2. AIで買い時判定＆テキスト生成中...")
-    selected_deals = analyze_with_gemini(raw_candidates)
+    try:
+        selected_deals = analyze_with_gemini(raw_candidates)
+    except Exception as e:
+        # APIエラーでもサイト更新を止めないよう、サンプルデータで続行する
+        status = getattr(getattr(e, "response", None), "status_code", type(e).__name__)
+        print(f"Gemini APIエラー（{status}）のため、サンプルデータで生成します。")
+        GEMINI_API_KEY = ""
+        selected_deals = analyze_with_gemini(raw_candidates)
 
     print("3. Webサイト更新＆通知送信中...")
     generate_html(selected_deals)
