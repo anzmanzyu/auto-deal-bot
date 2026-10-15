@@ -7,6 +7,7 @@ import requests
 
 # 環境変数の読み込み（未設定でもサンプル＆RSSで即テスト動作可能）
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL") or "gemini-flash-latest"
 AMAZON_TAG = os.getenv("AMAZON_TAG", "your-amazon-tag-22")
 RAKUTEN_AFFILIATE_ID = os.getenv("RAKUTEN_AFFILIATE_ID", "")
 RAKUTEN_APP_ID = os.getenv("RAKUTEN_APP_ID", "")
@@ -101,7 +102,7 @@ def analyze_with_gemini(candidates):
             }
         ]
 
-    endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+    endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
 
     prompt = f"""
 あなたはガジェット・日用品の価格調査およびお買い得判定の専門家です。
