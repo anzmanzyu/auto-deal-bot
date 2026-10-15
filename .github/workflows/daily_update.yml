@@ -1,4 +1,4 @@
-﻿name: Daily Deal Auto Update
+name: Daily Deal Auto Update
 
 on:
   schedule:
