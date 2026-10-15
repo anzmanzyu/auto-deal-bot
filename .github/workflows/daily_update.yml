@@ -1,4 +1,4 @@
-name: Daily Deal Auto Update
+﻿name: Daily Deal Auto Update
 
 on:
   schedule:
@@ -52,7 +52,7 @@ jobs:
             echo "No archive changes"
           else
             git commit -m "Update deal archive (${{ github.run_id }})"
-            git pull --rebase origin ${{ github.ref_name }}
+            git pull --rebase --autostash origin ${{ github.ref_name }}
             git push origin HEAD:${{ github.ref_name }}
           fi
 
