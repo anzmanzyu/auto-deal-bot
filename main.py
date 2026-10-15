@@ -28,15 +28,21 @@ def guess_site_url():
 
 
 SITE_URL = guess_site_url()
-SITE_TITLE = "AI厳選：実質最安値・注目ガジェット速報"
+SITE_NAME = "AI厳選 ガジェット特価速報"
+SITE_TAGLINE = "Amazon・楽天のお買い得ガジェットを、AIが毎日2回厳選"
+OG_IMAGE = "og.png"  # public/og.png（1200x630）
 
 JST = timezone(timedelta(hours=9))
 NOW = datetime.now(JST)
 TODAY_STR = NOW.strftime("%Y-%m-%d %H:%M")
 TODAY_DATE = NOW.strftime("%Y-%m-%d")
+WEEKDAYS = "月火水木金土日"
+UPDATE_HOURS = (7, 18)  # workflow の cron（UTC 22:00 / 9:00）を日本時間にしたもの
 
 HISTORY_PATH = "data/history.json"
 HISTORY_DAYS = 30
+EVENTS_PATH = "data/events.json"
+EVENT_LOOKAHEAD_DAYS = 14
 
 BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番"}
 
@@ -47,6 +53,7 @@ IMPULSE_STAPLES = [
         "category": "日用品・家電",
         "slot": "impulse",
         "badge": BADGES["impulse"],
+        "catch_copy": "予備に1本、ついでに安心",
         "deal_reason": "・1,000円台で買える定番の充電ケーブル\n・予備や職場用に1本あると便利\n・高額品のついでにカートへ入れやすい",
         "sns_text": "【ついで買い定番】AnkerのUSB-Cケーブルは予備に1本あると安心。セールのついでにまとめ買いがおすすめ。#ガジェット",
         "score": 82,
@@ -57,12 +64,51 @@ IMPULSE_STAPLES = [
         "category": "日用品・家電",
         "slot": "impulse",
         "badge": BADGES["impulse"],
+        "catch_copy": "切らす前にストック",
         "deal_reason": "・長持ちで定番のアルカリ乾電池\n・リモコンやマウスの予備に必須\n・1,000円前後で即決しやすい",
         "sns_text": "【ストック推奨】長持ちの定番乾電池エボルタネオ。切らす前にセールでまとめ買いしておくのが吉。#日用品",
         "score": 80,
         "image_url": ""
     },
 ]
+
+# 商品画像が無いときに表示するアイコン（上から順に判定）
+PRODUCT_ICONS = [
+    (("イヤホン", "ヘッドホン", "AirPods", "ヘッドセット"), "🎧"),
+    (("スピーカー", "サウンドバー"), "🔊"),
+    (("バッテリー", "Power Bank", "電池", "エボルタ"), "🔋"),
+    (("充電器", "Charger", "GaN", "ケーブル"), "🔌"),
+    (("マウス", "トラックボール"), "🖱️"),
+    (("キーボード",), "⌨️"),
+    (("モニター", "ディスプレイ"), "🖥️"),
+    (("ノート", "MacBook", "Chromebook", "パソコン", "PC"), "💻"),
+    (("iPad", "タブレット", "Kindle", "Fire HD"), "📱"),
+    (("iPhone", "Pixel", "Galaxy", "スマホ", "スマートフォン", "Xperia", "AQUOS"), "📱"),
+    (("ウォッチ", "Watch", "バンド"), "⌚"),
+    (("カメラ", "GoPro", "Insta360"), "📷"),
+    (("SSD", "HDD", "USBメモリ", "microSD", "SDカード", "NAS"), "💾"),
+    (("ルーター", "Wi-Fi", "WiFi", "メッシュ"), "📶"),
+    (("Fire TV", "テレビ", "TV", "プロジェクター", "Chromecast"), "📺"),
+    (("Switch", "PlayStation", "PS5", "ゲーム", "コントローラー"), "🎮"),
+    (("掃除機", "ルンバ"), "🧹"),
+    (("炭酸水", "飲料", "コーヒー", "お茶"), "🥤"),
+    (("洗剤", "ティッシュ", "トイレットペーパー"), "🧴"),
+]
+
+# ランキングカードの背景色（画像が無いとき）
+CARD_TONES = [
+    "from-amber-100 via-orange-100 to-rose-200",
+    "from-sky-100 via-indigo-100 to-violet-200",
+    "from-fuchsia-100 via-pink-100 to-rose-200",
+    "from-emerald-100 via-teal-100 to-cyan-200",
+]
+IMPULSE_TONE = "from-lime-100 via-emerald-100 to-teal-200"
+RANK_STYLES = {
+    1: "from-amber-300 to-yellow-500 text-amber-950",
+    2: "from-slate-200 to-slate-400 text-slate-800",
+    3: "from-orange-300 to-amber-700 text-white",
+    4: "from-sky-300 to-indigo-500 text-white",
+}
 
 
 def safe_status(e):
@@ -96,6 +142,8 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
             items.append({
                 "title": info.get("itemName", ""),
                 "price": f"{info.get('itemPrice', '')}円（ポイント倍率: {info.get('pointRate', 1)}倍）",
+                "price_yen": info.get("itemPrice"),
+                "point_rate": info.get("pointRate", 1),
                 "description": info.get("itemCaption", "")[:200],
                 "source_url": info.get("itemUrl", ""),
                 "image_url": image_url,
@@ -160,6 +208,7 @@ def sample_deals():
             "category": "ガジェット",
             "slot": "main",
             "badge": "⚡ 実質最安級",
+            "catch_copy": "PCもスマホもこれ1台",
             "deal_reason": "・ノートPCもスマホもこれ1台で急速充電可能\n・折りたたみ式プラグで持ち運びに最適\n・セール時はポイント還元込みで実質最安クラスに到達",
             "sns_text": "【本日の注目ガジェット】Ankerの67W 3ポート充電器が実質最安クラスで狙い目！PCとスマホの充電器を1つにまとめたい人はこれ一択です。#ガジェット #セール",
             "score": 95,
@@ -170,6 +219,7 @@ def sample_deals():
             "category": "ガジェット",
             "slot": "main",
             "badge": BADGES["main"],
+            "catch_copy": "手首が疲れない定番機",
             "deal_reason": "・腕や手首が疲れにくい定番トラックボール\n・長寿命バッテリーで最大24ヶ月使用可能\n・Amazonおよび楽天の還元対象になりやすい鉄板モデル",
             "sns_text": "【定番アイテム】デスクワークの手首の疲れを激減させるロジクールの名機M575S。セール・ポイント還元時の買い替えが圧倒的にお得です。#デスク環境",
             "score": 91,
@@ -180,6 +230,7 @@ def sample_deals():
             "category": "ガジェット",
             "slot": "main",
             "badge": BADGES["main"],
+            "catch_copy": "ケーブル不要の直挿し型",
             "deal_reason": "・ポケットに入るコンパクトなモバイルバッテリー\n・USB-C直挿しでケーブル不要\n・通勤・旅行の電池切れ対策に",
             "sns_text": "【持ち歩き必須】ケーブル不要で直挿しできるAnkerの小型モバイルバッテリー。セール中なら買い時です。#ガジェット",
             "score": 88,
@@ -206,6 +257,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
       "category": "ガジェット または 日用品・家電",
       "slot": "main または impulse",
       "badge": "🔥 本日の目玉 / ⚡ 実質最安級 / 🛒 ついで買い定番 のいずれか（impulse枠は必ず 🛒 ついで買い定番）",
+      "catch_copy": "商品の一番の魅力をひと言で表すキャッチコピー（16文字以内、価格や割引率の数字は書かない）",
       "deal_reason": "なぜ注目・お買い得なのかを箇条書き3行（・から始める）で簡潔に解説",
       "sns_text": "X（旧Twitter）にそのまま投稿できる110文字以内の魅力的な紹介文（ハッシュタグ付き）",
       "score": 80から99までの整数（おすすめ度）,
@@ -265,8 +317,16 @@ def analyze_with_groq(candidates):
     return parse_deals(res.json()["choices"][0]["message"]["content"])
 
 
-def normalize_deals(deals):
+def reason_lines(text):
+    """「・」区切りの解説文を1行ずつのリストにする"""
+    lines = [line.strip().lstrip("・-•*").strip() for line in str(text).splitlines()]
+    return [line for line in lines if line]
+
+
+def normalize_deals(deals, candidates=()):
     """AI出力の欠損を補い、ついで買い枠2件を必ず含む5〜6件に整える"""
+    # 価格はAIに書かせず、楽天APIで取得した候補と画像URLが一致したときだけ載せる
+    prices = {c["image_url"]: c for c in candidates if c.get("image_url") and c.get("price_yen")}
     cleaned = []
     for d in deals:
         if not isinstance(d, dict) or not d.get("product_name"):
@@ -277,40 +337,54 @@ def normalize_deals(deals):
             score = int(d.get("score", 85))
         except (TypeError, ValueError):
             score = 85
+        reasons = reason_lines(d.get("deal_reason", ""))
+        catch_copy = str(d.get("catch_copy") or (reasons[0] if reasons else ""))[:24]
+        price = prices.get(image_url, {})
         cleaned.append({
             "product_name": str(d["product_name"])[:60],
             "category": str(d.get("category") or ("日用品・家電" if slot == "impulse" else "ガジェット")),
             "slot": slot,
             "badge": BADGES["impulse"] if slot == "impulse" else str(d.get("badge") or BADGES["main"]),
+            "catch_copy": catch_copy,
             "deal_reason": str(d.get("deal_reason", "")),
             "sns_text": str(d.get("sns_text", "")),
-            "score": score,
+            "score": max(0, min(100, score)),
             "image_url": image_url if image_url.startswith("https://") else "",
+            "price_yen": price.get("price_yen"),
+            "point_rate": price.get("point_rate"),
         })
 
-    main = [d for d in cleaned if d["slot"] == "main"][:4]
+    # 目玉枠はおすすめ度の高い順に並べてランキングにする
+    main = sorted((d for d in cleaned if d["slot"] == "main"), key=lambda d: d["score"], reverse=True)[:4]
     impulse = [d for d in cleaned if d["slot"] == "impulse"][:2]
     for staple in IMPULSE_STAPLES:
         if len(impulse) >= 2:
             break
         if all(staple["product_name"] != d["product_name"] for d in impulse):
-            impulse.append(dict(staple))
+            impulse.append(dict(staple, price_yen=None, point_rate=None))
     # 目玉枠を先頭、ついで買い枠を最後に並べる
     return main + impulse
+
+
+def with_amazon_tag(url):
+    return f"{url}{'&' if '?' in url else '?'}tag={AMAZON_TAG}"
+
+
+def with_rakuten_affiliate(url):
+    if not RAKUTEN_AFFILIATE_ID:
+        return url
+    return f"https://hb.afl.rakuten.co.jp/hgc/{RAKUTEN_AFFILIATE_ID}/?pc={urllib.parse.quote(url, safe='')}"
+
+
+AMAZON_SALE_URL = with_amazon_tag("https://www.amazon.co.jp/gp/goldbox")
+RAKUTEN_TOP_URL = with_rakuten_affiliate("https://www.rakuten.co.jp/")
 
 
 def build_affiliate_urls(product_name):
     """商品名からAmazonおよび楽天市場のアフィリエイト検索URLを自動生成する"""
     encoded_name = urllib.parse.quote(product_name)
-    amazon_url = f"https://www.amazon.co.jp/s?k={encoded_name}&tag={AMAZON_TAG}"
-
-    rakuten_search = f"https://search.rakuten.co.jp/search/mall/{encoded_name}/"
-    if RAKUTEN_AFFILIATE_ID:
-        encoded_dest = urllib.parse.quote(rakuten_search, safe="")
-        rakuten_url = f"https://hb.afl.rakuten.co.jp/hgc/{RAKUTEN_AFFILIATE_ID}/?pc={encoded_dest}"
-    else:
-        rakuten_url = rakuten_search
-
+    amazon_url = with_amazon_tag(f"https://www.amazon.co.jp/s?k={encoded_name}")
+    rakuten_url = with_rakuten_affiliate(f"https://search.rakuten.co.jp/search/mall/{encoded_name}/")
     return amazon_url, rakuten_url
 
 
@@ -320,72 +394,537 @@ def build_tweet_url(deal, page_url):
     return "https://twitter.com/intent/tweet?" + urllib.parse.urlencode({"text": text, "url": page_url})
 
 
-def thumbnail_html(deal):
-    """商品画像、無ければカテゴリ別のアイコンで表示する"""
+def load_events():
+    """data/events.json から、開催中または開催間近の大型セールを読み込む"""
+    try:
+        with open(EVENTS_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        return []
+    except Exception as e:
+        print(f"セール予定ファイルを読み込めませんでした: {e}")
+        return []
+
+    events = []
+    for e in data if isinstance(data, list) else []:
+        try:
+            start = datetime.fromisoformat(e["start"])
+            end = datetime.fromisoformat(e["end"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        start = start if start.tzinfo else start.replace(tzinfo=JST)
+        end = end if end.tzinfo else end.replace(tzinfo=JST)
+        if end < NOW or start > NOW + timedelta(days=EVENT_LOOKAHEAD_DAYS):
+            continue
+        store = e.get("store", "")
+        url = str(e.get("url") or "")
+        if not url.startswith("https://"):
+            url = "https://www.amazon.co.jp/gp/goldbox" if store == "amazon" else "https://www.rakuten.co.jp/"
+        if store == "amazon":
+            url = with_amazon_tag(url)
+        elif store == "rakuten":
+            url = with_rakuten_affiliate(url)
+        events.append({
+            "name": str(e.get("name", "")),
+            "note": str(e.get("note", "")),
+            "store": {"amazon": "Amazon", "rakuten": "楽天市場"}.get(store, store),
+            "start": start,
+            "end": end,
+            "url": url,
+        })
+    events.sort(key=lambda e: e["start"])
+    return events
+
+
+def md_date(dt):
+    """2026-10-15 → 10/15(木)"""
+    return f"{dt.month}/{dt.day}({WEEKDAYS[dt.weekday()]})"
+
+
+def md_datetime(dt):
+    return f"{md_date(dt)} {dt.hour}:{dt.minute:02d}"
+
+
+def next_update_text():
+    for hour in UPDATE_HOURS:
+        if NOW.hour < hour:
+            return f"本日 {hour}:00頃"
+    return f"明日 {UPDATE_HOURS[0]}:00頃"
+
+
+def next_rakuten_point_day():
+    """楽天市場「5と0のつく日」の直近の日付（ビルド時点。表示はJSでも更新する）"""
+    for i in range(7):
+        day = NOW + timedelta(days=i)
+        if day.day % 5 == 0:
+            return "今日は開催日！" if i == 0 else f"次回 {md_date(day)}"
+    return ""
+
+
+def product_icon(deal):
+    name = deal["product_name"].lower()
+    for keywords, icon in PRODUCT_ICONS:
+        if any(k.lower() in name for k in keywords):
+            return icon
+    return "🛒" if deal["slot"] == "impulse" else "⚡"
+
+
+def thumbnail_html(deal, box_cls, emoji_cls, tone):
+    """商品画像、無ければ商品ジャンルのアイコンで表示する"""
     if deal["image_url"]:
-        return (f'<img src="{html.escape(deal["image_url"])}" alt="{html.escape(deal["product_name"])}" '
-                f'loading="lazy" class="w-24 h-24 object-contain rounded-lg bg-white border border-slate-200 shrink-0">')
-    if deal["slot"] == "impulse" or "日用品" in deal["category"]:
-        icon, colors = "🏠", "from-emerald-100 to-emerald-200"
-    else:
-        icon, colors = "⚡", "from-sky-100 to-indigo-200"
-    return (f'<div class="w-24 h-24 rounded-lg bg-gradient-to-br {colors} flex items-center justify-center '
-            f'text-4xl shrink-0" aria-hidden="true">{icon}</div>')
+        return (f'<div class="{box_cls} shrink-0 rounded-2xl bg-white ring-1 ring-slate-200 overflow-hidden flex items-center justify-center">'
+                f'<img src="{html.escape(deal["image_url"])}" alt="{html.escape(deal["product_name"])}" loading="lazy" '
+                f'class="w-full h-full object-contain p-2" '
+                # 画像が読み込めないときはアイコン表示に切り替える
+                f'onerror="this.outerHTML=\'&lt;span class=&quot;{emoji_cls}&quot;&gt;{product_icon(deal)}&lt;/span&gt;\'"></div>')
+    return (f'<div class="{box_cls} shrink-0 rounded-2xl bg-gradient-to-br {tone} ring-1 ring-black/5 flex items-center justify-center" '
+            f'aria-hidden="true"><span class="{emoji_cls} drop-shadow">{product_icon(deal)}</span></div>')
 
 
-def render_page(deals, history, page_date, root, page_url):
-    """スマホ・PC対応のページHTMLを組み立てる（root はサイト直下への相対パス）"""
-    cards_html = ""
-    for idx, deal in enumerate(deals, 1):
-        amz_url, rkt_url = build_affiliate_urls(deal["product_name"])
-        reasons_html = html.escape(deal["deal_reason"]).replace("\n", "<br>")
-        badge_color = "bg-emerald-100 text-emerald-800" if deal["slot"] == "impulse" else "bg-rose-100 text-rose-800"
-        cards_html += f"""
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
-            <div class="flex items-center justify-between mb-3 gap-2 flex-wrap">
-                <div class="flex items-center gap-2 flex-wrap">
-                    <span class="{badge_color} text-xs font-bold px-2.5 py-1 rounded">{html.escape(deal['badge'])}</span>
-                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded">#{idx} {html.escape(deal['category'])}</span>
+def badges_html(deal):
+    badge_cls = "bg-emerald-100 text-emerald-800" if deal["slot"] == "impulse" else "bg-rose-100 text-rose-700"
+    return (f'<div class="flex items-center gap-1.5 flex-wrap">'
+            f'<span class="{badge_cls} text-[11px] font-black px-2 py-0.5 rounded-full">{html.escape(deal["badge"])}</span>'
+            f'<span class="bg-slate-100 text-slate-600 text-[11px] font-bold px-2 py-0.5 rounded-full">{html.escape(deal["category"])}</span>'
+            f'</div>')
+
+
+def score_html(score):
+    return f"""
+                <div class="flex items-center gap-2 mt-3" title="AIによるおすすめ度">
+                    <span class="text-[11px] font-bold text-slate-500 whitespace-nowrap">AI注目度</span>
+                    <div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500" style="width:{score}%"></div>
+                    </div>
+                    <span class="text-base font-black text-rose-600 tabular-nums">{score}</span>
+                </div>"""
+
+
+def price_html(deal):
+    if not deal.get("price_yen"):
+        return ""
+    try:
+        price = f"¥{int(deal['price_yen']):,}"
+    except (TypeError, ValueError):
+        return ""
+    point = f'<span class="text-[11px] font-bold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded">ポイント{html.escape(str(deal.get("point_rate") or 1))}倍</span>'
+    return f"""
+                <div class="flex items-baseline gap-2 mt-3 flex-wrap">
+                    <span class="text-[11px] text-slate-500">楽天参考価格</span>
+                    <span class="text-2xl font-black text-slate-900 tabular-nums">{price}</span>
+                    {point}
+                </div>"""
+
+
+def reasons_html(deal, text_cls="text-sm"):
+    items = "".join(
+        f'<li class="flex gap-2"><span class="text-emerald-500 font-black shrink-0">✓</span><span>{html.escape(line)}</span></li>'
+        for line in reason_lines(deal["deal_reason"])
+    )
+    return f'<ul class="space-y-1.5 {text_cls} text-slate-700 leading-relaxed mt-3">{items}</ul>'
+
+
+def cta_html(deal, page_url):
+    amz_url, rkt_url = build_affiliate_urls(deal["product_name"])
+    return f"""
+                <div class="grid grid-cols-2 gap-2 mt-4">
+                    <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored"
+                       class="btn-amz flex items-center justify-center gap-1 font-black py-3 px-2 rounded-xl text-sm shadow-sm transition">
+                       Amazonで見る <span aria-hidden="true">›</span>
+                    </a>
+                    <a href="{html.escape(rkt_url)}" target="_blank" rel="nofollow noopener sponsored"
+                       class="btn-rkt flex items-center justify-center gap-1 font-black py-3 px-2 rounded-xl text-sm shadow-sm transition">
+                       楽天で見る <span aria-hidden="true">›</span>
+                    </a>
                 </div>
-                <span class="text-amber-600 font-bold text-sm">注目度スコア: {deal['score']} / 100</span>
-            </div>
-            <div class="flex gap-4 mb-4">
-                {thumbnail_html(deal)}
-                <div class="min-w-0">
-                    <h2 class="text-lg font-bold text-slate-900 mb-2">{html.escape(deal['product_name'])}</h2>
-                    <div class="text-sm text-slate-700 leading-relaxed">{reasons_html}</div>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored"
-                   class="flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-4 rounded-lg text-sm transition">
-                   Amazonで最安値を見る
-                </a>
-                <a href="{html.escape(rkt_url)}" target="_blank" rel="nofollow noopener sponsored"
-                   class="flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-lg text-sm transition">
-                   楽天市場で実質価格を見る
-                </a>
-            </div>
-            <a href="{html.escape(build_tweet_url(deal, page_url))}" target="_blank" rel="noopener"
-               class="mt-3 flex items-center justify-center bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition">
-               𝕏 ポスト作成
-            </a>
-        </div>
-        """
+                <div class="flex items-center justify-between gap-2 mt-3">
+                    <span class="text-[11px] text-slate-400">※価格・ポイントはリンク先でご確認ください</span>
+                    <a href="{html.escape(build_tweet_url(deal, page_url))}" target="_blank" rel="noopener"
+                       class="shrink-0 bg-slate-900 hover:bg-slate-700 text-white font-bold py-1.5 px-3 rounded-full text-[11px] transition">
+                       𝕏 ポスト作成
+                    </a>
+                </div>"""
 
-    archive_items = ""
+
+def featured_card(deal, page_url):
+    """ランキング1位の大きなカード"""
+    return f"""
+            <article id="deal-1" class="relative col-span-full bg-white rounded-3xl shadow-xl shadow-orange-500/10 ring-2 ring-amber-300 overflow-hidden">
+                <div class="absolute top-0 left-0 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-black px-4 py-1.5 rounded-br-2xl shadow">👑 本日のNo.1</div>
+                <div class="p-5 pt-11 md:p-7 md:pt-12 flex flex-col md:flex-row gap-5 md:gap-7">
+                    {thumbnail_html(deal, "w-full h-44 md:w-64 md:h-64", "text-7xl md:text-8xl", CARD_TONES[0])}
+                    <div class="flex-1 min-w-0">
+                        {badges_html(deal)}
+                        <h3 class="text-xl md:text-2xl font-black text-slate-900 leading-snug mt-2">{html.escape(deal['product_name'])}</h3>
+                        <p class="mt-1 text-rose-600 font-black">{html.escape(deal['catch_copy'])}</p>
+                        {score_html(deal['score'])}
+                        {price_html(deal)}
+                        {reasons_html(deal, "text-sm md:text-base")}
+                        {cta_html(deal, page_url)}
+                    </div>
+                </div>
+            </article>"""
+
+
+def ranked_card(deal, rank, page_url):
+    rank_style = RANK_STYLES.get(rank, RANK_STYLES[4])
+    return f"""
+            <article id="deal-{rank}" class="relative bg-white rounded-2xl shadow-md ring-1 ring-slate-200 p-5 flex flex-col hover:-translate-y-0.5 hover:shadow-xl transition">
+                <div class="flex gap-4">
+                    <div class="relative shrink-0">
+                        {thumbnail_html(deal, "w-24 h-24", "text-5xl", CARD_TONES[(rank - 1) % len(CARD_TONES)])}
+                        <span class="absolute -top-2 -left-2 w-9 h-9 rounded-full bg-gradient-to-br {rank_style} text-sm font-black flex items-center justify-center shadow ring-2 ring-white">{rank}位</span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        {badges_html(deal)}
+                        <h3 class="text-base font-black text-slate-900 leading-snug mt-1.5">{html.escape(deal['product_name'])}</h3>
+                        <p class="mt-1 text-sm text-rose-600 font-bold">{html.escape(deal['catch_copy'])}</p>
+                    </div>
+                </div>
+                {score_html(deal['score'])}
+                {price_html(deal)}
+                <div class="flex-1">{reasons_html(deal)}</div>
+                {cta_html(deal, page_url)}
+            </article>"""
+
+
+def impulse_card(deal, idx, page_url):
+    return f"""
+            <article id="deal-{idx}" class="bg-white rounded-2xl ring-1 ring-emerald-200 shadow-sm p-5 flex flex-col">
+                <div class="flex gap-4">
+                    {thumbnail_html(deal, "w-20 h-20", "text-4xl", IMPULSE_TONE)}
+                    <div class="min-w-0 flex-1">
+                        {badges_html(deal)}
+                        <h3 class="text-base font-black text-slate-900 leading-snug mt-1.5">{html.escape(deal['product_name'])}</h3>
+                        <p class="mt-1 text-sm text-emerald-700 font-bold">{html.escape(deal['catch_copy'])}</p>
+                    </div>
+                </div>
+                {price_html(deal)}
+                <div class="flex-1">{reasons_html(deal)}</div>
+                {cta_html(deal, page_url)}
+            </article>"""
+
+
+def section_head(eyebrow, title, sub, accent="text-orange-500"):
+    return f"""
+            <div class="mb-6">
+                <p class="text-[11px] font-black tracking-[0.25em] {accent}">{eyebrow}</p>
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-1">{title}</h2>
+                <p class="text-sm text-slate-500 mt-1.5">{sub}</p>
+            </div>"""
+
+
+def event_attrs(event):
+    state = "live" if event["start"] <= NOW else "soon"
+    return (f'data-event-start="{event["start"].isoformat()}" data-event-end="{event["end"].isoformat()}" '
+            f'data-state="{state}"')
+
+
+def event_period(event):
+    return f"{md_datetime(event['start'])} 〜 {md_datetime(event['end'])}"
+
+
+def event_bar_html(events):
+    """ページ最上部の大型セール告知（終了したものはJSで隠す）"""
+    if not events:
+        return ""
+    items = ""
+    for i, ev in enumerate(events):
+        hidden = "" if i == 0 else " hidden"
+        items += f"""
+        <a href="{html.escape(ev['url'])}" target="_blank" rel="nofollow noopener sponsored" data-event-bar {event_attrs(ev)}{hidden}
+           class="block max-w-5xl mx-auto px-4 py-2 text-center text-sm font-bold hover:underline">
+            <span class="ev-state text-[11px] font-black px-2 py-0.5 rounded-full mr-1.5">{'開催中' if ev['start'] <= NOW else 'まもなく開始'}</span>
+            🎉 {html.escape(ev['name'])}
+            <span class="font-black text-yellow-200 ml-1" data-event-countdown>{html.escape(event_period(ev))}</span>
+            <span class="ml-1 underline">会場を見る →</span>
+        </a>"""
+    return f'<div id="event-bar" class="bg-gradient-to-r from-rose-600 via-orange-500 to-amber-500 text-white">{items}\n    </div>'
+
+
+def sale_info_html(events):
+    cards = ""
+    for ev in events:
+        note = f'<p class="text-xs text-slate-600 mt-2">{html.escape(ev["note"])}</p>' if ev["note"] else ""
+        cards += f"""
+                <a href="{html.escape(ev['url'])}" target="_blank" rel="nofollow noopener sponsored" {event_attrs(ev)}
+                   class="block bg-white rounded-2xl ring-1 ring-slate-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition">
+                    <div class="flex items-center gap-2">
+                        <span class="ev-state text-[11px] font-black px-2 py-0.5 rounded-full">{'開催中' if ev['start'] <= NOW else 'まもなく開始'}</span>
+                        <span class="text-xs font-bold text-slate-500">{html.escape(ev['store'])}</span>
+                    </div>
+                    <h3 class="font-black text-lg text-slate-900 mt-2">{html.escape(ev['name'])}</h3>
+                    <p class="text-xs text-slate-500 mt-1">{html.escape(event_period(ev))}</p>
+                    <p class="text-sm font-black text-rose-600 mt-2" data-event-countdown></p>
+                    {note}
+                    <span class="inline-block mt-3 text-sm font-black text-orange-600">セール会場を見る →</span>
+                </a>"""
+    cards += f"""
+                <a href="{html.escape(RAKUTEN_TOP_URL)}" target="_blank" rel="nofollow noopener sponsored" data-rakuten-day
+                   class="block bg-white rounded-2xl ring-1 ring-slate-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-black px-2 py-0.5 rounded-full bg-red-600 text-white">毎月5・10・15・20・25・30日</span>
+                        <span class="text-xs font-bold text-slate-500">楽天市場</span>
+                    </div>
+                    <h3 class="font-black text-lg text-slate-900 mt-2">5と0のつく日</h3>
+                    <p class="text-sm font-black text-rose-600 mt-2" id="rakuten-day">{next_rakuten_point_day()}</p>
+                    <p class="text-xs text-slate-600 mt-2">エントリー＆楽天カード決済でポイントアップ。高額ガジェットはこの日にまとめるのが定番です。</p>
+                    <span class="inline-block mt-3 text-sm font-black text-red-600">楽天市場を見る →</span>
+                </a>
+                <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored"
+                   class="block bg-white rounded-2xl ring-1 ring-slate-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-black px-2 py-0.5 rounded-full bg-slate-900 text-amber-300">毎日開催</span>
+                        <span class="text-xs font-bold text-slate-500">Amazon</span>
+                    </div>
+                    <h3 class="font-black text-lg text-slate-900 mt-2">タイムセール</h3>
+                    <p class="text-sm font-black text-rose-600 mt-2">人気商品が日替わりで登場</p>
+                    <p class="text-xs text-slate-600 mt-2">数量限定の特選タイムセールは売り切れ次第終了。気になる商品は早めのチェックがおすすめです。</p>
+                    <span class="inline-block mt-3 text-sm font-black text-orange-600">タイムセール会場を見る →</span>
+                </a>"""
+    # 楽天・Amazonの常設カード2枚を足した枚数で、空きマスが出にくい列数にする
+    cols = "md:grid-cols-2" if (len(events) + 2) % 2 == 0 and len(events) + 2 < 6 else "md:grid-cols-2 lg:grid-cols-3"
+    return f"""
+        <section id="sale-info" class="scroll-mt-20">
+            {section_head("SALE CALENDAR", "📣 開催中・まもなく開始のセール", "大型セールやポイントアップ日に買うと、同じ商品でも実質価格が下がります。")}
+            <div class="grid gap-4 {cols}">{cards}
+            </div>
+        </section>"""
+
+
+def archive_html(history, root, page_date):
+    items = ""
     for entry in history:
-        names = " / ".join(entry.get("products", [])[:3])
-        archive_items += f"""
-            <li><a href="{root}archive/{entry['date']}.html" class="block py-2 hover:bg-slate-50 rounded px-2">
-                <span class="font-bold text-slate-800">{entry['date']}</span>
-                <span class="text-slate-500 text-xs block truncate">{html.escape(names)}</span>
-            </a></li>"""
+        products = entry.get("products", [])
+        try:
+            label = md_date(datetime.strptime(entry["date"], "%Y-%m-%d"))
+        except ValueError:
+            label = entry["date"]
+        current = entry["date"] == page_date
+        ring = "ring-2 ring-orange-400" if current else "ring-1 ring-slate-200"
+        top = html.escape(products[0]) if products else ""
+        items += f"""
+                <li><a href="{root}archive/{entry['date']}.html" class="block h-full bg-white rounded-2xl {ring} p-4 hover:shadow-md hover:-translate-y-0.5 transition">
+                    <span class="flex items-baseline justify-between gap-2">
+                        <span class="font-black text-slate-900">{label}</span>
+                        <span class="text-[11px] font-bold text-orange-600">{len(products)}件</span>
+                    </span>
+                    <span class="block text-xs text-slate-500 mt-1 line-clamp-2">{top}</span>
+                </a></li>"""
+    return f"""
+        <section id="archive" class="scroll-mt-20">
+            {section_head("ARCHIVE", "📅 過去のお買い得アーカイブ一覧", "日ごとの厳選リストを30日分保存しています。値動きのチェックにどうぞ。")}
+            <ul class="grid grid-cols-2 md:grid-cols-4 gap-3">{items}
+            </ul>
+        </section>"""
 
-    top_names = "、".join(d["product_name"] for d in deals[:3])
-    description = f"{page_date}のAI厳選お買い得ガジェット・日用品。{top_names}など。Amazon・楽天の実質価格をチェック。"
-    title = f"{page_date} 実質最安値・お買い得ガジェット速報 | {SITE_TITLE}"
-    home_link = "" if root == "" else f'<a href="{root}index.html" class="text-xs text-sky-300 underline">最新のお買い得情報へ</a>'
+
+HOW_TO_STEPS = [
+    ("🤖", "AIが毎日2回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
+    ("📊", "注目度をスコア化", "値下げ幅・定番度・話題性をAIが判定し、買い時の商品をランキングにします。"),
+    ("🛒", "Amazon・楽天をワンタップ比較", "ボタンから両ストアの販売ページへ。ポイント還元込みの実質価格を比べて選べます。"),
+]
+
+FAQ = [
+    ("掲載商品はどうやって選んでいますか？",
+     "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが値下げ幅・定番度・話題性を判定して毎日2回自動で選んでいます。"),
+    ("「実質最安値」とは何ですか？",
+     "販売価格からポイント還元やクーポンを差し引いた、実際の負担額のことです。還元率は会員ランクやキャンペーンのエントリー状況で変わるため、最終的な価格は各ストアでご確認ください。"),
+    ("「ついで買い定番」とは何ですか？",
+     "送料無料ラインやポイントアップ条件に届かせたいときに追加しやすい、手頃な定番品です。ケーブルや乾電池など、いつか必ず使うものを選んでいます。"),
+]
+
+
+def about_html():
+    steps = "".join(f"""
+                <div class="bg-white rounded-2xl ring-1 ring-slate-200 p-5">
+                    <div class="flex items-center gap-3">
+                        <span class="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-900 to-indigo-900 text-2xl flex items-center justify-center">{icon}</span>
+                        <span class="text-xs font-black text-orange-500">STEP {i}</span>
+                    </div>
+                    <h3 class="font-black text-slate-900 mt-3">{title}</h3>
+                    <p class="text-sm text-slate-600 mt-1 leading-relaxed">{text}</p>
+                </div>""" for i, (icon, title, text) in enumerate(HOW_TO_STEPS, 1))
+    faq = "".join(f"""
+                <details class="group bg-white rounded-2xl ring-1 ring-slate-200 p-4">
+                    <summary class="flex items-center justify-between gap-3 cursor-pointer font-bold text-slate-900 list-none">
+                        <span><span class="text-orange-500 font-black mr-1">Q.</span>{html.escape(q)}</span>
+                        <span class="text-slate-400 group-open:rotate-45 transition text-xl leading-none">+</span>
+                    </summary>
+                    <p class="text-sm text-slate-600 mt-3 leading-relaxed">{html.escape(a)}</p>
+                </details>""" for q, a in FAQ)
+    return f"""
+        <section id="about" class="scroll-mt-20">
+            {section_head("HOW IT WORKS", "🔍 このサイトの使い方", "セール情報を追いかける手間を、AIが代わりに引き受けます。")}
+            <div class="grid gap-4 md:grid-cols-3">{steps}
+            </div>
+            <div class="grid gap-3 mt-6">{faq}
+            </div>
+        </section>"""
+
+
+PAGE_CSS = """
+        body { font-family: 'Noto Sans JP', system-ui, -apple-system, 'Hiragino Sans', sans-serif; }
+        .hero-bg {
+            background:
+                radial-gradient(circle at 12% 18%, rgba(249, 115, 22, .45), transparent 42%),
+                radial-gradient(circle at 88% 4%, rgba(236, 72, 153, .38), transparent 45%),
+                radial-gradient(circle at 60% 110%, rgba(56, 189, 248, .25), transparent 45%),
+                linear-gradient(135deg, #0b1120 0%, #1e1b4b 55%, #312e81 100%);
+        }
+        .grid-bg {
+            background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: linear-gradient(to bottom, #000 30%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+        }
+        .btn-amz { background: #ff9900; color: #111827; }
+        .btn-amz:hover { background: #f08804; }
+        .btn-rkt { background: #bf0000; color: #fff; }
+        .btn-rkt:hover { background: #9e0000; }
+        .ev-state { background: #fde047; color: #0f172a; }
+        [data-state="live"] .ev-state { background: #fff; color: #e11d48; }
+        #sale-info [data-state="live"] .ev-state, [data-rakuten-day][data-state="live"] .ev-state { background: #e11d48; color: #fff; }
+        .no-scrollbar { scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        [hidden] { display: none !important; }
+"""
+
+PAGE_JS = """
+    (function () {
+        function pad(n) { return (n < 10 ? '0' : '') + n; }
+        function left(ms) {
+            var s = Math.max(0, Math.floor(ms / 1000)), d = Math.floor(s / 86400),
+                h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+            return d > 0 ? d + '日' + h + '時間' + pad(m) + '分' : h + ':' + pad(m) + ':' + pad(s % 60);
+        }
+        function tick() {
+            var now = Date.now(), barShown = false;
+            document.querySelectorAll('[data-event-start]').forEach(function (el) {
+                var st = Date.parse(el.dataset.eventStart), en = Date.parse(el.dataset.eventEnd);
+                var ended = now > en, live = now >= st && !ended;
+                if (el.hasAttribute('data-event-bar')) {
+                    var show = !ended && !barShown;
+                    el.hidden = !show;
+                    if (show) barShown = true;
+                } else {
+                    el.hidden = ended;
+                }
+                el.dataset.state = live ? 'live' : 'soon';
+                var label = el.querySelector('.ev-state'), cd = el.querySelector('[data-event-countdown]');
+                if (label) label.textContent = live ? '開催中' : 'まもなく開始';
+                if (cd) cd.textContent = live ? '終了まで あと' + left(en - now) : '開始まで あと' + left(st - now);
+            });
+            var bar = document.getElementById('event-bar');
+            if (bar) bar.hidden = !barShown;
+        }
+        function rakutenDay() {
+            var el = document.getElementById('rakuten-day');
+            if (!el) return;
+            var j = new Date(Date.now() + 9 * 3600000), w = '日月火水木金土';
+            for (var i = 0; i < 7; i++) {
+                var t = new Date(Date.UTC(j.getUTCFullYear(), j.getUTCMonth(), j.getUTCDate() + i));
+                if (t.getUTCDate() % 5 === 0) {
+                    el.textContent = i === 0 ? '今日は開催日！' : '次回 ' + (t.getUTCMonth() + 1) + '/' + t.getUTCDate() + '(' + w[t.getUTCDay()] + ')';
+                    el.closest('[data-rakuten-day]').dataset.state = i === 0 ? 'live' : 'soon';
+                    return;
+                }
+            }
+        }
+        function updatedAgo() {
+            document.querySelectorAll('[data-updated]').forEach(function (el) {
+                var min = Math.floor((Date.now() - Date.parse(el.dataset.updated)) / 60000);
+                if (isNaN(min) || min < 0) return;
+                el.textContent = min < 60 ? '（' + Math.max(1, min) + '分前）' : min < 1440 ? '（' + Math.floor(min / 60) + '時間前）' : '';
+            });
+        }
+        tick(); rakutenDay(); updatedAgo();
+        setInterval(tick, 1000);
+        setInterval(updatedAgo, 60000);
+    })();
+"""
+
+
+def json_ld(deals, page_url, page_label):
+    data = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "WebSite", "name": SITE_NAME, "url": SITE_URL, "description": SITE_TAGLINE, "inLanguage": "ja"},
+            {
+                "@type": "ItemList",
+                "name": f"{page_label}のお買い得ガジェット",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": i, "name": d["product_name"], "url": f"{page_url}#deal-{i}"}
+                    for i, d in enumerate(deals, 1)
+                ],
+            },
+        ],
+    }
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
+def render_page(deals, history, page_date, root, page_url, events=()):
+    """スマホ・PC対応のページHTMLを組み立てる（root はサイト直下への相対パス）"""
+    is_archive = root != ""
+    page_dt = datetime.strptime(page_date, "%Y-%m-%d")
+    page_label = f"{page_dt.month}月{page_dt.day}日({WEEKDAYS[page_dt.weekday()]})"
+    main_deals = [d for d in deals if d["slot"] == "main"]
+    impulse_deals = [d for d in deals if d["slot"] == "impulse"]
+
+    # 2位以下が3件なら3列、2件以下なら2列にして空きマスを作らない
+    ranking_cols = "md:grid-cols-2 lg:grid-cols-3" if len(main_deals) >= 4 else "md:grid-cols-2"
+    ranking_cards = ""
+    for rank, deal in enumerate(main_deals, 1):
+        ranking_cards += featured_card(deal, page_url) if rank == 1 else ranked_card(deal, rank, page_url)
+    impulse_cards = "".join(impulse_card(d, len(main_deals) + i, page_url) for i, d in enumerate(impulse_deals, 1))
+
+    picks = ""
+    for i, deal in enumerate(deals, 1):
+        mark = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, "🛒" if deal["slot"] == "impulse" else "⚡")
+        picks += (f'<a href="#deal-{i}" class="shrink-0 max-w-[16rem] truncate bg-white/10 hover:bg-white/20 ring-1 ring-white/15 '
+                  f'rounded-full px-3 py-1.5 text-xs font-bold transition">{mark} {html.escape(deal["product_name"])}</a>')
+
+    top_names = "、".join(d["product_name"] for d in main_deals[:3])
+    description = (f"{page_label}更新｜{top_names}など、AIが厳選した今日のお買い得ガジェット{len(deals)}選。"
+                   f"Amazon・楽天のセール情報とポイントアップ日もまとめてチェックできます。")
+    if is_archive:
+        title = f"【{page_dt.year}年{page_label}】お買い得ガジェット{len(deals)}選｜{SITE_NAME}"
+        h1 = f'{page_label}の<span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">お買い得ガジェット</span>{len(deals)}選'
+        lead = f"{page_dt.year}年{page_label}にAIが厳選したセール・値下げ情報のアーカイブです。価格やポイント倍率は変わっている可能性があるため、最新情報はトップページでご確認ください。"
+        third_stat = ("掲載日", f"{md_date(page_dt)}", "")
+        crumbs = (f'<nav class="text-xs text-slate-400 mb-4" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-white">ホーム</a>'
+                  f' › <a href="{root}index.html#archive" class="hover:text-white">アーカイブ</a> › <span class="text-slate-200">{md_date(page_dt)}</span></nav>')
+        archive_notice = f"""
+        <div class="bg-amber-50 ring-1 ring-amber-200 text-amber-900 rounded-2xl p-4 text-sm flex flex-col md:flex-row md:items-center gap-3 justify-between">
+            <span>📌 このページは{page_dt.year}年{page_label}時点のアーカイブです。</span>
+            <a href="{root}index.html" class="shrink-0 bg-amber-400 hover:bg-amber-500 text-slate-900 font-black px-4 py-2 rounded-xl text-center">最新のお買い得情報を見る →</a>
+        </div>"""
+    else:
+        title = f"【{md_date(page_dt)}更新】今日のお買い得ガジェット{len(deals)}選・セール情報｜{SITE_NAME}"
+        h1 = 'AIが選ぶ、今日の<br class="md:hidden"><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">お買い得ガジェット</span>'
+        lead = "Amazon・楽天市場のセールや値下げ情報から、AIが買い時の商品を毎日2回ピックアップ。ポイント還元込みの「実質価格」を各ストアですぐ比較できます。"
+        third_stat = ("次回更新", next_update_text(), "")
+        crumbs = ""
+        archive_notice = ""
+
+    updated_iso = NOW.isoformat()
+    tweet_page_url = "https://twitter.com/intent/tweet?" + urllib.parse.urlencode({
+        "text": f"【{md_date(page_dt)}】AIが厳選した今日のお買い得ガジェット{len(deals)}選 #ガジェット #セール情報",
+        "url": page_url,
+    })
+    og_image = f"{SITE_URL}{OG_IMAGE}"
+    favicon = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E"
+               "%3Crect width='100' height='100' rx='22' fill='%23f97316'/%3E%3Ctext x='50' y='72' font-size='64' text-anchor='middle'%3E⚡%3C/text%3E%3C/svg%3E")
+
+    impulse_section = ""
+    if impulse_cards:
+        impulse_section = f"""
+        <section id="impulse" class="scroll-mt-20">
+            {section_head("ADD TO CART", "🛒 ついで買いで、もう1品お得に", "送料無料ラインやポイントアップ条件にあと少し届かない時に。いつか必ず使う手頃な定番品です。", "text-emerald-600")}
+            <div class="grid gap-5 md:grid-cols-2">{impulse_cards}
+            </div>
+        </section>"""
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -395,36 +934,122 @@ def render_page(deals, history, page_date, root, page_url):
     <title>{html.escape(title)}</title>
     <meta name="description" content="{html.escape(description)}">
     <link rel="canonical" href="{html.escape(page_url)}">
+    <meta name="theme-color" content="#0b1120">
+    <link rel="icon" href="{favicon}">
     <meta property="og:title" content="{html.escape(title)}">
     <meta property="og:description" content="{html.escape(description)}">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{'article' if is_archive else 'website'}">
     <meta property="og:url" content="{html.escape(page_url)}">
-    <meta property="og:site_name" content="{html.escape(SITE_TITLE)}">
+    <meta property="og:site_name" content="{html.escape(SITE_NAME)}">
     <meta property="og:locale" content="ja_JP">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="{html.escape(og_image)}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{html.escape(title)}">
     <meta name="twitter:description" content="{html.escape(description)}">
+    <meta name="twitter:image" content="{html.escape(og_image)}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>{PAGE_CSS}    </style>
+    <script type="application/ld+json">{json_ld(deals, page_url, page_label)}</script>
 </head>
-<body class="bg-slate-100 min-h-screen text-slate-800">
-    <header class="bg-slate-900 text-white py-6 px-4 shadow-md">
-        <div class="max-w-2xl mx-auto">
-            <h1 class="text-xl font-bold">⚡ {html.escape(SITE_TITLE)}</h1>
-            <p class="text-xs text-slate-400 mt-1">{page_date} 版 / 最終自動更新: {TODAY_STR} (JST) / 毎日自動解析</p>
-            {home_link}
+<body class="bg-slate-50 min-h-screen text-slate-800 pb-20 md:pb-0">
+    <div class="bg-slate-950 text-slate-400 text-[11px] text-center py-1.5 px-4">【PR】当サイトはアフィリエイト広告（Amazonアソシエイト・楽天アフィリエイト）を利用しています</div>
+    {event_bar_html(events)}
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur border-b border-white/10 text-white">
+        <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+            <a href="{root}index.html" class="flex items-center gap-2.5 min-w-0">
+                <span class="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center text-lg shadow-lg shadow-orange-500/30">⚡</span>
+                <span class="leading-tight min-w-0">
+                    <span class="block text-[10px] font-black text-amber-300 tracking-[0.2em]">AI厳選</span>
+                    <span class="block font-black text-base truncate">ガジェット特価速報</span>
+                </span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-bold text-slate-300">
+                <a href="#ranking" class="hover:text-white">ランキング</a>
+                <a href="#impulse" class="hover:text-white">ついで買い</a>
+                <a href="#sale-info" class="hover:text-white">セール情報</a>
+                <a href="#archive" class="hover:text-white">アーカイブ</a>
+            </nav>
+            <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored"
+               class="shrink-0 text-xs font-black bg-amber-400 hover:bg-amber-300 text-slate-900 px-3 py-2 rounded-lg transition">セール会場 ↗</a>
         </div>
     </header>
-    <main class="max-w-2xl mx-auto p-4">
-        <p class="text-xs text-slate-500 mb-4">※当サイトは適格販売により収入を得るプログラムに参加しています。リアルタイムの在庫・ポイント還元率は各リンク先でご確認ください。</p>
-        {cards_html}
-    </main>
-    <footer class="max-w-2xl mx-auto p-4 pb-10">
-        <section class="bg-white rounded-xl border border-slate-200 p-5">
-            <h2 class="font-bold text-slate-900 mb-2">📅 過去のお買い得アーカイブ一覧</h2>
-            <ul class="divide-y divide-slate-100 text-sm">{archive_items}
-            </ul>
+
+    <section class="hero-bg text-white relative overflow-hidden">
+        <div class="grid-bg absolute inset-0" aria-hidden="true"></div>
+        <div class="relative max-w-5xl mx-auto px-4 pt-8 pb-8 md:pt-14 md:pb-12">
+            {crumbs}
+            <div class="inline-flex items-center gap-2 bg-white/10 ring-1 ring-white/20 rounded-full px-3 py-1 text-xs font-bold backdrop-blur">
+                <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span></span>
+                毎日7時・18時にAIが自動更新
+            </div>
+            <h1 class="mt-4 text-3xl md:text-5xl font-black leading-tight tracking-tight">{h1}</h1>
+            <p class="mt-4 text-slate-300 text-sm md:text-base max-w-2xl leading-relaxed">{lead}</p>
+            <div class="grid grid-cols-3 gap-2 md:gap-3 mt-6 max-w-xl">
+                <div class="bg-white/10 ring-1 ring-white/15 rounded-2xl p-3">
+                    <p class="text-[11px] text-slate-300">本日の厳選</p>
+                    <p class="text-2xl font-black">{len(deals)}<span class="text-sm font-bold ml-0.5">件</span></p>
+                </div>
+                <div class="bg-white/10 ring-1 ring-white/15 rounded-2xl p-3">
+                    <p class="text-[11px] text-slate-300">最終更新</p>
+                    <p class="text-sm md:text-base font-black leading-tight mt-1">{md_datetime(NOW)}<span class="block text-[11px] font-bold text-emerald-300" data-updated="{updated_iso}"></span></p>
+                </div>
+                <div class="bg-white/10 ring-1 ring-white/15 rounded-2xl p-3">
+                    <p class="text-[11px] text-slate-300">{third_stat[0]}</p>
+                    <p class="text-sm md:text-base font-black leading-tight mt-1">{third_stat[1]}</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3 mt-6">
+                <a href="#ranking" class="bg-gradient-to-r from-amber-400 to-orange-500 hover:brightness-110 text-slate-900 font-black px-5 py-3 rounded-xl shadow-lg shadow-orange-500/30 transition">🔥 今日のランキングを見る</a>
+                <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="bg-white/10 hover:bg-white/20 ring-1 ring-white/30 font-bold px-5 py-3 rounded-xl transition">Amazonタイムセール会場 ↗</a>
+            </div>
+            <div class="mt-7">
+                <p class="text-[11px] font-black tracking-[0.25em] text-amber-300 mb-2">TODAY'S PICKS</p>
+                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">{picks}</div>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-5xl mx-auto px-4 py-10 space-y-14">
+        {archive_notice}
+        <section id="ranking" class="scroll-mt-20">
+            {section_head("TODAY'S RANKING", f"🏆 {page_label}の注目ガジェット ランキング", "AIがお買い得度・注目度の高い順に並べました。価格・ポイントはボタンから各ストアで確認できます。")}
+            <div class="grid gap-5 {ranking_cols}">{ranking_cards}
+            </div>
         </section>
+        {impulse_section}
+        {sale_info_html(events)}
+        <section class="bg-gradient-to-r from-slate-900 to-indigo-900 rounded-3xl p-6 md:p-8 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <p class="text-[11px] font-black tracking-[0.25em] text-amber-300">SHARE</p>
+                <p class="text-lg md:text-xl font-black mt-1">お得情報を友だちにも教えよう</p>
+                <p class="text-sm text-slate-300 mt-1">このページは毎日7時・18時に自動で更新されます。ブックマークもおすすめです。</p>
+            </div>
+            <a href="{html.escape(tweet_page_url)}" target="_blank" rel="noopener" class="shrink-0 bg-white text-slate-900 hover:bg-slate-100 font-black px-5 py-3 rounded-xl text-center transition">𝕏 このページをポスト</a>
+        </section>
+        {about_html()}
+        {archive_html(history, root, page_date)}
+    </main>
+
+    <footer class="bg-slate-950 text-slate-400 text-xs">
+        <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
+            <p class="flex items-center gap-2 text-white font-black text-sm"><span class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center">⚡</span>{html.escape(SITE_NAME)}</p>
+            <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日7時・18時に自動更新しています。</p>
+            <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。また、楽天アフィリエイトを利用しています。</p>
+            <p>掲載内容はAIが公開情報をもとに自動生成したものです。価格・在庫・ポイント倍率は変動するため、購入前に必ず各販売ページでご確認ください。</p>
+            <p class="text-slate-500">最終更新: {TODAY_STR}（日本時間） © {NOW.year} {html.escape(SITE_NAME)}</p>
+        </div>
     </footer>
+
+    <div class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur border-t border-slate-200 p-2 grid grid-cols-2 gap-2">
+        <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="btn-amz text-center font-black py-2.5 rounded-xl text-sm">Amazonセール会場</a>
+        <a href="{html.escape(RAKUTEN_TOP_URL)}" target="_blank" rel="nofollow noopener sponsored" class="btn-rkt text-center font-black py-2.5 rounded-xl text-sm">楽天市場を見る</a>
+    </div>
+    <script>{PAGE_JS}</script>
 </body>
 </html>
 """
@@ -458,12 +1083,13 @@ def generate_site(deals):
     """トップページ・日別アーカイブ・sitemap.xml・robots.txt を生成する"""
     os.makedirs("public/archive", exist_ok=True)
     history = update_history(load_history(), deals)
+    events = load_events()
 
     with open("public/index.html", "w", encoding="utf-8") as f:
-        f.write(render_page(deals, history, TODAY_DATE, "", SITE_URL))
+        f.write(render_page(deals, history, TODAY_DATE, "", SITE_URL, events))
     archive_url = f"{SITE_URL}archive/{TODAY_DATE}.html"
     with open(f"public/archive/{TODAY_DATE}.html", "w", encoding="utf-8") as f:
-        f.write(render_page(deals, history, TODAY_DATE, "../", archive_url))
+        f.write(render_page(deals, history, TODAY_DATE, "../", archive_url, events))
 
     # 実在するアーカイブだけをサイトマップに載せる
     archive_dates = sorted((n[:-5] for n in os.listdir("public/archive") if n.endswith(".html")), reverse=True)
@@ -503,7 +1129,7 @@ def select_deals(candidates):
         if not key:
             continue
         try:
-            deals = normalize_deals(func(candidates))
+            deals = normalize_deals(func(candidates), candidates)
             if len([d for d in deals if d["slot"] == "main"]) >= 2:
                 print(f"{name}で判定しました。")
                 return deals

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Amazon プライム感謝祭 先行セール",
+    "store": "amazon",
+    "start": "2026-10-13T00:00:00+09:00",
+    "end": "2026-10-15T23:59:59+09:00",
+    "note": "本番前に一部の目玉商品が先行して値下げ。",
+    "url": "https://www.amazon.co.jp/gp/goldbox"
+  },
+  {
+    "name": "Amazon プライム感謝祭",
+    "store": "amazon",
+    "start": "2026-10-16T00:00:00+09:00",
+    "end": "2026-10-19T23:59:59+09:00",
+    "note": "プライム会員限定・対象400万点以上の大型セール。",
+    "url": "https://www.amazon.co.jp/gp/goldbox"
+  }
+]
