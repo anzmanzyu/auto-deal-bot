@@ -272,6 +272,11 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
 
 
 def parse_deals(text):
+    text = str(text).strip()
+    # コードブロックや前置きの文章が付いていても、JSON部分だけを読む
+    start, end = text.find("{"), text.rfind("}")
+    if not text.startswith(("{", "[")) and 0 <= start < end:
+        text = text[start:end + 1]
     result = json.loads(text)
     if isinstance(result, dict):
         result = result.get("deals", [])
@@ -306,15 +311,29 @@ def analyze_with_groq(candidates):
         text_models = [m for m in available if not any(x in m for x in ("whisper", "tts", "guard", "orpheus", "compound"))]
         model = next((m for m in preferred if m in available), text_models[0] if text_models else model)
         print(f"Groq: {GROQ_MODEL} が利用できないため {model} を使用します。")
-    payload = {
-        "model": model,
-        "messages": [{"role": "user", "content": build_prompt(candidates)}],
-        "response_format": {"type": "json_object"},
-        "temperature": 0.3
-    }
-    res = requests.post(endpoint, headers=headers, json=payload, timeout=60)
+    # JSONの形式チェックで400になることがあるため、同じモデル→別モデルの順に再試行する
+    fallbacks = [m for m in ("llama-3.3-70b-versatile", "openai/gpt-oss-20b") if m in available and m != model]
+    for attempt_model in [model, model] + fallbacks[:1]:
+        payload = {
+            "model": attempt_model,
+            "messages": [{"role": "user", "content": build_prompt(candidates)}],
+            "response_format": {"type": "json_object"},
+            "temperature": 0.3
+        }
+        res = requests.post(endpoint, headers=headers, json=payload, timeout=60)
+        if res.status_code != 400:
+            break
+        print(f"Groq: {attempt_model} が400エラー（{groq_error_code(res)}）のため再試行します。")
     res.raise_for_status()
     return parse_deals(res.json()["choices"][0]["message"]["content"])
+
+
+def groq_error_code(res):
+    """エラー本文から原因コードだけを取り出す（キーなどは含まれない）"""
+    try:
+        return res.json().get("error", {}).get("code") or res.status_code
+    except ValueError:
+        return res.status_code
 
 
 def reason_lines(text):
