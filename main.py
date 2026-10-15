@@ -12,8 +12,8 @@ AMAZON_TAG = os.getenv("AMAZON_TAG", "your-amazon-tag-22")
 RAKUTEN_AFFILIATE_ID = os.getenv("RAKUTEN_AFFILIATE_ID", "")
 RAKUTEN_APP_ID = os.getenv("RAKUTEN_APP_ID", "")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
-GITHUB_MODEL = os.getenv("GITHUB_MODEL") or "openai/gpt-4.1-mini"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_MODEL = os.getenv("GROQ_MODEL") or "llama-3.3-70b-versatile"
 
 JST = timezone(timedelta(hours=9))
 TODAY_STR = datetime.now(JST).strftime("%Y-%m-%d %H:%M")
@@ -120,12 +120,12 @@ def analyze_with_gemini(candidates):
     return json.loads(result_text)
 
 
-def analyze_with_github_models(candidates):
-    """GitHub Models（Actionsでは無料枠で利用可能）で注目商品を厳選する"""
-    endpoint = "https://models.github.ai/inference/chat/completions"
-    headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Content-Type": "application/json"}
+def analyze_with_groq(candidates):
+    """Groq（クレカ不要の無料枠あり）で注目商品を厳選する"""
+    endpoint = "https://api.groq.com/openai/v1/chat/completions"
+    headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
     payload = {
-        "model": GITHUB_MODEL,
+        "model": GROQ_MODEL,
         "messages": [{"role": "user", "content": build_prompt(candidates) + "\n配列は {\"deals\": [...]} の形で包んで出力してください。"}],
         "response_format": {"type": "json_object"},
         "temperature": 0.3
@@ -261,14 +261,14 @@ if __name__ == "__main__":
             selected_deals = analyze_with_gemini(raw_candidates)
         except Exception as e:
             status = getattr(getattr(e, "response", None), "status_code", type(e).__name__)
-            print(f"Gemini APIエラー（{status}）のため、GitHub Modelsを試します。")
-    if selected_deals is None and GITHUB_TOKEN:
+            print(f"Gemini APIエラー（{status}）")
+    if selected_deals is None and GROQ_API_KEY:
         try:
-            selected_deals = analyze_with_github_models(raw_candidates)
-            print(f"GitHub Models（{GITHUB_MODEL}）で判定しました。")
+            selected_deals = analyze_with_groq(raw_candidates)
+            print(f"Groq（{GROQ_MODEL}）で判定しました。")
         except Exception as e:
             status = getattr(getattr(e, "response", None), "status_code", type(e).__name__)
-            print(f"GitHub Modelsエラー（{status}）のため、サンプルデータで生成します。")
+            print(f"Groq APIエラー（{status}）")
     if selected_deals is None:
         # APIエラーでもサイト更新を止めないよう、サンプルデータで続行する
         GEMINI_API_KEY = ""
