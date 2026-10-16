@@ -39,6 +39,7 @@ jobs:
           AMAZON_TAG: ${{ secrets.AMAZON_TAG }}
           RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
           RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: python main.py

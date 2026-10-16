@@ -12,6 +12,7 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL") or "gemini-flash-latest"
 AMAZON_TAG = os.getenv("AMAZON_TAG", "your-amazon-tag-22")
 RAKUTEN_AFFILIATE_ID = os.getenv("RAKUTEN_AFFILIATE_ID", "")
 RAKUTEN_APP_ID = os.getenv("RAKUTEN_APP_ID", "")
+RAKUTEN_ACCESS_KEY = os.getenv("RAKUTEN_ACCESS_KEY", "")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_MODEL = os.getenv("GROQ_MODEL") or "openai/gpt-oss-120b"
@@ -134,9 +135,17 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
         params["minPrice"] = min_price
     if max_price:
         params["maxPrice"] = max_price
+    if RAKUTEN_ACCESS_KEY:
+        # 新方式: アクセスキー + 許可ドメイン(Origin)で認証する
+        params["accessKey"] = RAKUTEN_ACCESS_KEY
+        url = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601"
+    else:
+        url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601"
+    origin = SITE_URL.split("/", 3)
+    headers = {"Origin": origin[0] + "//" + origin[2], "Referer": SITE_URL}
     items = []
     try:
-        res = requests.get("https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601", params=params, timeout=15)
+        res = requests.get(url, params=params, headers=headers, timeout=15)
         res.raise_for_status()
         for item in res.json().get("Items", []):
             info = item.get("Item", item)
