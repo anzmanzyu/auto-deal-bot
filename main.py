@@ -1115,6 +1115,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
     <script>{TAILWIND_CONFIG}    </script>
     <style>{page_css}    </style>
     <script type="application/ld+json">{json_ld(deals, page_url, page_label)}</script>
+    <script data-goatcounter="https://namikilog.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body class="bg-cream min-h-screen text-ink pb-24 md:pb-0">
     <div class="bg-white/80 text-ink-soft text-xs text-center py-1.5 px-4 border-b border-orange-100 leading-relaxed">【PR】当サイトはアフィリエイト広告（Amazonアソシエイト・楽天アフィリエイト）を利用しています</div>
@@ -1384,6 +1385,9 @@ def post_to_threads(deal):
 
 def post_to_sns(deals):
     """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
+    if os.getenv("SKIP_SNS") == "true":
+        print("手動実行のためSNS投稿をスキップします。")
+        return
     try:
         deal = pick_sns_deal(deals)
     except Exception as e:
