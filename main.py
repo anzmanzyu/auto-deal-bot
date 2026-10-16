@@ -184,9 +184,18 @@ def fetch_candidates():
     candidates = []
 
     if RAKUTEN_APP_ID:
-        candidates += fetch_rakuten("セール 目玉 ガジェット", "main", 10)
-        time.sleep(1.5)  # 楽天APIのレート制限(1秒1回)対策
-        candidates += fetch_rakuten("送料無料 定番 まとめ買い", "impulse", 8, 800, 3500)
+        queries = [
+            ("ワイヤレスイヤホン", "main", 4, 3000, None),
+            ("モバイルモニター", "main", 3, 8000, None),
+            ("スマートウォッチ", "main", 3, 3000, None),
+            ("ロボット掃除機", "main", 3, 10000, None),
+            ("モバイルバッテリー", "impulse", 3, 1000, 4000),
+            ("USB-C 充電ケーブル", "impulse", 3, 500, 2500),
+        ]
+        for i, (keyword, slot_hint, hits, min_price, max_price) in enumerate(queries):
+            if i:
+                time.sleep(1.2)  # 楽天APIのレート制限(1秒1回)対策
+            candidates += fetch_rakuten(keyword, slot_hint, hits, min_price, max_price)
 
     rss_urls = [
         "https://pc.watch.impress.co.jp/data/rss/1.0/pcw/feed.rdf",
@@ -223,7 +232,10 @@ def fetch_candidates():
         except Exception as e:
             print(f"RSS fetch notice ({rss_url}): {safe_status(e)}")
 
-    return candidates[:30]
+    candidates = candidates[:36]
+    for no, c in enumerate(candidates, 1):
+        c["no"] = no
+    return candidates
 
 
 def sample_deals():
@@ -274,6 +286,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
 - 目玉ガジェット・家電枠（slot: "main"）を3〜4件：値引き率や注目度が高い製品
 - ついで買い・即決定番枠（slot: "impulse"）を必ず2件：モバイルバッテリー、充電ケーブル、乾電池、炭酸水、日用品など
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
+- image_url のある候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
 
 【出力フォーマット（必ず以下のJSONオブジェクトのみを出力してください）】
 {{
@@ -287,7 +300,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
       "deal_reason": "なぜ注目・お買い得なのかを箇条書き3行（・から始める）で簡潔に解説",
       "sns_text": "X（旧Twitter）にそのまま投稿できる110文字以内の魅力的な紹介文（ハッシュタグ付き）",
       "score": 80から99までの整数（おすすめ度）,
-      "image_url": "元にした候補データに image_url があればそのまま転記、無ければ空文字"
+      "candidate_no": 元にした候補データの no（候補に無い商品を選んだ場合は 0）
     }}
   ]
 }}
@@ -371,20 +384,24 @@ def reason_lines(text):
 def normalize_deals(deals, candidates=()):
     """AI出力の欠損を補い、ついで買い枠2件を必ず含む5〜6件に整える"""
     # 価格はAIに書かせず、楽天APIで取得した候補と画像URLが一致したときだけ載せる
-    prices = {c["image_url"]: c for c in candidates if c.get("image_url") and c.get("price_yen")}
+    by_no = {c.get("no"): c for c in candidates if c.get("image_url")}
     cleaned = []
     for d in deals:
         if not isinstance(d, dict) or not d.get("product_name"):
             continue
         slot = "impulse" if d.get("slot") == "impulse" else "main"
-        image_url = str(d.get("image_url") or "")
+        try:
+            src = by_no.get(int(d.get("candidate_no") or 0), {})
+        except (TypeError, ValueError):
+            src = {}
+        image_url = str(src.get("image_url") or "")
         try:
             score = int(d.get("score", 85))
         except (TypeError, ValueError):
             score = 85
         reasons = reason_lines(d.get("deal_reason", ""))
         catch_copy = str(d.get("catch_copy") or (reasons[0] if reasons else ""))[:24]
-        price = prices.get(image_url, {})
+        price = src
         cleaned.append({
             "product_name": str(d["product_name"])[:60],
             "category": str(d.get("category") or ("日用品・家電" if slot == "impulse" else "ガジェット")),
@@ -1253,7 +1270,7 @@ if __name__ == "__main__":
 
     print("2. AIで買い時判定＆テキスト生成中...")
     selected_deals = select_deals(raw_candidates)
-    print(f"   掲載件数: {len(selected_deals)}件（ついで買い枠 {sum(d['slot'] == 'impulse' for d in selected_deals)}件）")
+    print(f"   掲載件数: {len(selected_deals)}件（ついで買い枠 {sum(d['slot'] == 'impulse' for d in selected_deals)}件、写真付き {sum(bool(d['image_url']) for d in selected_deals)}件）")
 
     print("3. Webサイト更新＆通知送信中...")
     generate_site(selected_deals)
