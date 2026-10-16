@@ -87,7 +87,7 @@ ITEM_ART = [
     (("モニター", "ディスプレイ"), "monitor"),
     (("Fire TV", "テレビ", "TV", "プロジェクター", "Chromecast"), "tv"),
     (("ウォッチ", "Watch", "バンド", "Fitbit"), "watch"),
-    (("iPad", "タブレット", "Tablet", "Kindle", "Fire HD", "Fire Max"), "tablet"),
+    (("iPad", "タブレット", "Tablet", "Kindle", "Fire HD", "Fire Max", "液タブ", "ペンタブ"), "tablet"),
     (("ノート", "MacBook", "Chromebook", "Surface", "パソコン", "PC"), "laptop"),
     (("iPhone", "Pixel", "Galaxy", "スマホ", "スマートフォン", "Xperia", "AQUOS"), "phone"),
     (("カメラ", "GoPro", "Insta360", "Osmo"), "camera"),
@@ -95,6 +95,8 @@ ITEM_ART = [
     (("ルーター", "Wi-Fi", "WiFi", "メッシュ"), "router"),
     (("Switch", "PlayStation", "PS5", "ゲーム", "コントローラー"), "game"),
     (("掃除機", "ルンバ"), "cleaner"),
+    (("ノンフライヤー", "エアフライヤー", "炊飯器", "電子レンジ", "オーブン", "トースター", "ケトル", "圧力鍋",
+      "ホットクック", "ブレンダー", "コーヒーメーカー"), "kitchen"),
     (("炭酸水", "天然水", "ミネラルウォーター", "飲料", "コーヒー", "お茶"), "drink"),
     (("洗剤", "ティッシュ", "トイレットペーパー"), "household"),
 ]
