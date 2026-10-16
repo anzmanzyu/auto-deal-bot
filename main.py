@@ -191,6 +191,10 @@ def fetch_candidates():
             ("ロボット掃除機", "main", 3, 10000, None),
             ("モバイルバッテリー", "impulse", 3, 1000, 4000),
             ("USB-C 充電ケーブル", "impulse", 3, 500, 2500),
+            # リピート買いされやすい1,000〜2,000円台の日用品
+            ("炭酸水 500ml 24本", "impulse", 2, 1000, 2999),
+            ("乾電池 単3 まとめ買い", "impulse", 2, 800, 2999),
+            ("電源タップ", "impulse", 2, 1000, 2999),
         ]
         for i, (keyword, slot_hint, hits, min_price, max_price) in enumerate(queries):
             if i:
@@ -287,6 +291,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
 - ついで買い・即決定番枠（slot: "impulse"）を必ず2件：モバイルバッテリー、充電ケーブル、乾電池、炭酸水、日用品など
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
 - image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
+- 候補データに含まれない詳細なスペック数値（重量や解像度など）は推測で書かず、利用シーンやお得感を中心に紹介すること
 
 【出力フォーマット（必ず以下のJSONオブジェクトのみを出力してください）】
 {{
@@ -427,6 +432,7 @@ def normalize_deals(deals, candidates=()):
             "image_url": image_url if image_url.startswith("https://") else "",
             "price_yen": price.get("price_yen"),
             "point_rate": price.get("point_rate"),
+            "item_url": rakuten_item_url(src.get("source_url")),
         })
 
     # 目玉枠はおすすめ度の高い順に並べてランキングにする
@@ -455,18 +461,28 @@ AMAZON_SALE_URL = with_amazon_tag("https://www.amazon.co.jp/gp/goldbox")
 RAKUTEN_TOP_URL = with_rakuten_affiliate("https://www.rakuten.co.jp/")
 
 
-def build_affiliate_urls(product_name):
-    """商品名からAmazonおよび楽天市場のアフィリエイト検索URLを自動生成する"""
+def rakuten_item_url(url):
+    """楽天市場の個別商品ページURLだけを通す（ニュース記事などは除外）"""
+    url = str(url or "")
+    return url if url.startswith("https://item.rakuten.co.jp/") else ""
+
+
+def build_affiliate_urls(product_name, item_url=""):
+    """Amazonは商品名検索、楽天は商品ページ（無ければ検索ページ）のアフィリエイトURLを生成する"""
     encoded_name = urllib.parse.quote(product_name)
     amazon_url = with_amazon_tag(f"https://www.amazon.co.jp/s?k={encoded_name}")
-    rakuten_url = with_rakuten_affiliate(f"https://search.rakuten.co.jp/search/mall/{encoded_name}/")
+    rakuten_target = rakuten_item_url(item_url) or f"https://search.rakuten.co.jp/search/mall/{encoded_name}/"
+    rakuten_url = with_rakuten_affiliate(rakuten_target)
     return amazon_url, rakuten_url
 
 
 def build_tweet_url(deal, page_url):
-    amz_url, _ = build_affiliate_urls(deal["product_name"])
-    text = f"{deal['sns_text']}\n{amz_url}"
-    return "https://twitter.com/intent/tweet?" + urllib.parse.urlencode({"text": text, "url": page_url})
+    """X投稿画面を開くURL。リンクはアフィリエイトではなくサイトのトップにする"""
+    points = reason_lines(deal.get("deal_reason", ""))[:2] or [deal.get("catch_copy", "")]
+    lines = [f"【本日の注目特価】{deal['product_name']}"]
+    lines += [f"・{p}" for p in points if p]
+    lines += ["詳細・現在の価格はこちら👇", SITE_URL, "#ガジェット #セール"]
+    return "https://twitter.com/intent/tweet?" + urllib.parse.urlencode({"text": "\n".join(lines)})
 
 
 def load_events():
@@ -604,7 +620,7 @@ def reasons_html(deal, text_cls="text-sm"):
 
 
 def cta_html(deal, page_url):
-    amz_url, rkt_url = build_affiliate_urls(deal["product_name"])
+    amz_url, rkt_url = build_affiliate_urls(deal["product_name"], deal.get("item_url", ""))
     return f"""
                 <div class="grid grid-cols-2 gap-2.5 mt-5">
                     <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored"
