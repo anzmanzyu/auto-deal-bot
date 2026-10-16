@@ -72,42 +72,46 @@ IMPULSE_STAPLES = [
     },
 ]
 
-# 商品画像が無いときに表示するアイコン（上から順に判定）
-PRODUCT_ICONS = [
-    (("イヤホン", "ヘッドホン", "AirPods", "ヘッドセット"), "🎧"),
-    (("スピーカー", "サウンドバー"), "🔊"),
-    (("バッテリー", "Power Bank", "電池", "エボルタ"), "🔋"),
-    (("充電器", "Charger", "GaN", "ケーブル"), "🔌"),
-    (("マウス", "トラックボール"), "🖱️"),
-    (("キーボード",), "⌨️"),
-    (("モニター", "ディスプレイ"), "🖥️"),
-    (("ノート", "MacBook", "Chromebook", "パソコン", "PC"), "💻"),
-    (("iPad", "タブレット", "Kindle", "Fire HD"), "📱"),
-    (("iPhone", "Pixel", "Galaxy", "スマホ", "スマートフォン", "Xperia", "AQUOS"), "📱"),
-    (("ウォッチ", "Watch", "バンド"), "⌚"),
-    (("カメラ", "GoPro", "Insta360"), "📷"),
-    (("SSD", "HDD", "USBメモリ", "microSD", "SDカード", "NAS"), "💾"),
-    (("ルーター", "Wi-Fi", "WiFi", "メッシュ"), "📶"),
-    (("Fire TV", "テレビ", "TV", "プロジェクター", "Chromecast"), "📺"),
-    (("Switch", "PlayStation", "PS5", "ゲーム", "コントローラー"), "🎮"),
-    (("掃除機", "ルンバ"), "🧹"),
-    (("炭酸水", "飲料", "コーヒー", "お茶"), "🥤"),
-    (("洗剤", "ティッシュ", "トイレットペーパー"), "🧴"),
+# 商品画像が無いときに表示するジャンル別イラスト public/img/items/*.svg（上から順に判定）
+ITEM_ART = [
+    (("ミニPC", "Mac mini", "NUC"), "minipc"),
+    (("ヘッドホン", "ヘッドフォン", "ヘッドセット"), "headphones"),
+    (("イヤホン", "AirPods", "Buds"), "earbuds"),
+    (("スピーカー", "サウンドバー", "Echo"), "speaker"),
+    (("バッテリー", "Power Bank", "PowerCore"), "battery"),
+    (("乾電池", "電池", "エボルタ", "エネループ", "単3", "単4"), "drycell"),
+    (("充電器", "Charger", "GaN", "アダプタ"), "charger"),
+    (("ケーブル",), "cable"),
+    (("マウス", "トラックボール"), "mouse"),
+    (("キーボード",), "keyboard"),
+    (("モニター", "ディスプレイ"), "monitor"),
+    (("Fire TV", "テレビ", "TV", "プロジェクター", "Chromecast"), "tv"),
+    (("ウォッチ", "Watch", "バンド", "Fitbit"), "watch"),
+    (("iPad", "タブレット", "Tablet", "Kindle", "Fire HD", "Fire Max"), "tablet"),
+    (("ノート", "MacBook", "Chromebook", "Surface", "パソコン", "PC"), "laptop"),
+    (("iPhone", "Pixel", "Galaxy", "スマホ", "スマートフォン", "Xperia", "AQUOS"), "phone"),
+    (("カメラ", "GoPro", "Insta360", "Osmo"), "camera"),
+    (("SSD", "HDD", "USBメモリ", "microSD", "SDカード", "NAS"), "storage"),
+    (("ルーター", "Wi-Fi", "WiFi", "メッシュ"), "router"),
+    (("Switch", "PlayStation", "PS5", "ゲーム", "コントローラー"), "game"),
+    (("掃除機", "ルンバ"), "cleaner"),
+    (("炭酸水", "天然水", "ミネラルウォーター", "飲料", "コーヒー", "お茶"), "drink"),
+    (("洗剤", "ティッシュ", "トイレットペーパー"), "household"),
 ]
 
-# ランキングカードの背景色（画像が無いとき）
+# 商品イラストの背景色
 CARD_TONES = [
-    "from-amber-100 via-orange-100 to-rose-200",
-    "from-sky-100 via-indigo-100 to-violet-200",
-    "from-fuchsia-100 via-pink-100 to-rose-200",
-    "from-emerald-100 via-teal-100 to-cyan-200",
+    "from-amber-100 to-orange-200",
+    "from-sky-100 to-indigo-200",
+    "from-pink-100 to-rose-200",
+    "from-emerald-100 to-teal-200",
 ]
-IMPULSE_TONE = "from-lime-100 via-emerald-100 to-teal-200"
+IMPULSE_TONE = "from-lime-100 to-emerald-200"
 RANK_STYLES = {
     1: "from-amber-300 to-yellow-500 text-amber-950",
     2: "from-slate-200 to-slate-400 text-slate-800",
-    3: "from-orange-300 to-amber-700 text-white",
-    4: "from-sky-300 to-indigo-500 text-white",
+    3: "from-orange-300 to-amber-600 text-white",
+    4: "from-sky-300 to-indigo-400 text-white",
 }
 
 
@@ -480,42 +484,45 @@ def next_rakuten_point_day():
     return ""
 
 
-def product_icon(deal):
+def item_art(deal):
+    """商品名からジャンル別イラストのファイル名を決める"""
     name = deal["product_name"].lower()
-    for keywords, icon in PRODUCT_ICONS:
+    for keywords, art in ITEM_ART:
         if any(k.lower() in name for k in keywords):
-            return icon
-    return "🛒" if deal["slot"] == "impulse" else "⚡"
+            return art
+    return "cart" if deal["slot"] == "impulse" else "gadget"
 
 
-def thumbnail_html(deal, box_cls, emoji_cls, tone):
-    """商品画像、無ければ商品ジャンルのアイコンで表示する"""
+def thumbnail_html(deal, box_cls, tone, root):
+    """商品画像、無ければ商品ジャンルのイラストで表示する"""
+    art = f"{root}img/items/{item_art(deal)}.svg"
     if deal["image_url"]:
-        return (f'<div class="{box_cls} shrink-0 rounded-2xl bg-white ring-1 ring-slate-200 overflow-hidden flex items-center justify-center">'
+        return (f'<div class="{box_cls} shrink-0 rounded-3xl bg-white ring-1 ring-slate-100 overflow-hidden flex items-center justify-center">'
                 f'<img src="{html.escape(deal["image_url"])}" alt="{html.escape(deal["product_name"])}" loading="lazy" '
-                f'class="w-full h-full object-contain p-2" '
-                # 画像が読み込めないときはアイコン表示に切り替える
-                f'onerror="this.outerHTML=\'&lt;span class=&quot;{emoji_cls}&quot;&gt;{product_icon(deal)}&lt;/span&gt;\'"></div>')
-    return (f'<div class="{box_cls} shrink-0 rounded-2xl bg-gradient-to-br {tone} ring-1 ring-black/5 flex items-center justify-center" '
-            f'aria-hidden="true"><span class="{emoji_cls} drop-shadow">{product_icon(deal)}</span></div>')
+                f'class="w-full h-full object-contain p-3" '
+                # 画像が読み込めないときはジャンルのイラストに切り替える
+                f'onerror="this.onerror=null;this.classList.add(\'p-5\');this.src=\'{art}\'"></div>')
+    return (f'<div class="{box_cls} relative shrink-0 rounded-3xl bg-gradient-to-br {tone} overflow-hidden flex items-center justify-center" aria-hidden="true">'
+            f'<span class="absolute h-[76%] aspect-square rounded-full bg-white/60"></span>'
+            f'<img src="{art}" alt="" loading="lazy" class="relative w-[88%] h-[88%] object-contain"></div>')
 
 
 def badges_html(deal):
-    badge_cls = "bg-emerald-100 text-emerald-800" if deal["slot"] == "impulse" else "bg-rose-100 text-rose-700"
+    badge_cls = "bg-emerald-50 text-emerald-700 ring-emerald-100" if deal["slot"] == "impulse" else "bg-rose-50 text-rose-600 ring-rose-100"
     return (f'<div class="flex items-center gap-1.5 flex-wrap">'
-            f'<span class="{badge_cls} text-[11px] font-black px-2 py-0.5 rounded-full">{html.escape(deal["badge"])}</span>'
-            f'<span class="bg-slate-100 text-slate-600 text-[11px] font-bold px-2 py-0.5 rounded-full">{html.escape(deal["category"])}</span>'
+            f'<span class="{badge_cls} ring-1 text-xs font-bold px-2.5 py-1 rounded-full">{html.escape(deal["badge"])}</span>'
+            f'<span class="bg-sky-50 text-sky-700 ring-1 ring-sky-100 text-xs font-bold px-2.5 py-1 rounded-full">{html.escape(deal["category"])}</span>'
             f'</div>')
 
 
 def score_html(score):
     return f"""
-                <div class="flex items-center gap-2 mt-3" title="AIによるおすすめ度">
-                    <span class="text-[11px] font-bold text-slate-500 whitespace-nowrap">AI注目度</span>
-                    <div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-full rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500" style="width:{score}%"></div>
+                <div class="flex items-center gap-2.5 mt-4" title="AIによるおすすめ度">
+                    <span class="text-xs font-bold text-ink-soft whitespace-nowrap">AI注目度</span>
+                    <div class="flex-1 h-2.5 bg-orange-100 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400" style="width:{score}%"></div>
                     </div>
-                    <span class="text-base font-black text-rose-600 tabular-nums">{score}</span>
+                    <span class="text-lg font-extrabold text-orange-600 tabular-nums leading-none">{score}</span>
                 </div>"""
 
 
@@ -526,78 +533,81 @@ def price_html(deal):
         price = f"¥{int(deal['price_yen']):,}"
     except (TypeError, ValueError):
         return ""
-    point = f'<span class="text-[11px] font-bold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded">ポイント{html.escape(str(deal.get("point_rate") or 1))}倍</span>'
+    point = f'<span class="text-xs font-bold text-rose-600 bg-rose-50 ring-1 ring-rose-100 px-2.5 py-1 rounded-full">ポイント{html.escape(str(deal.get("point_rate") or 1))}倍</span>'
     return f"""
-                <div class="flex items-baseline gap-2 mt-3 flex-wrap">
-                    <span class="text-[11px] text-slate-500">楽天参考価格</span>
-                    <span class="text-2xl font-black text-slate-900 tabular-nums">{price}</span>
+                <div class="flex items-center gap-2 mt-4 flex-wrap">
+                    <span class="text-xs font-bold text-ink-soft">楽天参考価格</span>
+                    <span class="text-2xl font-extrabold text-ink tabular-nums leading-none">{price}</span>
                     {point}
                 </div>"""
 
 
 def reasons_html(deal, text_cls="text-sm"):
     items = "".join(
-        f'<li class="flex gap-2"><span class="text-emerald-500 font-black shrink-0">✓</span><span>{html.escape(line)}</span></li>'
+        f'<li class="flex gap-2.5"><span class="w-5 h-5 mt-0.5 shrink-0 rounded-full bg-emerald-100 text-emerald-600 text-[11px] font-extrabold flex items-center justify-center">✓</span>'
+        f'<span>{html.escape(line)}</span></li>'
         for line in reason_lines(deal["deal_reason"])
     )
-    return f'<ul class="space-y-1.5 {text_cls} text-slate-700 leading-relaxed mt-3">{items}</ul>'
+    return f'<ul class="space-y-2 {text_cls} text-ink leading-relaxed mt-4">{items}</ul>'
 
 
 def cta_html(deal, page_url):
     amz_url, rkt_url = build_affiliate_urls(deal["product_name"])
     return f"""
-                <div class="grid grid-cols-2 gap-2 mt-4">
+                <div class="grid grid-cols-2 gap-2.5 mt-5">
                     <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored"
-                       class="btn-amz flex items-center justify-center gap-1 font-black py-3 px-2 rounded-xl text-sm shadow-sm transition">
+                       class="btn btn-amz flex items-center justify-center gap-1 font-bold py-3 px-2 rounded-full text-[15px]">
                        Amazonで見る <span aria-hidden="true">›</span>
                     </a>
                     <a href="{html.escape(rkt_url)}" target="_blank" rel="nofollow noopener sponsored"
-                       class="btn-rkt flex items-center justify-center gap-1 font-black py-3 px-2 rounded-xl text-sm shadow-sm transition">
+                       class="btn btn-rkt flex items-center justify-center gap-1 font-bold py-3 px-2 rounded-full text-[15px]">
                        楽天で見る <span aria-hidden="true">›</span>
                     </a>
                 </div>
-                <div class="flex items-center justify-between gap-2 mt-3">
-                    <span class="text-[11px] text-slate-400">※価格・ポイントはリンク先でご確認ください</span>
+                <div class="flex items-center justify-between gap-2 mt-4">
+                    <span class="text-xs text-ink-soft">※価格・ポイントはリンク先でご確認ください</span>
                     <a href="{html.escape(build_tweet_url(deal, page_url))}" target="_blank" rel="noopener"
-                       class="shrink-0 bg-slate-900 hover:bg-slate-700 text-white font-bold py-1.5 px-3 rounded-full text-[11px] transition">
+                       class="shrink-0 bg-ink hover:bg-ink-soft text-white font-bold py-2 px-3.5 rounded-full text-xs transition">
                        𝕏 ポスト作成
                     </a>
                 </div>"""
 
 
-def featured_card(deal, page_url):
+def featured_card(deal, page_url, root):
     """ランキング1位の大きなカード"""
     return f"""
-            <article id="deal-1" class="relative col-span-full bg-white rounded-3xl shadow-xl shadow-orange-500/10 ring-2 ring-amber-300 overflow-hidden">
-                <div class="absolute top-0 left-0 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-black px-4 py-1.5 rounded-br-2xl shadow">👑 本日のNo.1</div>
-                <div class="p-5 pt-11 md:p-7 md:pt-12 flex flex-col md:flex-row gap-5 md:gap-7">
-                    {thumbnail_html(deal, "w-full h-44 md:w-64 md:h-64", "text-7xl md:text-8xl", CARD_TONES[0])}
+            <article id="deal-1" class="card relative col-span-full ring-2 ring-amber-200 p-5 pt-16 md:p-8 md:pt-16">
+                <div class="absolute top-4 left-4 md:top-5 md:left-6 flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-sm font-extrabold pl-1.5 pr-4 py-1.5 rounded-full shadow-md shadow-orange-200">
+                    <span class="w-7 h-7 rounded-full bg-white flex items-center justify-center"><img src="{root}img/icons/trophy.svg" alt="" class="w-5 h-5"></span>本日のNo.1
+                </div>
+                <div class="flex flex-col md:flex-row gap-5 md:gap-8">
+                    {thumbnail_html(deal, "w-full h-60 md:w-72 md:h-72", CARD_TONES[0], root)}
                     <div class="flex-1 min-w-0">
                         {badges_html(deal)}
-                        <h3 class="text-xl md:text-2xl font-black text-slate-900 leading-snug mt-2">{html.escape(deal['product_name'])}</h3>
-                        <p class="mt-1 text-rose-600 font-black">{html.escape(deal['catch_copy'])}</p>
+                        <h3 class="text-xl md:text-2xl font-extrabold text-ink leading-snug mt-3">{html.escape(deal['product_name'])}</h3>
+                        <p class="mt-1.5 text-orange-600 font-bold md:text-lg">{html.escape(deal['catch_copy'])}</p>
                         {score_html(deal['score'])}
                         {price_html(deal)}
-                        {reasons_html(deal, "text-sm md:text-base")}
+                        {reasons_html(deal, "text-[15px] md:text-base")}
                         {cta_html(deal, page_url)}
                     </div>
                 </div>
             </article>"""
 
 
-def ranked_card(deal, rank, page_url):
+def ranked_card(deal, rank, page_url, root):
     rank_style = RANK_STYLES.get(rank, RANK_STYLES[4])
     return f"""
-            <article id="deal-{rank}" class="relative bg-white rounded-2xl shadow-md ring-1 ring-slate-200 p-5 flex flex-col hover:-translate-y-0.5 hover:shadow-xl transition">
-                <div class="flex gap-4">
+            <article id="deal-{rank}" class="card card-hover relative p-5 md:p-6 flex flex-col">
+                <div class="flex gap-4 md:flex-col">
                     <div class="relative shrink-0">
-                        {thumbnail_html(deal, "w-24 h-24", "text-5xl", CARD_TONES[(rank - 1) % len(CARD_TONES)])}
-                        <span class="absolute -top-2 -left-2 w-9 h-9 rounded-full bg-gradient-to-br {rank_style} text-sm font-black flex items-center justify-center shadow ring-2 ring-white">{rank}位</span>
+                        {thumbnail_html(deal, "w-24 h-24 md:w-full md:h-44", CARD_TONES[(rank - 1) % len(CARD_TONES)], root)}
+                        <span class="absolute -top-2.5 -left-2.5 w-10 h-10 rounded-full bg-gradient-to-br {rank_style} text-sm font-extrabold flex items-center justify-center shadow-md ring-[3px] ring-white">{rank}位</span>
                     </div>
                     <div class="min-w-0 flex-1">
                         {badges_html(deal)}
-                        <h3 class="text-base font-black text-slate-900 leading-snug mt-1.5">{html.escape(deal['product_name'])}</h3>
-                        <p class="mt-1 text-sm text-rose-600 font-bold">{html.escape(deal['catch_copy'])}</p>
+                        <h3 class="text-[17px] md:text-lg font-extrabold text-ink leading-snug mt-2">{html.escape(deal['product_name'])}</h3>
+                        <p class="mt-1 text-sm text-orange-600 font-bold">{html.escape(deal['catch_copy'])}</p>
                     </div>
                 </div>
                 {score_html(deal['score'])}
@@ -607,14 +617,14 @@ def ranked_card(deal, rank, page_url):
             </article>"""
 
 
-def impulse_card(deal, idx, page_url):
+def impulse_card(deal, idx, page_url, root):
     return f"""
-            <article id="deal-{idx}" class="bg-white rounded-2xl ring-1 ring-emerald-200 shadow-sm p-5 flex flex-col">
+            <article id="deal-{idx}" class="card card-hover p-4 md:p-6 flex flex-col">
                 <div class="flex gap-4">
-                    {thumbnail_html(deal, "w-20 h-20", "text-4xl", IMPULSE_TONE)}
+                    {thumbnail_html(deal, "w-20 h-20 md:w-24 md:h-24", IMPULSE_TONE, root)}
                     <div class="min-w-0 flex-1">
                         {badges_html(deal)}
-                        <h3 class="text-base font-black text-slate-900 leading-snug mt-1.5">{html.escape(deal['product_name'])}</h3>
+                        <h3 class="text-[17px] font-extrabold text-ink leading-snug mt-2">{html.escape(deal['product_name'])}</h3>
                         <p class="mt-1 text-sm text-emerald-700 font-bold">{html.escape(deal['catch_copy'])}</p>
                     </div>
                 </div>
@@ -624,12 +634,21 @@ def impulse_card(deal, idx, page_url):
             </article>"""
 
 
-def section_head(eyebrow, title, sub, accent="text-orange-500"):
+def section_head(icon, title, sub, root, tag=""):
+    tag_html = (f'<span class="inline-block text-xs font-bold text-orange-700 bg-orange-100 rounded-full px-3 py-1 mb-1.5">{tag}</span>'
+                if tag else "")
     return f"""
             <div class="mb-6">
-                <p class="text-[11px] font-black tracking-[0.25em] {accent}">{eyebrow}</p>
-                <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-1">{title}</h2>
-                <p class="text-sm text-slate-500 mt-1.5">{sub}</p>
+                <div class="flex items-center gap-3.5 md:gap-4">
+                    <span class="shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-[1.25rem] bg-white shadow-soft ring-1 ring-orange-100 flex items-center justify-center">
+                        <img src="{root}img/icons/{icon}.svg" alt="" class="w-10 h-10 md:w-11 md:h-11">
+                    </span>
+                    <div class="min-w-0">
+                        {tag_html}
+                        <h2 class="text-[1.4rem] md:text-3xl font-extrabold text-ink leading-snug">{title}</h2>
+                    </div>
+                </div>
+                <p class="text-sm md:text-base text-ink-soft mt-3 leading-relaxed">{sub}</p>
             </div>"""
 
 
@@ -652,61 +671,65 @@ def event_bar_html(events):
         hidden = "" if i == 0 else " hidden"
         items += f"""
         <a href="{html.escape(ev['url'])}" target="_blank" rel="nofollow noopener sponsored" data-event-bar {event_attrs(ev)}{hidden}
-           class="block max-w-5xl mx-auto px-4 py-2 text-center text-sm font-bold hover:underline">
-            <span class="ev-state text-[11px] font-black px-2 py-0.5 rounded-full mr-1.5">{'開催中' if ev['start'] <= NOW else 'まもなく開始'}</span>
-            🎉 {html.escape(ev['name'])}
-            <span class="font-black text-yellow-200 ml-1" data-event-countdown>{html.escape(event_period(ev))}</span>
-            <span class="ml-1 underline">会場を見る →</span>
+           class="block max-w-5xl mx-auto px-4 py-2.5 text-center text-sm font-bold leading-relaxed hover:underline">
+            <span class="ev-state text-xs font-extrabold px-2.5 py-0.5 rounded-full mr-1.5">{'開催中' if ev['start'] <= NOW else 'まもなく開始'}</span>
+            {html.escape(ev['name'])}
+            <span class="font-extrabold text-yellow-100 ml-1 whitespace-nowrap" data-event-countdown>{html.escape(event_period(ev))}</span>
+            <span class="ml-1 underline whitespace-nowrap">会場を見る →</span>
         </a>"""
-    return f'<div id="event-bar" class="bg-gradient-to-r from-rose-600 via-orange-500 to-amber-500 text-white">{items}\n    </div>'
+    return f'<div id="event-bar" class="bg-gradient-to-r from-rose-600 to-orange-600 text-white">{items}\n    </div>'
 
 
-def sale_info_html(events):
+def sale_card(href, icon, bubble, label_html, store, title, body, link_text, link_cls, root, attrs=""):
+    return f"""
+                <a href="{html.escape(href)}" target="_blank" rel="nofollow noopener sponsored" {attrs}
+                   class="card card-hover block p-5 md:p-6">
+                    <div class="flex items-center gap-3">
+                        <span class="shrink-0 w-14 h-14 rounded-2xl {bubble} flex items-center justify-center"><img src="{root}img/icons/{icon}.svg" alt="" class="w-10 h-10"></span>
+                        <div class="min-w-0 flex flex-col items-start gap-1">
+                            {label_html}
+                            <span class="text-xs font-bold text-ink-soft">{html.escape(store)}</span>
+                        </div>
+                    </div>
+                    <h3 class="font-extrabold text-xl text-ink leading-snug mt-4">{html.escape(title)}</h3>
+                    {body}
+                    <span class="inline-flex items-center gap-1 mt-4 text-sm font-bold {link_cls}">{link_text} <span aria-hidden="true">→</span></span>
+                </a>"""
+
+
+def sale_info_html(events, root):
     cards = ""
     for ev in events:
-        note = f'<p class="text-xs text-slate-600 mt-2">{html.escape(ev["note"])}</p>' if ev["note"] else ""
-        cards += f"""
-                <a href="{html.escape(ev['url'])}" target="_blank" rel="nofollow noopener sponsored" {event_attrs(ev)}
-                   class="block bg-white rounded-2xl ring-1 ring-slate-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition">
-                    <div class="flex items-center gap-2">
-                        <span class="ev-state text-[11px] font-black px-2 py-0.5 rounded-full">{'開催中' if ev['start'] <= NOW else 'まもなく開始'}</span>
-                        <span class="text-xs font-bold text-slate-500">{html.escape(ev['store'])}</span>
-                    </div>
-                    <h3 class="font-black text-lg text-slate-900 mt-2">{html.escape(ev['name'])}</h3>
-                    <p class="text-xs text-slate-500 mt-1">{html.escape(event_period(ev))}</p>
-                    <p class="text-sm font-black text-rose-600 mt-2" data-event-countdown></p>
-                    {note}
-                    <span class="inline-block mt-3 text-sm font-black text-orange-600">セール会場を見る →</span>
-                </a>"""
-    cards += f"""
-                <a href="{html.escape(RAKUTEN_TOP_URL)}" target="_blank" rel="nofollow noopener sponsored" data-rakuten-day
-                   class="block bg-white rounded-2xl ring-1 ring-slate-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition">
-                    <div class="flex items-center gap-2">
-                        <span class="text-[11px] font-black px-2 py-0.5 rounded-full bg-red-600 text-white">毎月5・10・15・20・25・30日</span>
-                        <span class="text-xs font-bold text-slate-500">楽天市場</span>
-                    </div>
-                    <h3 class="font-black text-lg text-slate-900 mt-2">5と0のつく日</h3>
-                    <p class="text-sm font-black text-rose-600 mt-2" id="rakuten-day">{next_rakuten_point_day()}</p>
-                    <p class="text-xs text-slate-600 mt-2">エントリー＆楽天カード決済でポイントアップ。高額ガジェットはこの日にまとめるのが定番です。</p>
-                    <span class="inline-block mt-3 text-sm font-black text-red-600">楽天市場を見る →</span>
-                </a>
-                <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored"
-                   class="block bg-white rounded-2xl ring-1 ring-slate-200 p-5 hover:shadow-lg hover:-translate-y-0.5 transition">
-                    <div class="flex items-center gap-2">
-                        <span class="text-[11px] font-black px-2 py-0.5 rounded-full bg-slate-900 text-amber-300">毎日開催</span>
-                        <span class="text-xs font-bold text-slate-500">Amazon</span>
-                    </div>
-                    <h3 class="font-black text-lg text-slate-900 mt-2">タイムセール</h3>
-                    <p class="text-sm font-black text-rose-600 mt-2">人気商品が日替わりで登場</p>
-                    <p class="text-xs text-slate-600 mt-2">数量限定の特選タイムセールは売り切れ次第終了。気になる商品は早めのチェックがおすすめです。</p>
-                    <span class="inline-block mt-3 text-sm font-black text-orange-600">タイムセール会場を見る →</span>
-                </a>"""
+        note = f'<p class="text-sm text-ink-soft mt-2 leading-relaxed">{html.escape(ev["note"])}</p>' if ev["note"] else ""
+        label = f'<span class="ev-state text-xs font-extrabold px-2.5 py-0.5 rounded-full whitespace-nowrap">{"開催中" if ev["start"] <= NOW else "まもなく開始"}</span>'
+        body = f"""
+                    <p class="text-sm text-ink-soft mt-2">{html.escape(event_period(ev))}</p>
+                    <p class="text-[15px] font-extrabold text-rose-600 mt-1" data-event-countdown></p>
+                    {note}"""
+        cards += sale_card(ev["url"], "megaphone", "bg-orange-50", label, ev["store"], ev["name"], body,
+                           "セール会場を見る", "text-orange-600", root, event_attrs(ev))
+    cards += sale_card(
+        RAKUTEN_TOP_URL, "coin", "bg-amber-50",
+        '<span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-red-600 text-white whitespace-nowrap">毎月6回</span>',
+        "楽天市場", "5と0のつく日",
+        f"""
+                    <p class="text-[15px] font-extrabold text-rose-600 mt-2" id="rakuten-day">{next_rakuten_point_day()}</p>
+                    <p class="text-sm text-ink-soft mt-1 leading-relaxed">エントリー＆楽天カード決済でポイントアップ。高額ガジェットはこの日にまとめるのが定番です。</p>""",
+        "楽天市場を見る", "text-red-600", root, "data-rakuten-day")
+    cards += sale_card(
+        AMAZON_SALE_URL, "clock", "bg-sky-50",
+        '<span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-ink text-amber-200 whitespace-nowrap">毎日開催</span>',
+        "Amazon", "タイムセール",
+        """
+                    <p class="text-[15px] font-extrabold text-rose-600 mt-2">人気商品が日替わりで登場</p>
+                    <p class="text-sm text-ink-soft mt-1 leading-relaxed">数量限定の特選タイムセールは売り切れ次第終了。気になる商品は早めのチェックがおすすめです。</p>""",
+        "タイムセール会場を見る", "text-orange-600", root)
     # 楽天・Amazonの常設カード2枚を足した枚数で、空きマスが出にくい列数にする
     cols = "md:grid-cols-2" if (len(events) + 2) % 2 == 0 and len(events) + 2 < 6 else "md:grid-cols-2 lg:grid-cols-3"
     return f"""
-        <section id="sale-info" class="scroll-mt-20">
-            {section_head("SALE CALENDAR", "📣 開催中・まもなく開始のセール", "大型セールやポイントアップ日に買うと、同じ商品でも実質価格が下がります。")}
-            <div class="grid gap-4 {cols}">{cards}
+        <section id="sale-info" class="scroll-mt-24">
+            {section_head("megaphone", "開催中・まもなく開始のセール", "大型セールやポイントアップ日に買うと、同じ商品でも実質価格が下がります。", root)}
+            <div class="grid gap-5 {cols}">{cards}
             </div>
         </section>"""
 
@@ -720,28 +743,28 @@ def archive_html(history, root, page_date):
         except ValueError:
             label = entry["date"]
         current = entry["date"] == page_date
-        ring = "ring-2 ring-orange-400" if current else "ring-1 ring-slate-200"
+        ring = "ring-2 ring-orange-300 bg-orange-50" if current else "ring-1 ring-orange-100 bg-white"
         top = html.escape(products[0]) if products else ""
         items += f"""
-                <li><a href="{root}archive/{entry['date']}.html" class="block h-full bg-white rounded-2xl {ring} p-4 hover:shadow-md hover:-translate-y-0.5 transition">
-                    <span class="flex items-baseline justify-between gap-2">
-                        <span class="font-black text-slate-900">{label}</span>
-                        <span class="text-[11px] font-bold text-orange-600">{len(products)}件</span>
+                <li><a href="{root}archive/{entry['date']}.html" class="block h-full rounded-2xl {ring} p-4 shadow-sm hover:shadow-soft hover:-translate-y-0.5 transition">
+                    <span class="flex items-center justify-between gap-2">
+                        <span class="font-extrabold text-ink">{label}</span>
+                        <span class="text-xs font-bold text-orange-700 bg-orange-100 rounded-full px-2 py-0.5">{len(products)}件</span>
                     </span>
-                    <span class="block text-xs text-slate-500 mt-1 line-clamp-2">{top}</span>
+                    <span class="block text-sm text-ink-soft mt-1.5 leading-snug line-clamp-2">{top}</span>
                 </a></li>"""
     return f"""
-        <section id="archive" class="scroll-mt-20">
-            {section_head("ARCHIVE", "📅 過去のお買い得アーカイブ一覧", "日ごとの厳選リストを30日分保存しています。値動きのチェックにどうぞ。")}
+        <section id="archive" class="scroll-mt-24">
+            {section_head("calendar", "過去のお買い得アーカイブ", "日ごとの厳選リストを30日分保存しています。値動きのチェックにどうぞ。", root)}
             <ul class="grid grid-cols-2 md:grid-cols-4 gap-3">{items}
             </ul>
         </section>"""
 
 
 HOW_TO_STEPS = [
-    ("🤖", "AIが毎日2回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
-    ("📊", "注目度をスコア化", "値下げ幅・定番度・話題性をAIが判定し、買い時の商品をランキングにします。"),
-    ("🛒", "Amazon・楽天をワンタップ比較", "ボタンから両ストアの販売ページへ。ポイント還元込みの実質価格を比べて選べます。"),
+    ("clock", "bg-sky-50", "AIが毎日2回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
+    ("chart", "bg-amber-50", "注目度をスコア化", "値下げ幅・定番度・話題性をAIが判定し、買い時の商品をランキングにします。"),
+    ("cart", "bg-emerald-50", "Amazon・楽天をワンタップ比較", "ボタンから両ストアの販売ページへ。ポイント還元込みの実質価格を比べて選べます。"),
 ]
 
 FAQ = [
@@ -754,57 +777,84 @@ FAQ = [
 ]
 
 
-def about_html():
+def about_html(root):
     steps = "".join(f"""
-                <div class="bg-white rounded-2xl ring-1 ring-slate-200 p-5">
+                <div class="card p-5 md:p-6">
                     <div class="flex items-center gap-3">
-                        <span class="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-900 to-indigo-900 text-2xl flex items-center justify-center">{icon}</span>
-                        <span class="text-xs font-black text-orange-500">STEP {i}</span>
+                        <span class="w-14 h-14 rounded-2xl {bubble} flex items-center justify-center"><img src="{root}img/icons/{icon}.svg" alt="" class="w-10 h-10"></span>
+                        <span class="text-xs font-extrabold text-orange-700 bg-orange-100 rounded-full px-2.5 py-1">STEP {i}</span>
                     </div>
-                    <h3 class="font-black text-slate-900 mt-3">{title}</h3>
-                    <p class="text-sm text-slate-600 mt-1 leading-relaxed">{text}</p>
-                </div>""" for i, (icon, title, text) in enumerate(HOW_TO_STEPS, 1))
+                    <h3 class="font-extrabold text-lg text-ink mt-4">{title}</h3>
+                    <p class="text-sm text-ink-soft mt-1.5 leading-relaxed">{text}</p>
+                </div>""" for i, (icon, bubble, title, text) in enumerate(HOW_TO_STEPS, 1))
     faq = "".join(f"""
-                <details class="group bg-white rounded-2xl ring-1 ring-slate-200 p-4">
-                    <summary class="flex items-center justify-between gap-3 cursor-pointer font-bold text-slate-900 list-none">
-                        <span><span class="text-orange-500 font-black mr-1">Q.</span>{html.escape(q)}</span>
-                        <span class="text-slate-400 group-open:rotate-45 transition text-xl leading-none">+</span>
+                <details class="group card !rounded-2xl p-4 md:p-5">
+                    <summary class="flex items-center justify-between gap-3 cursor-pointer font-bold text-ink list-none">
+                        <span class="flex items-start gap-2.5"><span class="w-7 h-7 shrink-0 rounded-full bg-orange-100 text-orange-600 text-sm font-extrabold flex items-center justify-center">Q</span><span class="pt-0.5">{html.escape(q)}</span></span>
+                        <span class="w-8 h-8 shrink-0 rounded-full bg-orange-50 text-orange-500 group-open:rotate-45 transition text-xl leading-none flex items-center justify-center">+</span>
                     </summary>
-                    <p class="text-sm text-slate-600 mt-3 leading-relaxed">{html.escape(a)}</p>
+                    <p class="text-sm text-ink-soft mt-3 pl-[2.375rem] leading-relaxed">{html.escape(a)}</p>
                 </details>""" for q, a in FAQ)
     return f"""
-        <section id="about" class="scroll-mt-20">
-            {section_head("HOW IT WORKS", "🔍 このサイトの使い方", "セール情報を追いかける手間を、AIが代わりに引き受けます。")}
-            <div class="grid gap-4 md:grid-cols-3">{steps}
+        <section id="about" class="scroll-mt-24">
+            {section_head("robot", "このサイトの使い方", "セール情報を追いかける手間を、AIが代わりに引き受けます。", root)}
+            <div class="grid gap-5 md:grid-cols-3">{steps}
             </div>
             <div class="grid gap-3 mt-6">{faq}
             </div>
         </section>"""
 
 
+TAILWIND_CONFIG = """
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { ink: { DEFAULT: '#2b3150', soft: '#555d80' }, cream: '#fffaf3' },
+                    boxShadow: { soft: '0 1px 2px rgba(43,49,80,.05), 0 12px 32px -12px rgba(43,49,80,.18)' }
+                }
+            }
+        };
+"""
+
+# __ROOT__ はページの階層に合わせて render_page で置き換える
 PAGE_CSS = """
-        body { font-family: 'Noto Sans JP', system-ui, -apple-system, 'Hiragino Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Meiryo', system-ui, sans-serif;
+            font-weight: 500; color: #2b3150; background: #fffaf3;
+            line-break: strict; -webkit-font-smoothing: antialiased;
+        }
+        h1, h2 { word-break: auto-phrase; text-wrap: balance; }
+        h3, p, li { word-break: auto-phrase; text-wrap: pretty; }
         .hero-bg {
             background:
-                radial-gradient(circle at 12% 18%, rgba(249, 115, 22, .45), transparent 42%),
-                radial-gradient(circle at 88% 4%, rgba(236, 72, 153, .38), transparent 45%),
-                radial-gradient(circle at 60% 110%, rgba(56, 189, 248, .25), transparent 45%),
-                linear-gradient(135deg, #0b1120 0%, #1e1b4b 55%, #312e81 100%);
+                radial-gradient(55% 65% at 92% 18%, rgba(255, 205, 160, .75), transparent 70%),
+                radial-gradient(45% 55% at 0% 95%, rgba(196, 240, 222, .9), transparent 70%),
+                radial-gradient(40% 45% at 8% 0%, rgba(210, 234, 255, .95), transparent 70%),
+                #fff5ea;
         }
-        .grid-bg {
-            background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
-            background-size: 36px 36px;
-            mask-image: linear-gradient(to bottom, #000 30%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+        .pattern { background-image: url('__ROOT__img/pattern.svg'); background-size: 180px 180px; }
+        .marker {
+            background: linear-gradient(transparent 62%, #ffd66b 62%, #ffd66b 92%, transparent 92%);
+            padding: 0 .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone;
         }
-        .btn-amz { background: #ff9900; color: #111827; }
-        .btn-amz:hover { background: #f08804; }
-        .btn-rkt { background: #bf0000; color: #fff; }
-        .btn-rkt:hover { background: #9e0000; }
-        .ev-state { background: #fde047; color: #0f172a; }
+        .card {
+            background: #fff; border-radius: 1.75rem;
+            box-shadow: 0 1px 2px rgba(43, 49, 80, .05), 0 12px 32px -12px rgba(43, 49, 80, .18);
+        }
+        .card:not([class*="ring-"]) { box-shadow: 0 0 0 1px #ffe9d6, 0 1px 2px rgba(43, 49, 80, .05), 0 12px 32px -12px rgba(43, 49, 80, .18); }
+        .card-hover { transition: transform .2s, box-shadow .2s; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px #ffd9b8, 0 18px 40px -14px rgba(43, 49, 80, .28); }
+        .btn { transition: transform .1s, box-shadow .1s, filter .15s; }
+        .btn:hover { filter: brightness(1.05); }
+        .btn:active { transform: translateY(3px); box-shadow: none; }
+        .btn-amz { background: #ff9900; color: #1f2537; box-shadow: 0 4px 0 #db7f00; }
+        .btn-rkt { background: #bf0000; color: #fff; box-shadow: 0 4px 0 #8a0000; }
+        .btn-main { background: #e11d48; color: #fff; box-shadow: 0 4px 0 #9f1239; }
+        .ev-state { background: #ffe066; color: #2b3150; }
         [data-state="live"] .ev-state { background: #fff; color: #e11d48; }
         #sale-info [data-state="live"] .ev-state, [data-rakuten-day][data-state="live"] .ev-state { background: #e11d48; color: #fff; }
+        summary::-webkit-details-marker { display: none; }
         .no-scrollbar { scrollbar-width: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         [hidden] { display: none !important; }
@@ -883,6 +933,14 @@ def json_ld(deals, page_url, page_label):
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 
+def stat_card(icon, label, value, root):
+    return f"""
+                    <div class="bg-white rounded-2xl ring-1 ring-orange-100 shadow-sm p-2.5 md:p-4">
+                        <p class="flex items-center gap-1 md:gap-1.5 text-xs font-bold text-ink-soft whitespace-nowrap"><img src="{root}img/icons/{icon}.svg" alt="" class="w-4 h-4 md:w-6 md:h-6">{label}</p>
+                        <div class="text-ink font-extrabold leading-tight mt-1.5">{value}</div>
+                    </div>"""
+
+
 def render_page(deals, history, page_date, root, page_url, events=()):
     """スマホ・PC対応のページHTMLを組み立てる（root はサイト直下への相対パス）"""
     is_archive = root != ""
@@ -895,35 +953,36 @@ def render_page(deals, history, page_date, root, page_url, events=()):
     ranking_cols = "md:grid-cols-2 lg:grid-cols-3" if len(main_deals) >= 4 else "md:grid-cols-2"
     ranking_cards = ""
     for rank, deal in enumerate(main_deals, 1):
-        ranking_cards += featured_card(deal, page_url) if rank == 1 else ranked_card(deal, rank, page_url)
-    impulse_cards = "".join(impulse_card(d, len(main_deals) + i, page_url) for i, d in enumerate(impulse_deals, 1))
+        ranking_cards += featured_card(deal, page_url, root) if rank == 1 else ranked_card(deal, rank, page_url, root)
+    impulse_cards = "".join(impulse_card(d, len(main_deals) + i, page_url, root) for i, d in enumerate(impulse_deals, 1))
 
     picks = ""
     for i, deal in enumerate(deals, 1):
-        mark = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, "🛒" if deal["slot"] == "impulse" else "⚡")
-        picks += (f'<a href="#deal-{i}" class="shrink-0 max-w-[16rem] truncate bg-white/10 hover:bg-white/20 ring-1 ring-white/15 '
-                  f'rounded-full px-3 py-1.5 text-xs font-bold transition">{mark} {html.escape(deal["product_name"])}</a>')
+        picks += (f'<a href="#deal-{i}" class="shrink-0 max-w-[16rem] flex items-center gap-2 bg-white hover:bg-orange-50 ring-1 ring-orange-100 shadow-sm '
+                  f'rounded-full pl-1 pr-4 py-1 text-sm font-bold text-ink transition">'
+                  f'<img src="{root}img/items/{item_art(deal)}.svg" alt="" class="w-9 h-9 shrink-0 rounded-full bg-orange-50">'
+                  f'<span class="truncate">{html.escape(deal["product_name"])}</span></a>')
 
     top_names = "、".join(d["product_name"] for d in main_deals[:3])
     description = (f"{page_label}更新｜{top_names}など、AIが厳選した今日のお買い得ガジェット{len(deals)}選。"
                    f"Amazon・楽天のセール情報とポイントアップ日もまとめてチェックできます。")
     if is_archive:
         title = f"【{page_dt.year}年{page_label}】お買い得ガジェット{len(deals)}選｜{SITE_NAME}"
-        h1 = f'{page_label}の<span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">お買い得ガジェット</span>{len(deals)}選'
+        h1 = f'{page_label}の<br><span class="marker">お買い得ガジェット</span>{len(deals)}選'
         lead = f"{page_dt.year}年{page_label}にAIが厳選したセール・値下げ情報のアーカイブです。価格やポイント倍率は変わっている可能性があるため、最新情報はトップページでご確認ください。"
-        third_stat = ("掲載日", f"{md_date(page_dt)}", "")
-        crumbs = (f'<nav class="text-xs text-slate-400 mb-4" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-white">ホーム</a>'
-                  f' › <a href="{root}index.html#archive" class="hover:text-white">アーカイブ</a> › <span class="text-slate-200">{md_date(page_dt)}</span></nav>')
+        third_stat = ("calendar", "掲載日", md_date(page_dt), "")
+        crumbs = (f'<nav class="text-sm text-ink-soft mb-4" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a>'
+                  f' › <a href="{root}index.html#archive" class="hover:text-orange-600 underline-offset-2 hover:underline">アーカイブ</a> › <span class="text-ink font-bold">{md_date(page_dt)}</span></nav>')
         archive_notice = f"""
-        <div class="bg-amber-50 ring-1 ring-amber-200 text-amber-900 rounded-2xl p-4 text-sm flex flex-col md:flex-row md:items-center gap-3 justify-between">
-            <span>📌 このページは{page_dt.year}年{page_label}時点のアーカイブです。</span>
-            <a href="{root}index.html" class="shrink-0 bg-amber-400 hover:bg-amber-500 text-slate-900 font-black px-4 py-2 rounded-xl text-center">最新のお買い得情報を見る →</a>
+        <div class="bg-amber-50 ring-1 ring-amber-200 text-amber-950 rounded-[1.5rem] p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-3 justify-between">
+            <span class="flex items-center gap-3 text-[15px] font-bold"><img src="{root}img/icons/calendar.svg" alt="" class="w-9 h-9 shrink-0">このページは{page_dt.year}年{page_label}時点のアーカイブです。</span>
+            <a href="{root}index.html" class="btn btn-amz shrink-0 font-bold px-5 py-3 rounded-full text-center">最新のお買い得情報を見る →</a>
         </div>"""
     else:
         title = f"【{md_date(page_dt)}更新】今日のお買い得ガジェット{len(deals)}選・セール情報｜{SITE_NAME}"
-        h1 = 'AIが選ぶ、今日の<br class="md:hidden"><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">お買い得ガジェット</span>'
+        h1 = 'AIが選ぶ、今日の<br><span class="marker">お買い得ガジェット</span>'
         lead = "Amazon・楽天市場のセールや値下げ情報から、AIが買い時の商品を毎日2回ピックアップ。ポイント還元込みの「実質価格」を各ストアですぐ比較できます。"
-        third_stat = ("次回更新", next_update_text(), "")
+        third_stat = ("calendar", "次回更新", *next_update_text().split(" ", 1))
         crumbs = ""
         archive_notice = ""
 
@@ -933,28 +992,34 @@ def render_page(deals, history, page_date, root, page_url, events=()):
         "url": page_url,
     })
     og_image = f"{SITE_URL}{OG_IMAGE}"
-    favicon = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E"
-               "%3Crect width='100' height='100' rx='22' fill='%23f97316'/%3E%3Ctext x='50' y='72' font-size='64' text-anchor='middle'%3E⚡%3C/text%3E%3C/svg%3E")
+    page_css = PAGE_CSS.replace("__ROOT__", root)
+
+    stats = (stat_card("chart", "本日の厳選", f'<span class="text-2xl md:text-3xl">{len(deals)}</span><span class="text-sm ml-0.5">件</span>', root)
+             + stat_card("clock", "最終更新", f'<span class="block text-sm md:text-base">{md_date(NOW)}</span><span class="block text-sm md:text-base">{NOW.hour}:{NOW.minute:02d}</span>'
+                         f'<span class="block text-xs font-bold text-emerald-600" data-updated="{updated_iso}"></span>', root)
+             + stat_card(third_stat[0], third_stat[1], ''.join(f'<span class="block text-sm md:text-base">{v}</span>' for v in third_stat[2:] if v), root))
 
     impulse_section = ""
     if impulse_cards:
         impulse_section = f"""
-        <section id="impulse" class="scroll-mt-20">
-            {section_head("ADD TO CART", "🛒 ついで買いで、もう1品お得に", "送料無料ラインやポイントアップ条件にあと少し届かない時に。いつか必ず使う手頃な定番品です。", "text-emerald-600")}
+        <section id="impulse" class="scroll-mt-24 bg-emerald-50 ring-1 ring-emerald-100 rounded-[2rem] px-3 py-6 md:p-8 -mx-2 md:mx-0">
+            {section_head("cart", "ついで買いで、もう1品お得に", "送料無料ラインやポイントアップ条件にあと少し届かない時に。いつか必ず使う手頃な定番品です。", root)}
             <div class="grid gap-5 md:grid-cols-2">{impulse_cards}
             </div>
         </section>"""
 
+    nav_cls = "px-3 py-2 rounded-full hover:bg-orange-50 hover:text-orange-600 transition"
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{html.escape(title)}</title>
     <meta name="description" content="{html.escape(description)}">
     <link rel="canonical" href="{html.escape(page_url)}">
-    <meta name="theme-color" content="#0b1120">
-    <link rel="icon" href="{favicon}">
+    <meta name="theme-color" content="#fff5ea">
+    <link rel="icon" type="image/svg+xml" href="{root}img/logo.svg">
+    <link rel="apple-touch-icon" href="{root}apple-touch-icon.png">
     <meta property="og:title" content="{html.escape(title)}">
     <meta property="og:description" content="{html.escape(description)}">
     <meta property="og:type" content="{'article' if is_archive else 'website'}">
@@ -970,103 +1035,104 @@ def render_page(deals, history, page_date, root, page_url, events=()):
     <meta name="twitter:image" content="{html.escape(og_image)}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>{PAGE_CSS}    </style>
+    <script>{TAILWIND_CONFIG}    </script>
+    <style>{page_css}    </style>
     <script type="application/ld+json">{json_ld(deals, page_url, page_label)}</script>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800 pb-20 md:pb-0">
-    <div class="bg-slate-950 text-slate-400 text-[11px] text-center py-1.5 px-4">【PR】当サイトはアフィリエイト広告（Amazonアソシエイト・楽天アフィリエイト）を利用しています</div>
+<body class="bg-cream min-h-screen text-ink pb-24 md:pb-0">
+    <div class="bg-white/80 text-ink-soft text-xs text-center py-1.5 px-4 border-b border-orange-100 leading-relaxed">【PR】当サイトはアフィリエイト広告（Amazonアソシエイト・楽天アフィリエイト）を利用しています</div>
     {event_bar_html(events)}
-    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur border-b border-white/10 text-white">
-        <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
             <a href="{root}index.html" class="flex items-center gap-2.5 min-w-0">
-                <span class="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center text-lg shadow-lg shadow-orange-500/30">⚡</span>
+                <img src="{root}img/logo.svg" alt="" class="w-10 h-10 shrink-0">
                 <span class="leading-tight min-w-0">
-                    <span class="block text-[10px] font-black text-amber-300 tracking-[0.2em]">AI厳選</span>
-                    <span class="block font-black text-base truncate">ガジェット特価速報</span>
+                    <span class="block text-xs font-bold text-orange-600">AI厳選</span>
+                    <span class="block font-extrabold text-[17px] text-ink truncate">ガジェット特価速報</span>
                 </span>
             </a>
-            <nav class="hidden md:flex items-center gap-6 text-sm font-bold text-slate-300">
-                <a href="#ranking" class="hover:text-white">ランキング</a>
-                <a href="#impulse" class="hover:text-white">ついで買い</a>
-                <a href="#sale-info" class="hover:text-white">セール情報</a>
-                <a href="#archive" class="hover:text-white">アーカイブ</a>
+            <nav class="hidden md:flex items-center gap-1 text-sm font-bold text-ink-soft">
+                <a href="#ranking" class="{nav_cls}">ランキング</a>
+                <a href="#impulse" class="{nav_cls}">ついで買い</a>
+                <a href="#sale-info" class="{nav_cls}">セール情報</a>
+                <a href="#archive" class="{nav_cls}">アーカイブ</a>
             </nav>
             <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored"
-               class="shrink-0 text-xs font-black bg-amber-400 hover:bg-amber-300 text-slate-900 px-3 py-2 rounded-lg transition">セール会場 ↗</a>
+               class="btn btn-amz shrink-0 text-sm font-bold px-4 py-2.5 rounded-full">セール会場 ↗</a>
         </div>
     </header>
 
-    <section class="hero-bg text-white relative overflow-hidden">
-        <div class="grid-bg absolute inset-0" aria-hidden="true"></div>
-        <div class="relative max-w-5xl mx-auto px-4 pt-8 pb-8 md:pt-14 md:pb-12">
-            {crumbs}
-            <div class="inline-flex items-center gap-2 bg-white/10 ring-1 ring-white/20 rounded-full px-3 py-1 text-xs font-bold backdrop-blur">
-                <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span></span>
-                毎日7時・18時にAIが自動更新
-            </div>
-            <h1 class="mt-4 text-3xl md:text-5xl font-black leading-tight tracking-tight">{h1}</h1>
-            <p class="mt-4 text-slate-300 text-sm md:text-base max-w-2xl leading-relaxed">{lead}</p>
-            <div class="grid grid-cols-3 gap-2 md:gap-3 mt-6 max-w-xl">
-                <div class="bg-white/10 ring-1 ring-white/15 rounded-2xl p-3">
-                    <p class="text-[11px] text-slate-300">本日の厳選</p>
-                    <p class="text-2xl font-black">{len(deals)}<span class="text-sm font-bold ml-0.5">件</span></p>
+    <section class="hero-bg relative overflow-hidden">
+        <div class="pattern absolute inset-0" aria-hidden="true"></div>
+        <div class="relative max-w-5xl mx-auto px-4 pt-7 pb-16 md:pt-12 md:pb-24 md:grid md:grid-cols-[1.15fr_.85fr] md:items-center md:gap-6">
+            <div class="min-w-0">
+                {crumbs}
+                <div class="inline-flex items-center gap-2 bg-white ring-1 ring-orange-100 shadow-sm rounded-full px-3.5 py-1.5 text-sm font-bold text-ink">
+                    <span class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span></span>
+                    毎日7時・18時にAIが自動更新
                 </div>
-                <div class="bg-white/10 ring-1 ring-white/15 rounded-2xl p-3">
-                    <p class="text-[11px] text-slate-300">最終更新</p>
-                    <p class="text-sm md:text-base font-black leading-tight mt-1">{md_datetime(NOW)}<span class="block text-[11px] font-bold text-emerald-300" data-updated="{updated_iso}"></span></p>
+                <h1 class="mt-5 text-[1.85rem] md:text-5xl font-extrabold text-ink leading-[1.35] md:leading-[1.3]">{h1}</h1>
+                <p class="mt-4 text-ink-soft text-[15px] md:text-lg leading-relaxed">{lead}</p>
+                <img src="{root}img/hero.svg" alt="" class="md:hidden w-full max-w-[17rem] mx-auto mt-4 -mb-1">
+                <div class="grid grid-cols-3 gap-2 md:gap-3 mt-5 md:mt-7">{stats}
                 </div>
-                <div class="bg-white/10 ring-1 ring-white/15 rounded-2xl p-3">
-                    <p class="text-[11px] text-slate-300">{third_stat[0]}</p>
-                    <p class="text-sm md:text-base font-black leading-tight mt-1">{third_stat[1]}</p>
+                <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                    <a href="#ranking" class="btn btn-main text-center font-extrabold px-6 py-3.5 rounded-full">{"この日" if is_archive else "今日"}のランキングを見る</a>
+                    <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="text-center bg-white hover:bg-orange-50 ring-1 ring-orange-200 text-ink font-bold px-6 py-3.5 rounded-full shadow-sm transition">Amazonタイムセール会場 ↗</a>
                 </div>
             </div>
-            <div class="flex flex-wrap gap-3 mt-6">
-                <a href="#ranking" class="bg-gradient-to-r from-amber-400 to-orange-500 hover:brightness-110 text-slate-900 font-black px-5 py-3 rounded-xl shadow-lg shadow-orange-500/30 transition">🔥 今日のランキングを見る</a>
-                <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="bg-white/10 hover:bg-white/20 ring-1 ring-white/30 font-bold px-5 py-3 rounded-xl transition">Amazonタイムセール会場 ↗</a>
+            <div class="hidden md:block">
+                <img src="{root}img/hero.svg" alt="" class="w-full max-w-[28rem] ml-auto">
             </div>
-            <div class="mt-7">
-                <p class="text-[11px] font-black tracking-[0.25em] text-amber-300 mb-2">TODAY'S PICKS</p>
-                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">{picks}</div>
+            <div class="md:col-span-2 mt-7 md:mt-8">
+                <p class="text-sm font-bold text-ink mb-2.5">{"この日" if is_archive else "今日"}のピックアップ</p>
+                <div class="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 pb-1 md:mx-0 md:px-0 md:flex-wrap">{picks}</div>
             </div>
         </div>
+        <svg class="absolute bottom-0 inset-x-0 w-full h-10 md:h-16" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+            <path fill="#fffaf3" d="M0 56 C 240 100 480 100 720 64 S 1200 8 1440 44 V100 H0 Z"/>
+        </svg>
     </section>
 
-    <main class="max-w-5xl mx-auto px-4 py-10 space-y-14">
+    <main class="max-w-5xl mx-auto px-4 pt-6 pb-16 space-y-16 md:space-y-20">
         {archive_notice}
-        <section id="ranking" class="scroll-mt-20">
-            {section_head("TODAY'S RANKING", f"🏆 {page_label}の注目ガジェット ランキング", "AIがお買い得度・注目度の高い順に並べました。価格・ポイントはボタンから各ストアで確認できます。")}
-            <div class="grid gap-5 {ranking_cols}">{ranking_cards}
+        <section id="ranking" class="scroll-mt-24">
+            {section_head("trophy", "注目ガジェット ランキング", "AIがお買い得度・注目度の高い順に並べました。価格・ポイントはボタンから各ストアで確認できます。", root, page_label)}
+            <div class="grid gap-5 md:gap-6 {ranking_cols}">{ranking_cards}
             </div>
         </section>
         {impulse_section}
-        {sale_info_html(events)}
-        <section class="bg-gradient-to-r from-slate-900 to-indigo-900 rounded-3xl p-6 md:p-8 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <p class="text-[11px] font-black tracking-[0.25em] text-amber-300">SHARE</p>
-                <p class="text-lg md:text-xl font-black mt-1">お得情報を友だちにも教えよう</p>
-                <p class="text-sm text-slate-300 mt-1">このページは毎日7時・18時に自動で更新されます。ブックマークもおすすめです。</p>
+        {sale_info_html(events, root)}
+        <section class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-orange-100 via-rose-100 to-violet-100 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5">
+            <div class="pattern absolute inset-0" aria-hidden="true"></div>
+            <div class="relative flex items-center gap-4">
+                <span class="shrink-0 w-16 h-16 rounded-[1.25rem] bg-white shadow-soft flex items-center justify-center"><img src="{root}img/icons/share.svg" alt="" class="w-11 h-11"></span>
+                <div>
+                    <p class="text-lg md:text-xl font-extrabold text-ink">お得情報を友だちにも教えよう</p>
+                    <p class="text-sm text-ink-soft mt-1 leading-relaxed">このページは毎日7時・18時に自動で更新されます。ブックマークもおすすめです。</p>
+                </div>
             </div>
-            <a href="{html.escape(tweet_page_url)}" target="_blank" rel="noopener" class="shrink-0 bg-white text-slate-900 hover:bg-slate-100 font-black px-5 py-3 rounded-xl text-center transition">𝕏 このページをポスト</a>
+            <a href="{html.escape(tweet_page_url)}" target="_blank" rel="noopener" class="relative shrink-0 bg-ink hover:bg-ink-soft text-white font-bold px-6 py-3.5 rounded-full text-center shadow-md transition">𝕏 このページをポスト</a>
         </section>
-        {about_html()}
+        {about_html(root)}
         {archive_html(history, root, page_date)}
     </main>
 
-    <footer class="bg-slate-950 text-slate-400 text-xs">
+    <footer class="bg-white border-t border-orange-100 text-[13px] text-ink-soft">
         <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
-            <p class="flex items-center gap-2 text-white font-black text-sm"><span class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center">⚡</span>{html.escape(SITE_NAME)}</p>
+            <p class="flex items-center gap-2.5 text-ink font-extrabold text-base"><img src="{root}img/logo.svg" alt="" class="w-8 h-8">{html.escape(SITE_NAME)}</p>
             <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日7時・18時に自動更新しています。</p>
             <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。また、楽天アフィリエイトを利用しています。</p>
             <p>掲載内容はAIが公開情報をもとに自動生成したものです。価格・在庫・ポイント倍率は変動するため、購入前に必ず各販売ページでご確認ください。</p>
-            <p class="text-slate-500">最終更新: {TODAY_STR}（日本時間） © {NOW.year} {html.escape(SITE_NAME)}</p>
+            <p class="text-xs">最終更新: {TODAY_STR}（日本時間） © {NOW.year} {html.escape(SITE_NAME)}</p>
         </div>
     </footer>
 
-    <div class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur border-t border-slate-200 p-2 grid grid-cols-2 gap-2">
-        <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="btn-amz text-center font-black py-2.5 rounded-xl text-sm">Amazonセール会場</a>
-        <a href="{html.escape(RAKUTEN_TOP_URL)}" target="_blank" rel="nofollow noopener sponsored" class="btn-rkt text-center font-black py-2.5 rounded-xl text-sm">楽天市場を見る</a>
+    <div class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur border-t border-orange-100 px-3 pt-2.5 pb-[calc(.75rem+env(safe-area-inset-bottom))] grid grid-cols-2 gap-2.5">
+        <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="btn btn-amz text-center font-bold py-3 rounded-full text-sm">Amazonセール会場</a>
+        <a href="{html.escape(RAKUTEN_TOP_URL)}" target="_blank" rel="nofollow noopener sponsored" class="btn btn-rkt text-center font-bold py-3 rounded-full text-sm">楽天市場を見る</a>
     </div>
     <script>{PAGE_JS}</script>
 </body>
