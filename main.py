@@ -155,6 +155,7 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
             if images:
                 first = images[0]
                 image_url = first.get("imageUrl", "") if isinstance(first, dict) else str(first)
+                image_url = image_url.replace("_ex=128x128", "_ex=400x400")  # 小さすぎるので高解像度版に
             items.append({
                 "title": info.get("itemName", ""),
                 "price": f"{info.get('itemPrice', '')}円（ポイント倍率: {info.get('pointRate', 1)}倍）",
