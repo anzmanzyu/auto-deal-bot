@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import html
 import urllib.parse
@@ -138,7 +139,7 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
     if RAKUTEN_ACCESS_KEY:
         # 新方式: アクセスキー + 許可ドメイン(Origin)で認証する
         params["accessKey"] = RAKUTEN_ACCESS_KEY
-        url = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601"
+        url = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701"
     else:
         url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601"
     origin = SITE_URL.split("/", 3)
@@ -183,6 +184,7 @@ def fetch_candidates():
 
     if RAKUTEN_APP_ID:
         candidates += fetch_rakuten("セール 目玉 ガジェット", "main", 10)
+        time.sleep(1.5)  # 楽天APIのレート制限(1秒1回)対策
         candidates += fetch_rakuten("送料無料 定番 まとめ買い", "impulse", 8, 800, 3500)
 
     rss_urls = [
