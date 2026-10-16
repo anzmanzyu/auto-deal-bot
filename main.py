@@ -1361,7 +1361,12 @@ def post_to_x(deal):
 
 def post_to_threads(deal):
     """画像付き（無ければテキスト）で1投稿にまとめて公開する"""
-    base = f"https://graph.threads.net/v1.0/{THREADS_USER_ID}"
+    user_id = THREADS_USER_ID
+    if not user_id:  # ユーザーID未登録ならトークンから自分のIDを調べる
+        res = requests.get("https://graph.threads.net/v1.0/me", params={"fields": "id", "access_token": THREADS_ACCESS_TOKEN}, timeout=15)
+        res.raise_for_status()
+        user_id = res.json()["id"]
+    base = f"https://graph.threads.net/v1.0/{user_id}"
     params = {"text": f"{sns_body(deal, 400)}\n\n▼詳細・現在の価格はこちら\n{SITE_URL}", "access_token": THREADS_ACCESS_TOKEN}
     if deal.get("image_url"):
         params.update(media_type="IMAGE", image_url=deal["image_url"])
@@ -1388,7 +1393,7 @@ def post_to_sns(deals):
         return
     targets = (
         ("X", all((X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET)), post_to_x),
-        ("Threads", all((THREADS_USER_ID, THREADS_ACCESS_TOKEN)), post_to_threads),
+        ("Threads", bool(THREADS_ACCESS_TOKEN), post_to_threads),
     )
     for name, configured, func in targets:
         if not configured:
