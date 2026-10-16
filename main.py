@@ -286,7 +286,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
 - 目玉ガジェット・家電枠（slot: "main"）を3〜4件：値引き率や注目度が高い製品
 - ついで買い・即決定番枠（slot: "impulse"）を必ず2件：モバイルバッテリー、充電ケーブル、乾電池、炭酸水、日用品など
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
-- image_url のある候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
+- image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
 
 【出力フォーマット（必ず以下のJSONオブジェクトのみを出力してください）】
 {{
@@ -306,8 +306,21 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
 }}
 
 【候補データ】
-{json.dumps(candidates, ensure_ascii=False)}
+{json.dumps(compact_candidates(candidates), ensure_ascii=False)}
 """
+
+
+def compact_candidates(candidates):
+    """AIに渡す候補を必要な項目だけに絞る（無料枠の文字数上限対策）"""
+    rows = []
+    for c in candidates:
+        row = {"no": c.get("no"), "title": str(c.get("title", ""))[:70], "price": c.get("price", ""), "slot_hint": c.get("slot_hint", "")}
+        if c.get("image_url"):
+            row["image_url"] = "あり"
+        else:
+            row["description"] = str(c.get("description", ""))[:80]
+        rows.append(row)
+    return rows
 
 
 def parse_deals(text):
