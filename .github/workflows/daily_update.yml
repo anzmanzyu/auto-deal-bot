@@ -35,6 +35,7 @@ jobs:
 
       - name: Run Deal Analyzer
         env:
+          SITE_URL: https://deals.namiki-log.com/
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AMAZON_TAG: ${{ secrets.AMAZON_TAG }}
           RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}

@@ -36,6 +36,7 @@ def guess_site_url():
 
 
 SITE_URL = guess_site_url()
+RAKUTEN_ORIGIN = os.getenv("RAKUTEN_ORIGIN", "https://anzmanzyu.github.io")
 SITE_NAME = "AI厳選 ガジェット特価速報"
 SITE_TAGLINE = "Amazon・楽天のお買い得ガジェットを、AIが毎日2回厳選"
 OG_IMAGE = "og.png"  # public/og.png（1200x630）
@@ -148,8 +149,8 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
         url = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701"
     else:
         url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601"
-    origin = SITE_URL.split("/", 3)
-    headers = {"Origin": origin[0] + "//" + origin[2], "Referer": SITE_URL}
+    # 楽天に登録済みの許可サイト（独自ドメインに移っても github.io のまま送る）
+    headers = {"Origin": RAKUTEN_ORIGIN, "Referer": RAKUTEN_ORIGIN + "/auto-deal-bot/"}
     items = []
     try:
         res = requests.get(url, params=params, headers=headers, timeout=15)
