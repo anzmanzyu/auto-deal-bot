@@ -165,7 +165,15 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
                 "slot_hint": slot_hint,
             })
     except Exception as e:
-        print(f"Rakuten API fetch notice ({keyword}): {safe_status(e)}")
+        detail = ""
+        resp = getattr(e, "response", None)
+        if resp is not None:
+            try:
+                body = resp.json()
+                detail = " " + str(body.get("error", "")) + " " + str(body.get("error_description", body.get("message", "")))[:200]
+            except Exception:
+                detail = ""
+        print(f"Rakuten API fetch notice ({keyword}): {safe_status(e)}{detail}")
     return items
 
 
