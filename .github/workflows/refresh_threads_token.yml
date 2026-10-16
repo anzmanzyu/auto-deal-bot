@@ -1,0 +1,40 @@
+name: Refresh Threads Token
+
+# Threadsの長期トークン(約60日)を毎週延長する
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh token
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, sys, urllib.error, urllib.parse, urllib.request
+          old = os.environ.get("THREADS_ACCESS_TOKEN", "")
+          if not old:
+              print("THREADS_ACCESS_TOKEN未設定のためスキップします。")
+              sys.exit(0)
+          url = "https://graph.threads.net/refresh_access_token?" + urllib.parse.urlencode(
+              {"grant_type": "th_refresh_token", "access_token": old})
+          try:
+              with urllib.request.urlopen(url, timeout=30) as res:
+                  data = json.load(res)
+          except urllib.error.HTTPError as e:
+              print(f"延長に失敗しました (HTTP {e.code})。発行から24時間未満か、期限切れの可能性があります。")
+              sys.exit(1)
+          new = data.get("access_token", "")
+          print(f"::add-mask::{new}")
+          print(f"トークンを延長しました（残り約{int(data.get('expires_in', 0)) // 86400}日）。")
+          if new and new != old:
+              print("新しいトークン文字列が発行されました。シークレットの更新が必要です。")
+              sys.exit(1)
+          EOF
