@@ -2,6 +2,7 @@ import os
 import time
 import json
 import html
+import hashlib
 import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
@@ -50,6 +51,9 @@ UPDATE_HOURS = (7, 18)  # workflow の cron（UTC 22:00 / 9:00）を日本時間
 
 HISTORY_PATH = "data/history.json"
 HISTORY_DAYS = 30
+PRODUCTS_PATH = "data/products.json"
+PRODUCT_RECORDS = 120  # 1商品あたりの価格記録の上限
+PRODUCT_KEEP_DAYS = 180  # これより長く掲載されていない商品ページは削除する
 EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
 
@@ -626,8 +630,13 @@ def reasons_html(deal, text_cls="text-sm"):
     return f'<ul class="space-y-2 {text_cls} text-ink leading-relaxed mt-4">{items}</ul>'
 
 
-def cta_html(deal, page_url):
+def cta_html(deal, page_url, root="", detail_link=True):
     amz_url, rkt_url = build_affiliate_urls(deal["product_name"], deal.get("item_url", ""))
+    detail = ""
+    if detail_link and deal.get("item_page"):
+        detail = (f'<a href="{root}{deal["item_page"]}" class="mt-3 flex items-center justify-center gap-1.5 text-sm font-bold text-orange-600 '
+                  f'bg-orange-50 hover:bg-orange-100 ring-1 ring-orange-100 rounded-full py-2.5 transition">'
+                  f'<img src="{root}img/icons/chart.svg" alt="" class="w-5 h-5">価格の記録・詳細を見る</a>')
     return f"""
                 <div class="grid grid-cols-2 gap-2.5 mt-5">
                     <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored"
@@ -639,6 +648,7 @@ def cta_html(deal, page_url):
                        楽天で見る <span aria-hidden="true">›</span>
                     </a>
                 </div>
+                {detail}
                 <div class="flex items-center justify-between gap-2 mt-4">
                     <span class="text-xs text-ink-soft">※価格・ポイントはリンク先でご確認ください</span>
                     <a href="{html.escape(build_tweet_url(deal, page_url))}" target="_blank" rel="noopener"
@@ -664,7 +674,7 @@ def featured_card(deal, page_url, root):
                         {score_html(deal['score'])}
                         {price_html(deal)}
                         {reasons_html(deal, "text-[15px] md:text-base")}
-                        {cta_html(deal, page_url)}
+                        {cta_html(deal, page_url, root)}
                     </div>
                 </div>
             </article>"""
@@ -688,7 +698,7 @@ def ranked_card(deal, rank, page_url, root):
                 {score_html(deal['score'])}
                 {price_html(deal)}
                 <div class="flex-1">{reasons_html(deal)}</div>
-                {cta_html(deal, page_url)}
+                {cta_html(deal, page_url, root)}
             </article>"""
 
 
@@ -705,7 +715,7 @@ def impulse_card(deal, idx, page_url, root):
                 </div>
                 {price_html(deal)}
                 <div class="flex-1">{reasons_html(deal)}</div>
-                {cta_html(deal, page_url)}
+                {cta_html(deal, page_url, root)}
             </article>"""
 
 
@@ -1066,9 +1076,6 @@ def render_page(deals, history, page_date, root, page_url, events=()):
         "text": f"【{md_date(page_dt)}】AIが厳選した今日のお買い得ガジェット{len(deals)}選 #ガジェット #セール情報",
         "url": page_url,
     })
-    og_image = f"{SITE_URL}{OG_IMAGE}"
-    page_css = PAGE_CSS.replace("__ROOT__", root)
-
     stats = (stat_card("chart", "本日の厳選", f'<span class="text-2xl md:text-3xl">{len(deals)}</span><span class="text-sm ml-0.5">件</span>', root)
              + stat_card("clock", "最終更新", f'<span class="block text-sm md:text-base">{md_date(NOW)}</span><span class="block text-sm md:text-base">{NOW.hour}:{NOW.minute:02d}</span>'
                          f'<span class="block text-xs font-bold text-emerald-600" data-updated="{updated_iso}"></span>', root)
@@ -1084,41 +1091,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
         </section>"""
 
     nav_cls = "px-3 py-2 rounded-full hover:bg-orange-50 hover:text-orange-600 transition"
-    return f"""<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>{html.escape(title)}</title>
-    <meta name="description" content="{html.escape(description)}">
-    <link rel="canonical" href="{html.escape(page_url)}">
-    <meta name="theme-color" content="#fff5ea">
-    <link rel="icon" type="image/svg+xml" href="{root}img/logo.svg">
-    <link rel="apple-touch-icon" href="{root}apple-touch-icon.png">
-    <meta property="og:title" content="{html.escape(title)}">
-    <meta property="og:description" content="{html.escape(description)}">
-    <meta property="og:type" content="{'article' if is_archive else 'website'}">
-    <meta property="og:url" content="{html.escape(page_url)}">
-    <meta property="og:site_name" content="{html.escape(SITE_NAME)}">
-    <meta property="og:locale" content="ja_JP">
-    <meta property="og:image" content="{html.escape(og_image)}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{html.escape(title)}">
-    <meta name="twitter:description" content="{html.escape(description)}">
-    <meta name="twitter:image" content="{html.escape(og_image)}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>{TAILWIND_CONFIG}    </script>
-    <style>{page_css}    </style>
-    <script type="application/ld+json">{json_ld(deals, page_url, page_label)}</script>
-    <script data-goatcounter="https://namikilog.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
-</head>
-<body class="bg-cream min-h-screen text-ink pb-24 md:pb-0">
-    <div class="bg-white/80 text-ink-soft text-xs text-center py-1.5 px-4 border-b border-orange-100 leading-relaxed">【PR】当サイトはアフィリエイト広告（Amazonアソシエイト・楽天アフィリエイト）を利用しています</div>
+    return f"""{head_html(title, description, page_url, root, 'article' if is_archive else 'website', json_ld(deals, page_url, page_label))}
     {event_bar_html(events)}
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
@@ -1195,7 +1168,53 @@ def render_page(deals, history, page_date, root, page_url, events=()):
         {about_html(root)}
         {archive_html(history, root, page_date)}
     </main>
+{footer_html(root)}"""
 
+
+def head_html(title, description, page_url, root, og_type, ld_json):
+    """全ページ共通の <head> と【PR】表記"""
+    og_image = f"{SITE_URL}{OG_IMAGE}"
+    page_css = PAGE_CSS.replace("__ROOT__", root)
+    return f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{html.escape(title)}</title>
+    <meta name="description" content="{html.escape(description)}">
+    <link rel="canonical" href="{html.escape(page_url)}">
+    <meta name="theme-color" content="#fff5ea">
+    <link rel="icon" type="image/svg+xml" href="{root}img/logo.svg">
+    <link rel="apple-touch-icon" href="{root}apple-touch-icon.png">
+    <meta property="og:title" content="{html.escape(title)}">
+    <meta property="og:description" content="{html.escape(description)}">
+    <meta property="og:type" content="{og_type}">
+    <meta property="og:url" content="{html.escape(page_url)}">
+    <meta property="og:site_name" content="{html.escape(SITE_NAME)}">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:image" content="{html.escape(og_image)}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{html.escape(title)}">
+    <meta name="twitter:description" content="{html.escape(description)}">
+    <meta name="twitter:image" content="{html.escape(og_image)}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>{TAILWIND_CONFIG}    </script>
+    <style>{page_css}    </style>
+    <script type="application/ld+json">{ld_json}</script>
+    <script data-goatcounter="https://namikilog.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body class="bg-cream min-h-screen text-ink pb-24 md:pb-0">
+    <div class="bg-white/80 text-ink-soft text-xs text-center py-1.5 px-4 border-b border-orange-100 leading-relaxed">【PR】当サイトはアフィリエイト広告（Amazonアソシエイト・楽天アフィリエイト）を利用しています</div>"""
+
+
+def footer_html(root):
+    """全ページ共通のフッター・スマホ下部ボタン"""
+    return f"""
     <footer class="bg-white border-t border-orange-100 text-[13px] text-ink-soft">
         <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
             <p class="flex items-center gap-2.5 text-ink font-extrabold text-base"><img src="{root}img/logo.svg" alt="" class="w-8 h-8">{html.escape(SITE_NAME)}</p>
@@ -1240,10 +1259,203 @@ def update_history(history, deals):
     return history
 
 
+def product_id(deal):
+    """楽天の商品ページURL（無ければ商品名）から、商品ページ用の固定IDを作る"""
+    key = deal.get("item_url") or deal["product_name"]
+    return hashlib.sha1(key.encode("utf-8")).hexdigest()[:10]
+
+
+def load_products():
+    try:
+        with open(PRODUCTS_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except FileNotFoundError:
+        return {}
+    except Exception as e:
+        print(f"商品データの読み込みに失敗したため新規作成します: {e}")
+        return {}
+
+
+def update_products(products, deals):
+    """掲載した商品ごとに、掲載日時と楽天の参考価格を記録する（見本データは除く）"""
+    for deal in deals:
+        if deal.get("is_sample"):
+            continue
+        pid = product_id(deal)
+        deal["item_page"] = f"item/{pid}.html"
+        info = products.get(pid, {"records": []})
+        for key in ("product_name", "category", "slot", "badge", "catch_copy", "deal_reason", "score", "image_url", "item_url"):
+            if deal.get(key) or key not in info:
+                info[key] = deal.get(key)
+        records = [r for r in info["records"] if r.get("t") != TODAY_STR]
+        records.append({"t": TODAY_STR, "price": deal.get("price_yen"), "point": deal.get("point_rate")})
+        info["records"] = records[-PRODUCT_RECORDS:]
+        info["last_seen"] = TODAY_STR
+        products[pid] = info
+    # 長く掲載されていない商品は削除してデータを肥大化させない
+    cutoff = (NOW - timedelta(days=PRODUCT_KEEP_DAYS)).strftime("%Y-%m-%d")
+    products = {k: v for k, v in products.items() if v.get("last_seen", "") >= cutoff}
+    os.makedirs(os.path.dirname(PRODUCTS_PATH), exist_ok=True)
+    with open(PRODUCTS_PATH, "w", encoding="utf-8") as f:
+        json.dump(products, f, ensure_ascii=False, indent=1)
+    return products
+
+
+def price_points(info):
+    points = []
+    for r in info.get("records", []):
+        try:
+            points.append((r["t"], int(r["price"]), r.get("point") or 1))
+        except (KeyError, TypeError, ValueError):
+            continue
+    return points
+
+
+def price_chart_svg(points):
+    """価格の推移を折れ線グラフ（SVG）で描く"""
+    w, h, pad_x, pad_y = 640, 240, 84, 28
+    prices = [p for _, p, _ in points]
+    lo, hi = min(prices), max(prices)
+    span = max(hi - lo, max(hi * 0.05, 1))
+    lo -= span * 0.15
+    hi = lo + span * 1.3
+
+    def xy(i, p):
+        x = pad_x + (w - pad_x - 16) * (i / (len(points) - 1))
+        y = pad_y + (h - pad_y * 2) * (1 - (p - lo) / (hi - lo))
+        return x, y
+
+    coords = [xy(i, p) for i, (_, p, _) in enumerate(points)]
+    line = " ".join(f"{x:.1f},{y:.1f}" for x, y in coords)
+    area = f"{coords[0][0]:.1f},{h - pad_y} {line} {coords[-1][0]:.1f},{h - pad_y}"
+    dots = "".join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.5" fill="#fff" stroke="#f97316" stroke-width="3"/>' for x, y in coords)
+    labels = ""
+    for value in (max(prices), min(prices)):
+        _, y = xy(0, value)
+        labels += (f'<line x1="{pad_x}" x2="{w - 16}" y1="{y:.1f}" y2="{y:.1f}" stroke="#fed7aa" stroke-dasharray="4 5"/>'
+                   f'<text x="{pad_x - 8}" y="{y + 4:.1f}" text-anchor="end" font-size="17" font-weight="700" fill="#7c6f64">¥{value:,}</text>')
+    first, last = points[0][0], points[-1][0]
+    labels += (f'<text x="{pad_x}" y="{h - 6}" font-size="15" fill="#7c6f64">{html.escape(first[5:16].replace("-", "/"))}</text>'
+               f'<text x="{w - 16}" y="{h - 6}" text-anchor="end" font-size="15" fill="#7c6f64">{html.escape(last[5:16].replace("-", "/"))}</text>')
+    return (f'<svg viewBox="0 0 {w} {h}" class="w-full h-auto" role="img" aria-label="楽天参考価格の推移">'
+            f'<defs><linearGradient id="pg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fdba74" stop-opacity=".45"/>'
+            f'<stop offset="1" stop-color="#fdba74" stop-opacity="0"/></linearGradient></defs>'
+            f'{labels}<polygon points="{area}" fill="url(#pg)"/>'
+            f'<polyline points="{line}" fill="none" stroke="#f97316" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>{dots}</svg>')
+
+
+def price_history_html(info):
+    points = price_points(info)
+    seen = len(info.get("records", []))
+    if not points:
+        return f"""
+            <section class="card p-5 md:p-7">
+                <h2 class="text-lg md:text-xl font-extrabold text-ink">価格の記録</h2>
+                <p class="text-sm text-ink-soft mt-3 leading-relaxed">この商品は楽天の参考価格を取得できなかったため、価格の記録はありません（掲載{seen}回）。最新の価格は各ストアでご確認ください。</p>
+            </section>"""
+    prices = [p for _, p, _ in points]
+    latest = prices[-1]
+    if len(prices) >= 2 and latest <= min(prices):
+        verdict = ("bg-emerald-50 text-emerald-700 ring-emerald-100", "これまでの記録で最も安い価格")
+    elif len(prices) >= 2 and latest < max(prices):
+        verdict = ("bg-amber-50 text-amber-700 ring-amber-100", f"最安記録より ¥{latest - min(prices):,} 高め")
+    elif len(prices) >= 2:
+        verdict = ("bg-rose-50 text-rose-600 ring-rose-100", "記録中では高めの価格です")
+    else:
+        verdict = ("bg-sky-50 text-sky-700 ring-sky-100", "記録を始めたばかりです")
+    stats = "".join(
+        f'<div class="bg-orange-50/60 rounded-2xl p-3 text-center"><p class="text-xs font-bold text-ink-soft">{label}</p>'
+        f'<p class="text-lg md:text-xl font-extrabold text-ink tabular-nums mt-1">{value}</p></div>'
+        for label, value in (("最新", f"¥{latest:,}"), ("最安記録", f"¥{min(prices):,}"), ("最高記録", f"¥{max(prices):,}"), ("掲載回数", f"{seen}回"))
+    )
+    chart = price_chart_svg(points) if len(points) >= 2 else ""
+    rows = "".join(
+        f'<tr class="border-t border-orange-100"><td class="py-2.5 pr-3 whitespace-nowrap">{html.escape(t[:16].replace("-", "/"))}</td>'
+        f'<td class="py-2.5 pr-3 text-right font-bold tabular-nums">¥{p:,}</td>'
+        f'<td class="py-2.5 text-right whitespace-nowrap">{html.escape(str(pt))}倍</td></tr>'
+        for t, p, pt in reversed(points)
+    )
+    return f"""
+            <section class="card p-5 md:p-7">
+                <div class="flex items-center justify-between gap-3 flex-wrap">
+                    <h2 class="text-lg md:text-xl font-extrabold text-ink">楽天参考価格の記録</h2>
+                    <span class="{verdict[0]} ring-1 text-sm font-bold px-3 py-1 rounded-full">{verdict[1]}</span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mt-4">{stats}</div>
+                <div class="mt-5">{chart}</div>
+                <table class="w-full text-sm mt-4">
+                    <thead><tr class="text-xs text-ink-soft"><th class="text-left font-bold pb-2">掲載日時</th><th class="text-right font-bold pb-2 pr-3">価格</th><th class="text-right font-bold pb-2">ポイント</th></tr></thead>
+                    <tbody>{rows}</tbody>
+                </table>
+                <p class="text-xs text-ink-soft mt-4 leading-relaxed">当サイトが毎日7時・18時の更新時に、楽天市場の商品検索で取得した参考価格です。現在の価格・在庫・ポイント倍率は各ストアでご確認ください。</p>
+            </section>"""
+
+
+def render_item_page(pid, info):
+    """商品ごとの詳細・価格記録ページ"""
+    root = "../"
+    page_url = f"{SITE_URL}item/{pid}.html"
+    deal = dict(info, slot=info.get("slot") or "main", badge=info.get("badge") or BADGES["main"],
+                category=info.get("category") or "ガジェット", catch_copy=info.get("catch_copy") or "",
+                deal_reason=info.get("deal_reason") or "", image_url=info.get("image_url") or "")
+    name = deal["product_name"]
+    points = price_points(info)
+    latest = points[-1] if points else None
+    if latest:
+        deal["price_yen"], deal["point_rate"] = latest[1], latest[2]
+    seen = info.get("records", [])
+    first_seen = seen[0]["t"][:10].replace("-", "/") if seen else ""
+    title = f"{name}の価格推移・セール情報｜{SITE_NAME}"
+    description = (f"{name}の楽天参考価格の記録と、AIが選んだおすすめポイント。"
+                   + (f"記録中の最安 ¥{min(p for _, p, _ in points):,}・掲載{len(seen)}回。" if points else "")
+                   + "Amazon・楽天の販売ページもすぐ確認できます。")
+    ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
+        {"@type": "ListItem", "position": 2, "name": name, "item": page_url},
+    ]}
+    ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
+    return f"""{head_html(title, description, page_url, root, "article", ld_json)}
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
+        <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+            <a href="{root}index.html" class="flex items-center gap-2.5 min-w-0">
+                <img src="{root}img/logo.svg" alt="" class="w-10 h-10 shrink-0">
+                <span class="leading-tight min-w-0">
+                    <span class="block text-xs font-bold text-orange-600">AI厳選</span>
+                    <span class="block font-extrabold text-[17px] text-ink truncate">ガジェット特価速報</span>
+                </span>
+            </a>
+            <a href="{root}index.html" class="btn btn-main shrink-0 text-sm font-bold px-4 py-2.5 rounded-full">今日の特価 →</a>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
+        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">{html.escape(name)}</span></nav>
+        <article class="card p-5 md:p-8">
+            <div class="flex flex-col md:flex-row gap-5 md:gap-7">
+                {thumbnail_html(deal, "w-full h-60 md:w-64 md:h-64", CARD_TONES[0], root)}
+                <div class="flex-1 min-w-0">
+                    {badges_html(deal)}
+                    <h1 class="text-xl md:text-2xl font-extrabold text-ink leading-snug mt-3">{html.escape(name)}</h1>
+                    <p class="mt-1.5 text-orange-600 font-bold">{html.escape(deal['catch_copy'])}</p>
+                    <p class="mt-2 text-xs text-ink-soft">初掲載 {first_seen}・最終掲載 {html.escape(str(info.get('last_seen', ''))[:10].replace('-', '/'))}</p>
+                    {price_html(deal)}
+                    {reasons_html(deal, "text-[15px]")}
+                    {cta_html(deal, page_url, root, False)}
+                </div>
+            </div>
+        </article>
+        {price_history_html(info)}
+        <a href="{root}index.html" class="block card card-hover p-5 text-center font-extrabold text-ink">今日のお買い得ランキングを見る →</a>
+    </main>
+{footer_html(root)}"""
+
+
 def generate_site(deals):
     """トップページ・日別アーカイブ・sitemap.xml・robots.txt を生成する"""
     os.makedirs("public/archive", exist_ok=True)
     history = update_history(load_history(), deals)
+    products = update_products(load_products(), deals)
     events = load_events()
 
     with open("public/index.html", "w", encoding="utf-8") as f:
@@ -1252,11 +1464,22 @@ def generate_site(deals):
     with open(f"public/archive/{TODAY_DATE}.html", "w", encoding="utf-8") as f:
         f.write(render_page(deals, history, TODAY_DATE, "../", archive_url, events))
 
+    # 商品ページは毎回すべて作り直す（記録が消えた商品のページは削除する）
+    os.makedirs("public/item", exist_ok=True)
+    for name in os.listdir("public/item"):
+        if name.endswith(".html") and name[:-5] not in products:
+            os.remove(os.path.join("public/item", name))
+    for pid, info in products.items():
+        with open(f"public/item/{pid}.html", "w", encoding="utf-8") as f:
+            f.write(render_item_page(pid, info))
+
     # 実在するアーカイブだけをサイトマップに載せる
     archive_dates = sorted((n[:-5] for n in os.listdir("public/archive") if n.endswith(".html")), reverse=True)
     urls = [f"  <url><loc>{SITE_URL}</loc><lastmod>{TODAY_DATE}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>"]
     for d in archive_dates:
         urls.append(f"  <url><loc>{SITE_URL}archive/{d}.html</loc><lastmod>{d}</lastmod><priority>0.6</priority></url>")
+    for pid, info in products.items():
+        urls.append(f"  <url><loc>{SITE_URL}item/{pid}.html</loc><lastmod>{info['last_seen'][:10]}</lastmod><priority>0.7</priority></url>")
     with open("public/sitemap.xml", "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(urls) + "\n</urlset>\n")
