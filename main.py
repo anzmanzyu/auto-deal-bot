@@ -17,6 +17,12 @@ RAKUTEN_ACCESS_KEY = os.getenv("RAKUTEN_ACCESS_KEY", "")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_MODEL = os.getenv("GROQ_MODEL") or "openai/gpt-oss-120b"
+X_API_KEY = os.getenv("X_API_KEY", "")
+X_API_SECRET = os.getenv("X_API_SECRET", "")
+X_ACCESS_TOKEN = os.getenv("X_ACCESS_TOKEN", "")
+X_ACCESS_TOKEN_SECRET = os.getenv("X_ACCESS_TOKEN_SECRET", "")
+THREADS_USER_ID = os.getenv("THREADS_USER_ID", "")
+THREADS_ACCESS_TOKEN = os.getenv("THREADS_ACCESS_TOKEN", "")
 
 
 def guess_site_url():
@@ -1289,7 +1295,109 @@ def select_deals(candidates):
             print(f"{name}の出力が不足していたため次の手段を試します。")
         except Exception as e:
             print(f"{name} APIエラー（{safe_status(e)}）")
-    return normalize_deals(sample_deals())
+    fallback = normalize_deals(sample_deals())
+    for d in fallback:
+        d["is_sample"] = True  # 見本データはSNSへ投稿しない
+    return fallback
+
+
+def pick_sns_deal(deals):
+    """SNSに投稿する1件（目玉枠でおすすめ度が最も高い商品）を選ぶ"""
+    main = [d for d in deals if d["slot"] == "main" and not d.get("is_sample")]
+    return max(main, key=lambda d: d["score"]) if main else None
+
+
+def sns_body(deal, limit):
+    """【PR】を先頭に付けた紹介文。AIの文が無ければ商品名とキャッチコピーで作る"""
+    text = deal.get("sns_text") or f"{deal['product_name']}\n{deal.get('catch_copy', '')}\n#ガジェット #セール"
+    text = text.replace("【PR】", "").strip()
+    return ("【PR】" + text)[:limit]
+
+
+def upload_x_media(auth, image_url):
+    """楽天の商品画像をXにアップロードし media_id を返す（失敗時は空文字）"""
+    img = requests.get(image_url, timeout=20)
+    img.raise_for_status()
+    files = {"media": ("item.jpg", img.content, img.headers.get("Content-Type", "image/jpeg"))}
+    # v2 のアップロードを優先し、使えなければ v1.1 を試す
+    for endpoint, extra in (("https://api.x.com/2/media/upload", {"media_category": "tweet_image"}),
+                            ("https://upload.twitter.com/1.1/media/upload.json", {})):
+        try:
+            res = requests.post(endpoint, auth=auth, files=files, data=extra, timeout=30)
+            res.raise_for_status()
+            body = res.json()
+            media_id = (body.get("data") or {}).get("id") or body.get("media_id_string")
+            if media_id:
+                return str(media_id)
+        except Exception as e:
+            print(f"X画像アップロード notice（{safe_status(e)}）")
+    return ""
+
+
+def post_to_x(deal):
+    """1投目は画像＋紹介文（URLなし）、2投目の返信でサイトURLへ誘導する"""
+    from requests_oauthlib import OAuth1
+    auth = OAuth1(X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET)
+    payload = {"text": sns_body(deal, 135)}
+    if deal.get("image_url"):
+        try:
+            media_id = upload_x_media(auth, deal["image_url"])
+        except Exception as e:
+            print(f"X画像取得 notice（{safe_status(e)}）")
+            media_id = ""
+        if media_id:
+            payload["media"] = {"media_ids": [media_id]}
+    res = requests.post("https://api.x.com/2/tweets", auth=auth, json=payload, timeout=30)
+    res.raise_for_status()
+    tweet_id = res.json()["data"]["id"]
+    reply = {
+        "text": f"▼詳細・現在の価格チェックはこちら（毎日7時・18時AI自動更新）\n{SITE_URL}",
+        "reply": {"in_reply_to_tweet_id": tweet_id},
+    }
+    res = requests.post("https://api.x.com/2/tweets", auth=auth, json=reply, timeout=30)
+    res.raise_for_status()
+    print("Xに投稿しました（画像" + ("あり" if "media" in payload else "なし") + "・返信でURL）。")
+
+
+def post_to_threads(deal):
+    """画像付き（無ければテキスト）で1投稿にまとめて公開する"""
+    base = f"https://graph.threads.net/v1.0/{THREADS_USER_ID}"
+    params = {"text": f"{sns_body(deal, 400)}\n\n▼詳細・現在の価格はこちら\n{SITE_URL}", "access_token": THREADS_ACCESS_TOKEN}
+    if deal.get("image_url"):
+        params.update(media_type="IMAGE", image_url=deal["image_url"])
+    else:
+        params["media_type"] = "TEXT"
+    res = requests.post(f"{base}/threads", data=params, timeout=30)
+    res.raise_for_status()
+    creation_id = res.json()["id"]
+    time.sleep(5)  # コンテナの生成完了を待つ
+    res = requests.post(f"{base}/threads_publish", data={"creation_id": creation_id, "access_token": THREADS_ACCESS_TOKEN}, timeout=30)
+    res.raise_for_status()
+    print("Threadsに投稿しました。")
+
+
+def post_to_sns(deals):
+    """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
+    try:
+        deal = pick_sns_deal(deals)
+    except Exception as e:
+        print(f"SNS投稿の準備でエラー（{type(e).__name__}）")
+        return
+    if not deal:
+        print("SNS投稿: AIで選んだ商品が無いためスキップします。")
+        return
+    targets = (
+        ("X", all((X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET)), post_to_x),
+        ("Threads", all((THREADS_USER_ID, THREADS_ACCESS_TOKEN)), post_to_threads),
+    )
+    for name, configured, func in targets:
+        if not configured:
+            print(f"{name}: キー未設定のため投稿をスキップします。")
+            continue
+        try:
+            func(deal)
+        except Exception as e:
+            print(f"{name} 投稿エラー（{safe_status(e)}）")
 
 
 if __name__ == "__main__":
@@ -1304,4 +1412,7 @@ if __name__ == "__main__":
     print("3. Webサイト更新＆通知送信中...")
     generate_site(selected_deals)
     notify_discord(selected_deals)
+
+    print("4. SNS自動投稿中...")
+    post_to_sns(selected_deals)
     print("完了しました！")
