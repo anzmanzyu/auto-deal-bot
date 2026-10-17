@@ -91,7 +91,7 @@ ITEM_ART = [
     (("ヘッドホン", "ヘッドフォン", "ヘッドセット"), "headphones"),
     (("イヤホン", "AirPods", "Buds"), "earbuds"),
     (("スピーカー", "サウンドバー", "Echo"), "speaker"),
-    (("バッテリー", "Power Bank", "PowerCore"), "battery"),
+    (("バッテリー", "Power Bank", "PowerCore", "ポータブル電源"), "battery"),
     (("乾電池", "電池", "エボルタ", "エネループ", "単3", "単4"), "drycell"),
     (("充電器", "Charger", "GaN", "アダプタ"), "charger"),
     (("ケーブル",), "cable"),
@@ -103,7 +103,7 @@ ITEM_ART = [
     (("iPad", "タブレット", "Tablet", "Kindle", "Fire HD", "Fire Max", "液タブ", "ペンタブ"), "tablet"),
     (("ノート", "MacBook", "Chromebook", "Surface", "パソコン", "PC"), "laptop"),
     (("iPhone", "Pixel", "Galaxy", "スマホ", "スマートフォン", "Xperia", "AQUOS"), "phone"),
-    (("カメラ", "GoPro", "Insta360", "Osmo"), "camera"),
+    (("カメラ", "GoPro", "Insta360", "Osmo", "ドライブレコーダー", "ドラレコ"), "camera"),
     (("SSD", "HDD", "USBメモリ", "microSD", "SDカード", "NAS"), "storage"),
     (("ルーター", "Wi-Fi", "WiFi", "メッシュ"), "router"),
     (("Switch", "PlayStation", "PS5", "ゲーム", "コントローラー"), "game"),
@@ -134,13 +134,14 @@ def safe_status(e):
     return getattr(getattr(e, "response", None), "status_code", type(e).__name__)
 
 
-def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
+def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None, page=1):
     """楽天市場APIから商品候補を取得する（画像URL付き）"""
     params = {
         "applicationId": RAKUTEN_APP_ID,
         "keyword": keyword,
         "sort": "-reviewCount",
         "hits": hits,
+        "page": page,
         "imageFlag": 1,
     }
     if min_price:
@@ -190,27 +191,66 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None):
     return items
 
 
+# 目玉枠の検索ジャンル（更新ごとに4つずつ順番に使う）
+MAIN_QUERIES = [
+    ("ワイヤレスイヤホン", 3000, None),
+    ("モバイルモニター", 8000, None),
+    ("スマートウォッチ", 3000, None),
+    ("ロボット掃除機", 10000, None),
+    ("ヘッドホン ノイズキャンセリング", 5000, None),
+    ("ポータブルSSD", 5000, None),
+    ("ミニPC", 20000, None),
+    ("ワイヤレスキーボード", 3000, None),
+    ("ワイヤレスマウス", 2000, None),
+    ("Bluetoothスピーカー", 3000, None),
+    ("タブレット", 15000, None),
+    ("モバイルプロジェクター", 10000, None),
+    ("Wi-Fiルーター", 5000, None),
+    ("ゲーミングモニター", 15000, None),
+    ("ドライブレコーダー", 5000, None),
+    ("ポータブル電源", 15000, None),
+]
+# ついで買い枠（1,000〜3,000円台の定番品）
+IMPULSE_QUERIES = [
+    ("モバイルバッテリー", 1000, 4000),
+    ("USB-C 充電ケーブル", 500, 2500),
+    ("炭酸水 500ml 24本", 1000, 2999),
+    ("乾電池 単3 まとめ買い", 800, 2999),
+    ("電源タップ", 1000, 2999),
+    ("USB充電器 PD", 1000, 3500),
+    ("microSDカード", 1000, 3500),
+    ("スマホスタンド", 800, 2999),
+    ("ミネラルウォーター 2L 9本", 800, 2999),
+]
+RECENT_DAYS = 3  # この日数以内に掲載した商品は候補から外す
+
+
+def recent_item_urls():
+    cutoff = (NOW - timedelta(days=RECENT_DAYS)).strftime("%Y-%m-%d %H:%M")
+    return {v.get("item_url") for v in load_products().values()
+            if v.get("item_url") and v.get("last_seen", "") >= cutoff}
+
+
 def fetch_candidates():
     """公開RSSフィードおよび楽天APIから最新のセール・特価候補を取得する"""
     candidates = []
 
     if RAKUTEN_APP_ID:
-        queries = [
-            ("ワイヤレスイヤホン", "main", 4, 3000, None),
-            ("モバイルモニター", "main", 3, 8000, None),
-            ("スマートウォッチ", "main", 3, 3000, None),
-            ("ロボット掃除機", "main", 3, 10000, None),
-            ("モバイルバッテリー", "impulse", 3, 1000, 4000),
-            ("USB-C 充電ケーブル", "impulse", 3, 500, 2500),
-            # リピート買いされやすい1,000〜2,000円台の日用品
-            ("炭酸水 500ml 24本", "impulse", 2, 1000, 2999),
-            ("乾電池 単3 まとめ買い", "impulse", 2, 800, 2999),
-            ("電源タップ", "impulse", 2, 1000, 2999),
-        ]
-        for i, (keyword, slot_hint, hits, min_price, max_price) in enumerate(queries):
+        # 毎回同じ商品にならないよう、ジャンルを更新ごとに入れ替える
+        turn = NOW.toordinal() * 2 + (NOW.hour >= 12)
+        main_q = [MAIN_QUERIES[(turn * 4 + i) % len(MAIN_QUERIES)] for i in range(4)]
+        impulse_q = [IMPULSE_QUERIES[(turn * 3 + i) % len(IMPULSE_QUERIES)] for i in range(3)]
+        recent = recent_item_urls()
+        for i, (keyword, min_price, max_price) in enumerate(main_q + impulse_q):
             if i:
                 time.sleep(1.2)  # 楽天APIのレート制限(1秒1回)対策
-            candidates += fetch_rakuten(keyword, slot_hint, hits, min_price, max_price)
+            slot_hint = "main" if i < len(main_q) else "impulse"
+            # レビュー数上位の中から、ページもずらして取得する
+            page = 1 + (turn // 2 + i) % 3
+            items = fetch_rakuten(keyword, slot_hint, 6, min_price, max_price, page)
+            # 直近に掲載した商品は除外して入れ替わりを作る
+            fresh = [c for c in items if rakuten_item_url(c["source_url"]) not in recent]
+            candidates += fresh[:4 if slot_hint == "main" else 3]
 
     rss_urls = [
         "https://pc.watch.impress.co.jp/data/rss/1.0/pcw/feed.rdf",
