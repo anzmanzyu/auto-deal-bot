@@ -856,5 +856,100 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lifedrinkcompany/cabinet/item-soda/ozasoda/proper/oza24_peach.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/lifedrinkcompany/zaosoda-500/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-19 00:04"
+ },
+ "1387d748ec": {
+  "records": [
+   {
+    "t": "2026-10-19 00:19",
+    "price": 34800,
+    "point": 5
+   }
+  ],
+  "product_name": "WINTEN 15.6インチ モバイルモニター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "外出先でも大画面作業",
+  "deal_reason": "・15.6インチフルHDで作業効率UP\n・軽量設計で持ち運びが楽\n・ポイント5倍で実質お得",
+  "score": 95,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/win10/cabinet/monitor/156ltf_sam2025.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/win10/5581/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:19"
+ },
+ "96a7e13242": {
+  "records": [
+   {
+    "t": "2026-10-19 00:19",
+    "price": 54800,
+    "point": 1
+   }
+  ],
+  "product_name": "iRobot Roomba Plus 505 AutoWash",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⚡ 実質最安級",
+  "catch_copy": "自動掃除で手間ゼロ",
+  "deal_reason": "・自動洗浄機能でメンテ簡単\n・高吸引力で汚れしっかり除去\n・ポイント1倍でも割引率大",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/irobotstore/cabinet/03016688/20261017_brandday/202610_505c.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/irobotstore/n185060/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:19"
+ },
+ "08fe0cdebe": {
+  "records": [
+   {
+    "t": "2026-10-19 00:19",
+    "price": 3680,
+    "point": 1
+   }
+  ],
+  "product_name": "超安価 ワイヤレスイヤホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "低価格で高音質",
+  "deal_reason": "・3680円という破格価格\n・Bluetooth5.4で安定接続\n・ANC搭載でノイズ低減",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/rainbowshoji/cabinet/coupon/imgrc0088150958.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/rainbowshoji/s15/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:19"
+ },
+ "7382cee31b": {
+  "records": [
+   {
+    "t": "2026-10-19 00:19",
+    "price": 1000,
+    "point": 15
+   }
+  ],
+  "product_name": "USB-C 急速充電ケーブル 2本セット",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "高速充電で時間短縮",
+  "deal_reason": "・1000円台で2本セット\n・60W急速対応でスマホもタブも高速充電\n・タイプC対応で汎用性抜群",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/case-by-case/cabinet/08655288/08964230/imgrc0087940772.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/case-by-case/1-250-2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:19"
+ },
+ "1319f6d766": {
+  "records": [
+   {
+    "t": "2026-10-19 00:19",
+    "price": 2370,
+    "point": 1
+   }
+  ],
+  "product_name": "OZA 無糖炭酸水 500ml 48本",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "炭酸でリフレッシュ",
+  "deal_reason": "・48本セットでコスパ抜群\n・無糖・プレーンでカロリーゼロ\n・毎日さっぱり飲めるのでリピート必至",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lifedrinkcompany/cabinet/item-soda/ozasoda/proper/oza48_peach.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/lifedrinkcompany/zaosoda-500-48/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:19"
  }
 }
