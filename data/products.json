@@ -666,5 +666,100 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ioroi/cabinet/08743967/08743968/xxkjzjcqths-01i.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ioroi/10000230/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 23:49"
+ },
+ "cdc0803ae4": {
+  "records": [
+   {
+    "t": "2026-10-19 00:02",
+    "price": 4380,
+    "point": 1
+   }
+  ],
+  "product_name": "Mi Tune01 ワイヤレスイヤホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "高音質と低遅延で快適",
+  "deal_reason": "・Bluetooth5.4で安定接続\n・ENCノイズキャンセリング搭載\n・バッテリー残量表示で安心",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/milink-inc/cabinet/sn/tune01bk.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/milink-inc/qcy-t1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:02"
+ },
+ "381315fc87": {
+  "records": [
+   {
+    "t": "2026-10-19 00:02",
+    "price": 3680,
+    "point": 1
+   }
+  ],
+  "product_name": "QS16 Pro スマートウォッチ",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "24時間健康管理が手元に",
+  "deal_reason": "・通話機能でスマホ不要\n・大画面1.9インチで見やすい\n・女性向けデザインでスタイリッシュ",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/smahoservice/cabinet/w/w301984/w301984-02.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/smahoservice/w301984-1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:02"
+ },
+ "5cb2f7ae60": {
+  "records": [
+   {
+    "t": "2026-10-19 00:02",
+    "price": 15999,
+    "point": 1
+   }
+  ],
+  "product_name": "VisionOwl 14インチ モバイルモニター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⚡ 実質最安級",
+  "catch_copy": "軽量・高輝度で持ち運び楽々",
+  "deal_reason": "・540gと超軽量\n・400nit高輝度で屋外でも見やすい\n・100% sRGBで色再現が正確",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/09820502/11638583/imgrc0111583018.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/qifeng/xl-14/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:02"
+ },
+ "6c7725a6e8": {
+  "records": [
+   {
+    "t": "2026-10-19 00:02",
+    "price": 1280,
+    "point": 1
+   }
+  ],
+  "product_name": "オシャモバ 5000mAh モバイルバッテリー",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "軽量で持ち運び便利",
+  "deal_reason": "・5,000mAhでスマホを数回充電\n・USB-C対応で高速充電\n・コンパクトサイズでポケットに入る",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/corsage/cabinet/03257720/oshamoba/co_5000mini_plus01.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/corsage/1005-174_2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:02"
+ },
+ "ae4fd4892f": {
+  "records": [
+   {
+    "t": "2026-10-19 00:02",
+    "price": 590,
+    "point": 1
+   }
+  ],
+  "product_name": "PD急速充電 シリコンケーブル",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "柔らかく絡まらない",
+  "deal_reason": "・PD対応で高速充電\n・シリコン素材で耐久性◎\n・iPhone16/15対応で汎用性高い",
+  "score": 84,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/idealife/cabinet/11475677/13429386/imgrc0110300127.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/idealife/i-c001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:02"
  }
 }
