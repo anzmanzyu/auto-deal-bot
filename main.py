@@ -557,6 +557,11 @@ def attach_yahoo_items(deals):
             params.update(price_from=int(price * 0.6), price_to=int(price * 1.4))
         try:
             res = requests.get("https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch", params=params, timeout=15)
+            if res.status_code != 200:
+                print(f"Yahoo検索 notice（{res.status_code}）: {res.text[:200].replace(YAHOO_APP_ID, '***')}")
+                hits = []
+                time.sleep(1)
+                continue
             res.raise_for_status()
             hits = res.json().get("hits") or []
         except Exception as e:
