@@ -761,5 +761,100 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/idealife/cabinet/11475677/13429386/imgrc0110300127.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/idealife/i-c001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-19 00:02"
+ },
+ "3496034d86": {
+  "records": [
+   {
+    "t": "2026-10-19 00:04",
+    "price": 15999,
+    "point": 1
+   }
+  ],
+  "product_name": "kksmart 13.3インチ 2.5K モバイルモニター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "軽量2.5Kで鮮やか表示",
+  "deal_reason": "・606gの超軽量設計で持ち運びが楽々\n・2560×1600の高解像度で映像がくっきり\n・100％sRGB対応で色再現が正確",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/13057332/13057336/1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/qifeng/nk-133/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:04"
+ },
+ "3a30731f9b": {
+  "records": [
+   {
+    "t": "2026-10-19 00:04",
+    "price": 39420,
+    "point": 1
+   }
+  ],
+  "product_name": "HONMA x HUAWEI WATCH GT 6 Pro",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "高級感と健康管理",
+  "deal_reason": "・HONMAデザインでプレミアム感\n・長時間バッテリーで安心\n・多彩な健康測定機能搭載",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/huawei-official/cabinet/12523701/12523702/honma-itemid-1000.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/huawei-official/55026953/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:04"
+ },
+ "5c1126ced9": {
+  "records": [
+   {
+    "t": "2026-10-19 00:04",
+    "price": 13999,
+    "point": 1
+   }
+  ],
+  "product_name": "スタンドセット 15.6インチ フルHD モバイルモニター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⚡ 実質最安級",
+  "catch_copy": "コスパ最強のフルHD",
+  "deal_reason": "・15.6インチの大画面で作業効率UP\n・フルHD 1080pでクリアな映像\n・スタンド付きで設置が簡単",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/puchirabbit/cabinet/ev/156j03s218/j03s218.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/puchirabbit/1-monitor-b-m156j03/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:04"
+ },
+ "f797964d16": {
+  "records": [
+   {
+    "t": "2026-10-19 00:04",
+    "price": 1299,
+    "point": 1
+   }
+  ],
+  "product_name": "RoiCiel マグネット充電ケーブル",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "絡まない磁石ケーブル",
+  "deal_reason": "・磁石でケーブルが絡まらず収納簡単\n・USB-C・Lightning対応で汎用性◎\n・1,299円と低価格で即カート",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/roiciel/cabinet/08816048/10418553/10452724/imgrc0195106473.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/roiciel/rc-22-gp03/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:04"
+ },
+ "13b2e238a7": {
+  "records": [
+   {
+    "t": "2026-10-19 00:04",
+    "price": 1229,
+    "point": 1
+   }
+  ],
+  "product_name": "OZA SODA プレーン炭酸水 500ml 24本",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "爽快スッキリ炭酸",
+  "deal_reason": "・1本1229円でコスパ抜群\n・無糖・プレーンでカロリーゼロ\n・24本セットで常備しやすい",
+  "score": 84,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lifedrinkcompany/cabinet/item-soda/ozasoda/proper/oza24_peach.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/lifedrinkcompany/zaosoda-500/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "last_seen": "2026-10-19 00:04"
  }
 }
