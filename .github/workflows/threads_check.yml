@@ -1,0 +1,26 @@
+name: Threads Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Threads token (read only, no posting)
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.parse, urllib.error
+          token = os.environ["THREADS_ACCESS_TOKEN"]
+          for path in ("me?fields=id,username", "me/threads?fields=id,timestamp&limit=3"):
+              url = "https://graph.threads.net/v1.0/" + path + "&access_token=" + urllib.parse.quote(token)
+              try:
+                  with urllib.request.urlopen(url, timeout=20) as r:
+                      body = json.loads(r.read())
+                      print(path.split("?")[0], r.status, [t.get("timestamp") for t in body.get("data", [])] or "ok")
+              except urllib.error.HTTPError as e:
+                  err = json.loads(e.read() or b"{}").get("error", {})
+                  print(path.split("?")[0], e.code, "code=", err.get("code"), "sub=", err.get("error_subcode"), str(err.get("message", ""))[:160])
+          PY

@@ -1624,26 +1624,43 @@ def post_to_x(deal):
     print("Xに投稿しました（画像" + ("あり" if "media" in payload else "なし") + "・返信でURL）。")
 
 
+def threads_error(e):
+    """Metaのエラー本文から code と message だけを取り出す（トークンは含まれない）"""
+    try:
+        err = e.response.json().get("error", {})
+        msg = str(err.get("error_user_msg") or err.get("message", ""))[:160]
+        return f"{e.response.status_code} code={err.get('code')} sub={err.get('error_subcode')} {msg}"
+    except Exception:
+        return str(safe_status(e))
+
+
 def post_to_threads(deal):
-    """画像付き（無ければテキスト）で1投稿にまとめて公開する"""
+    """画像付き（無ければテキスト）で1投稿にまとめて公開する。画像で失敗したらテキストで再試行"""
     user_id = THREADS_USER_ID
     if not user_id:  # ユーザーID未登録ならトークンから自分のIDを調べる
         res = requests.get("https://graph.threads.net/v1.0/me", params={"fields": "id", "access_token": THREADS_ACCESS_TOKEN}, timeout=15)
-        res.raise_for_status()
+        if not res.ok:
+            raise RuntimeError("ユーザーID取得失敗 " + threads_error(requests.HTTPError(response=res)))
         user_id = res.json()["id"]
     base = f"https://graph.threads.net/v1.0/{user_id}"
-    params = {"text": f"{sns_body(deal, 400)}\n\n▼詳細・現在の価格はこちら\n{SITE_URL}", "access_token": THREADS_ACCESS_TOKEN}
+    text = f"{sns_body(deal, 400)}\n\n▼詳細・現在の価格はこちら\n{SITE_URL}"
+    attempts = []
     if deal.get("image_url"):
-        params.update(media_type="IMAGE", image_url=deal["image_url"])
-    else:
-        params["media_type"] = "TEXT"
-    res = requests.post(f"{base}/threads", data=params, timeout=30)
-    res.raise_for_status()
-    creation_id = res.json()["id"]
-    time.sleep(5)  # コンテナの生成完了を待つ
-    res = requests.post(f"{base}/threads_publish", data={"creation_id": creation_id, "access_token": THREADS_ACCESS_TOKEN}, timeout=30)
-    res.raise_for_status()
-    print("Threadsに投稿しました。")
+        attempts.append({"media_type": "IMAGE", "image_url": deal["image_url"]})
+    attempts.append({"media_type": "TEXT"})
+    for extra in attempts:
+        try:
+            res = requests.post(f"{base}/threads", data={"text": text, "access_token": THREADS_ACCESS_TOKEN, **extra}, timeout=30)
+            res.raise_for_status()
+            creation_id = res.json()["id"]
+            time.sleep(10)  # コンテナの生成完了を待つ
+            res = requests.post(f"{base}/threads_publish", data={"creation_id": creation_id, "access_token": THREADS_ACCESS_TOKEN}, timeout=30)
+            res.raise_for_status()
+            print(f"Threadsに投稿しました（{extra['media_type']}）。")
+            return
+        except requests.HTTPError as e:
+            print(f"Threads {extra['media_type']} 投稿エラー（{threads_error(e)}）")
+    raise RuntimeError("Threads投稿に失敗しました")
 
 
 def post_to_sns(deals):
