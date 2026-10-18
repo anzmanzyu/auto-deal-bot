@@ -13,6 +13,9 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL") or "gemini-flash-latest"
 AMAZON_TAG = os.getenv("AMAZON_TAG", "your-amazon-tag-22")
 RAKUTEN_AFFILIATE_ID = os.getenv("RAKUTEN_AFFILIATE_ID", "")
+VC_SID = os.getenv("VC_SID", "").strip()
+VC_PID = os.getenv("VC_PID", "").strip()
+YAHOO_APP_ID = os.getenv("YAHOO_APP_ID", "").strip()
 RAKUTEN_APP_ID = os.getenv("RAKUTEN_APP_ID", "")
 RAKUTEN_ACCESS_KEY = os.getenv("RAKUTEN_ACCESS_KEY", "")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
@@ -527,6 +530,46 @@ def build_affiliate_urls(product_name, item_url=""):
     return amazon_url, rakuten_url
 
 
+def with_vc_affiliate(url):
+    """バリューコマース経由のYahoo!ショッピング用アフィリエイトURL"""
+    return f"https://ck.jp.ap.valuecommerce.com/servlet/referral?sid={VC_SID}&pid={VC_PID}&vc_url={urllib.parse.quote(url, safe='')}"
+
+
+def yahoo_link(deal):
+    """Yahoo!ショッピングの商品ページ（無ければ検索ページ）。VC未設定なら空文字"""
+    if not (VC_SID and VC_PID):
+        return ""
+    target = deal.get("yahoo_item_url") or f"https://shopping.yahoo.co.jp/search?p={urllib.parse.quote(deal['product_name'])}"
+    return with_vc_affiliate(target)
+
+
+def attach_yahoo_items(deals):
+    """商品名でYahoo!ショッピングを検索し、楽天の参考価格に近い商品ページを紐付ける"""
+    if not (YAHOO_APP_ID and VC_SID and VC_PID):
+        return
+    found = 0
+    for deal in deals:
+        if deal.get("is_sample"):
+            continue
+        params = {"appid": YAHOO_APP_ID, "query": deal["product_name"][:60], "results": 10, "in_stock": "true"}
+        price = deal.get("price_yen")
+        if isinstance(price, (int, float)) and price > 0:
+            params.update(price_from=int(price * 0.6), price_to=int(price * 1.4))
+        try:
+            res = requests.get("https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch", params=params, timeout=15)
+            res.raise_for_status()
+            hits = res.json().get("hits") or []
+        except Exception as e:
+            print(f"Yahoo検索 notice（{safe_status(e)}）")
+            hits = []
+        url = str((hits[0] if hits else {}).get("url") or "")
+        if url.startswith("https://store.shopping.yahoo.co.jp/"):
+            deal["yahoo_item_url"] = url
+            found += 1
+        time.sleep(1)
+    print(f"   Yahoo!ショッピング商品ページ紐付け: {found}件")
+
+
 def build_tweet_url(deal, page_url):
     """X投稿画面を開くURL。リンクはアフィリエイトではなくサイトのトップにする"""
     points = reason_lines(deal.get("deal_reason", ""))[:2] or [deal.get("catch_copy", "")]
@@ -677,6 +720,12 @@ def cta_html(deal, page_url, root="", detail_link=True):
         detail = (f'<a href="{root}{deal["item_page"]}" class="mt-3 flex items-center justify-center gap-1.5 text-sm font-bold text-orange-600 '
                   f'bg-orange-50 hover:bg-orange-100 ring-1 ring-orange-100 rounded-full py-2.5 transition">'
                   f'<img src="{root}img/icons/chart.svg" alt="" class="w-5 h-5">価格の記録・詳細を見る</a>')
+    yahoo_url = yahoo_link(deal)
+    yahoo_btn = ""
+    if yahoo_url:
+        yahoo_btn = (f'<a href="{html.escape(yahoo_url)}" target="_blank" rel="nofollow noopener sponsored" '
+                     f'class="btn btn-yahoo col-span-2 flex items-center justify-center gap-1 font-bold py-3 px-2 rounded-full text-[15px]">'
+                     f'Yahoo!ショッピングで見る <span aria-hidden="true">›</span></a>')
     return f"""
                 <div class="grid grid-cols-2 gap-2.5 mt-5">
                     <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored"
@@ -687,6 +736,7 @@ def cta_html(deal, page_url, root="", detail_link=True):
                        class="btn btn-rkt flex items-center justify-center gap-1 font-bold py-3 px-2 rounded-full text-[15px]">
                        楽天で見る <span aria-hidden="true">›</span>
                     </a>
+                    {yahoo_btn}
                 </div>
                 {detail}
                 <div class="flex items-center justify-between gap-2 mt-4">
@@ -975,6 +1025,7 @@ PAGE_CSS = """
         .btn:active { transform: translateY(3px); box-shadow: none; }
         .btn-amz { background: #ff9900; color: #1f2537; box-shadow: 0 4px 0 #db7f00; }
         .btn-rkt { background: #bf0000; color: #fff; box-shadow: 0 4px 0 #8a0000; }
+        .btn-yahoo { background: #ff0033; color: #fff; box-shadow: 0 4px 0 #b80025; }
         .btn-main { background: #e11d48; color: #fff; box-shadow: 0 4px 0 #9f1239; }
         .ev-state { background: #ffe066; color: #2b3150; }
         [data-state="live"] .ev-state { background: #fff; color: #e11d48; }
@@ -1700,6 +1751,7 @@ if __name__ == "__main__":
     print(f"   掲載件数: {len(selected_deals)}件（ついで買い枠 {sum(d['slot'] == 'impulse' for d in selected_deals)}件、写真付き {sum(bool(d['image_url']) for d in selected_deals)}件）")
 
     print("3. Webサイト更新＆通知送信中...")
+    attach_yahoo_items(selected_deals)
     generate_site(selected_deals)
     notify_discord(selected_deals)
 
