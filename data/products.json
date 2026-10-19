@@ -1527,5 +1527,131 @@
   "review_count": 234,
   "review_average": 4.8,
   "last_seen": "2026-10-19 21:08"
+ },
+ "05de08e65c": {
+  "records": [
+   {
+    "t": "2026-10-19 22:03",
+    "price": 24800,
+    "point": 1
+   }
+  ],
+  "product_name": "Transcend 512GB スティックSSD",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "高速転送で作業快適",
+  "deal_reason": "・USB-CとUSB-A両対応\n・コンパクトで持ち運び楽々\n・耐衝撃設計で安心",
+  "score": 94,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/esupply/cabinet/bnr/toppa/r1_ts512gesd310c_1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/esupply/ts512gesd310c/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 42,
+  "review_average": 4.83,
+  "last_seen": "2026-10-19 22:03"
+ },
+ "3a5c03ea39": {
+  "records": [
+   {
+    "t": "2026-10-19 22:03",
+    "price": 5980,
+    "point": 1
+   }
+  ],
+  "product_name": "Mi T23 OWS ワイヤレスイヤホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "耳が塞がらない快適音",
+  "deal_reason": "・長時間装着でも疲れにくい\n・外部音が聞こえるので安全\n・安定した接続で遅延なし",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/milink-inc/cabinet/sn/t23_snbk.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/milink-inc/r01qt0005/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1013,
+  "review_average": 4.44,
+  "last_seen": "2026-10-19 22:03"
+ },
+ "7e2d399a25": {
+  "records": [
+   {
+    "t": "2026-10-19 22:03",
+    "price": 3201,
+    "point": 1
+   }
+  ],
+  "product_name": "Logitech K295GP ワイヤレスキーボード",
+  "category": "日用品・家電",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "静音で快適タイピング",
+  "deal_reason": "・静音設計でオフィスに最適\n・耐水加工で汚れに強い\n・長時間バッテリで安心",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/logicool/cabinet/prd/kb/k295gp/k295gp_01_r-1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/logicool/k295gp/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1063,
+  "review_average": 4.5,
+  "last_seen": "2026-10-19 22:03"
+ },
+ "c619ecc78a": {
+  "records": [
+   {
+    "t": "2026-10-19 22:03",
+    "price": 5280,
+    "point": 1
+   }
+  ],
+  "product_name": "UGREEN ワイヤレスキーボード",
+  "category": "日用品・家電",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "薄型で持ち運び便利",
+  "deal_reason": "・Bluetoothと2.4Gで柔軟接続\n・薄型デザインで机がすっきり\n・4台同時接続でマルチデバイス",
+  "score": 89,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ugreen-gear/cabinet/11871349/25441-75163-0.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/ugreen-gear/25441/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 494,
+  "review_average": 4.55,
+  "last_seen": "2026-10-19 22:03"
+ },
+ "37fdf2a411": {
+  "records": [
+   {
+    "t": "2026-10-19 22:03",
+    "price": 1380,
+    "point": 1
+   }
+  ],
+  "product_name": "急速充電ケーブルセット 20W",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "30分で60%充電",
+  "deal_reason": "・20W急速充電で時間短縮\n・iPhone・Android対応\n・コンパクトで持ち運び便利",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/asukapainting/cabinet/10429589/10585466/10607213/xzt.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/asukapainting/cdqsjx/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 4128,
+  "review_average": 4.6,
+  "last_seen": "2026-10-19 22:03"
+ },
+ "ac95d77cbc": {
+  "records": [
+   {
+    "t": "2026-10-19 22:03",
+    "price": 2280,
+    "point": 1
+   }
+  ],
+  "product_name": "Panasonic 40本セット 乾電池",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "長期保存で安心",
+  "deal_reason": "・10年保存でいつでも使える\n・40本セットでまとめ買い得\n・信頼のパナソニック品質",
+  "score": 87,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bp-shop/cabinet/goq004/20250402-kinpa40-1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/bp-shop/10027126/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 223,
+  "review_average": 4.75,
+  "last_seen": "2026-10-19 22:03"
  }
 }
