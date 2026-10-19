@@ -1720,11 +1720,34 @@ def notify_discord(deals):
         lines.append(f"**■ {deal['product_name']}** (Score: {deal['score']})")
         lines.append(f"```\n{deal['sns_text']}\n👉 {amz_url}\n```")
 
-    payload = {"content": "\n".join(lines)[:1950]}
-    try:
-        requests.post(DISCORD_WEBHOOK_URL, json=payload, timeout=10)
-    except Exception as e:
-        print(f"Discord通知エラー: {e}")
+    messages = ["\n".join(lines)[:1950]]
+    if NOW.hour >= 12:  # 夕方の更新時だけ、インサイト祭りの参加コメント案を別メッセージで届ける
+        comment = matsuri_comment(deals)
+        if comment:
+            messages += ["🎪 **今日のインサイト祭り用コメント案**（下のメッセージを長押しでコピー→祭り投稿に返信）", comment]
+    for content in messages:
+        try:
+            requests.post(DISCORD_WEBHOOK_URL, json={"content": content}, timeout=10)
+        except Exception as e:
+            print(f"Discord通知エラー: {e}")
+
+
+MATSURI_TEMPLATES = (
+    "インサイト祭り参加させてください🙌\nガジェット・家電のお買い得情報を毎日朝と夕方にまとめて発信してます。\n今日の注目は「{name}」{price}\nフォロー返しします！",
+    "祭り参加します✨\nAIで選んだガジェット特価を毎日2回お届けしているアカウントです。\n今日イチ推しは「{name}」{price}\n仲良くしてください🙏 フォロバします！",
+    "インサイト祭り失礼します📱\n買って損しないガジェット・家電の特価を毎日チェックしてます。\n今日のおすすめ→「{name}」{price}\nフォローいただけたら必ずお返しします！",
+    "参加させてください🙋\nセール中のガジェットを朝夕2回、AIと一緒に厳選して紹介してます。\n本日の目玉は「{name}」{price}\nフォロバ100%です、よろしくお願いします！",
+)
+
+
+def matsuri_comment(deals):
+    """人が手で返信するための参加コメント案。毎日言い回しを変え、リンクは付けない"""
+    deal = pick_sns_deal(deals)
+    if not deal:
+        return ""
+    name = re.sub(r"【[^】]*】", "", deal["product_name"]).strip()[:24]
+    price = f"（{deal['price_yen']:,}円）" if isinstance(deal.get("price_yen"), int) and deal["price_yen"] > 0 else ""
+    return MATSURI_TEMPLATES[NOW.toordinal() % len(MATSURI_TEMPLATES)].format(name=name, price=price)
 
 
 def select_deals(candidates):
