@@ -1191,5 +1191,110 @@
   "review_count": null,
   "review_average": null,
   "last_seen": "2026-10-19 10:44"
+ },
+ "263f9d0936": {
+  "records": [
+   {
+    "t": "2026-10-19 10:54",
+    "price": 3680,
+    "point": 1
+   }
+  ],
+  "product_name": "QS16 Pro限定版 スマートウォッチ",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "大画面で健康管理",
+  "deal_reason": "・1.9インチで見やすい\n・通話とSOSで安心\n・レビュー多数で信頼",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/smahoservice/cabinet/w/w302430/w302430-01.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/smahoservice/w302045/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1881,
+  "review_average": 4.38,
+  "last_seen": "2026-10-19 10:54"
+ },
+ "001428a732": {
+  "records": [
+   {
+    "t": "2026-10-19 10:54",
+    "price": 4580,
+    "point": 1
+   }
+  ],
+  "product_name": "AI搭載 2.08インチ スマートウォッチ",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⚡ 実質最安級",
+  "catch_copy": "AIで快適操作",
+  "deal_reason": "・2.08インチ大画面\n・Bluetooth6.0で安定\n・高評価4.45で安心",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/daiwasangyou/cabinet/09252944/imgrc0156164865.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/daiwasangyou/b06helt/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1851,
+  "review_average": 4.45,
+  "last_seen": "2026-10-19 10:54"
+ },
+ "ff7333402b": {
+  "records": [
+   {
+    "t": "2026-10-19 10:54",
+    "price": 45800,
+    "point": 1
+   }
+  ],
+  "product_name": "Roomba Plus 405 Combo",
+  "category": "日用品・家電",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "自動掃除で楽々",
+  "deal_reason": "・自動洗浄で手間省く\n・強力吸引で汚れ除去\n・レビュー高評価で安心",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/irobotstore/cabinet/03016688/20261017_brandday/202610_405c_tm.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/irobotstore/g185060/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1428,
+  "review_average": 4.45,
+  "last_seen": "2026-10-19 10:54"
+ },
+ "27810de552": {
+  "records": [
+   {
+    "t": "2026-10-19 10:54",
+    "price": 980,
+    "point": 1
+   }
+  ],
+  "product_name": "シリコン iPhone 充電ケーブル",
+  "category": "ガジェット",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "耐久シリコンケーブル",
+  "deal_reason": "・柔らかく絡まりにくい\n・高速充電対応\n・レビュー4.6で高評価",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/smartphonecase/cabinet/silicone_cable_01.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/smartphonecase/cable-silicon/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1499,
+  "review_average": 4.6,
+  "last_seen": "2026-10-19 10:54"
+ },
+ "cccffc30dc": {
+  "records": [
+   {
+    "t": "2026-10-19 10:54",
+    "price": 1380,
+    "point": 1
+   }
+  ],
+  "product_name": "ミネラルウォーター 500ml 24本",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "毎日飲みやすい水",
+  "deal_reason": "・国内産ミネラルで安心\n・24本セットでお得\n・レビュー4.85で好評",
+  "score": 87,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jyonetsubatake/cabinet/item/drink/naturalmineralwater/1127-c1_m_r1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/jyonetsubatake/1127-c1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 4714,
+  "review_average": 4.85,
+  "last_seen": "2026-10-19 10:54"
  }
 }
