@@ -178,6 +178,8 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None, page
                 "price": f"{info.get('itemPrice', '')}円（ポイント倍率: {info.get('pointRate', 1)}倍）",
                 "price_yen": info.get("itemPrice"),
                 "point_rate": info.get("pointRate", 1),
+                "review_count": info.get("reviewCount") or 0,
+                "review_average": info.get("reviewAverage") or 0,
                 "description": info.get("itemCaption", "")[:200],
                 "source_url": info.get("itemUrl", ""),
                 "image_url": image_url,
@@ -347,6 +349,8 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
 - ついで買い・即決定番枠（slot: "impulse"）を必ず2件：モバイルバッテリー、充電ケーブル、乾電池、炭酸水、日用品など
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
 - image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
+- reviews（楽天レビューの平均評価と件数）が多く高評価な候補を重視すること
+- deal_reason の1行目は、候補データにある事実（レビュー評価・件数、価格、ポイント倍率）をもとにした根拠にすること
 - 候補データに含まれない詳細なスペック数値（重量や解像度など）は推測で書かず、利用シーンやお得感を中心に紹介すること
 
 【出力フォーマット（必ず以下のJSONオブジェクトのみを出力してください）】
@@ -376,6 +380,8 @@ def compact_candidates(candidates):
     rows = []
     for c in candidates:
         row = {"no": c.get("no"), "title": str(c.get("title", ""))[:70], "price": c.get("price", ""), "slot_hint": c.get("slot_hint", "")}
+        if c.get("review_count"):
+            row["reviews"] = f"★{c.get('review_average')}（{int(c['review_count']):,}件）"
         if c.get("image_url"):
             row["image_url"] = "あり"
         else:
@@ -489,6 +495,8 @@ def normalize_deals(deals, candidates=()):
             "price_yen": price.get("price_yen"),
             "point_rate": price.get("point_rate"),
             "item_url": rakuten_item_url(src.get("source_url")),
+            "review_count": src.get("review_count") or 0,
+            "review_average": src.get("review_average") or 0,
         })
 
     # 目玉枠はおすすめ度の高い順に並べてランキングにする
@@ -686,13 +694,53 @@ def badges_html(deal):
 
 def score_html(score):
     return f"""
-                <div class="flex items-center gap-2.5 mt-4" title="AIによるおすすめ度">
+                <div class="flex items-center gap-2.5 mt-4" title="楽天レビュー・価格の記録・商品説明をもとにAIが付けた目安です">
                     <span class="text-xs font-bold text-ink-soft whitespace-nowrap">AI注目度</span>
                     <div class="flex-1 h-2.5 bg-orange-100 rounded-full overflow-hidden">
                         <div class="h-full rounded-full bg-gradient-to-r from-amber-300 to-orange-500" style="width:{score}%"></div>
                     </div>
                     <span class="text-lg font-extrabold text-orange-600 tabular-nums leading-none">{score}</span>
                 </div>"""
+
+
+def grounds_html(deal, show_score=True, open_=False):
+    """AIが何をもとに選んだのかを、確認できる事実だけで示す"""
+    rows = []
+    try:
+        count, avg = int(deal.get("review_count") or 0), float(deal.get("review_average") or 0)
+    except (TypeError, ValueError):
+        count, avg = 0, 0
+    if count:
+        rows.append(("★", f"楽天レビュー <b class=\"text-ink\">★{avg:.2f}</b>（{count:,}件）"))
+    if deal.get("item_url"):
+        rows.append(("🔎", "楽天市場の「レビュー件数が多い順」の検索結果から候補にしました"))
+    else:
+        rows.append(("🛒", "どこでも買いやすい定番品としてAIが選びました（楽天の価格データなし）"))
+    seen = int(deal.get("seen_count") or 0)
+    if deal.get("record_low"):
+        rows.append(("📉", "当サイトが記録した楽天参考価格の中で最安です"))
+    elif deal.get("price_drop"):
+        rows.append(("📉", f"前回掲載時より ¥{deal['price_drop']:,} 安くなっています"))
+    elif seen > 1:
+        rows.append(("📈", f"当サイトでの掲載は{seen}回目。価格は前回から下がっていません"))
+    elif deal.get("price_yen"):
+        rows.append(("🆕", "当サイトでは初めての掲載です（今日から価格を記録します）"))
+    if point_rate_value(deal) >= 2:
+        rows.append(("💰", f"楽天ポイント{point_rate_value(deal):g}倍の対象です"))
+    peek = f'<span class="ml-2 font-normal text-ink-soft whitespace-nowrap">レビュー★{avg:.1f}・{count:,}件</span>' if count and not open_ else ""
+    items = "".join(f'<li class="flex gap-2"><span class="w-4 shrink-0 text-center" aria-hidden="true">{icon}</span><span>{text}</span></li>'
+                    for icon, text in rows)
+    note = ("「AI注目度」は、これらのデータと商品説明をもとにAIが付けた目安です。" if show_score
+            else "おすすめ文は、これらのデータと商品説明をもとにAIが作成しています。")
+    return f"""
+                <details class="group mt-4 rounded-2xl bg-slate-50 ring-1 ring-slate-200 px-4 py-3 text-[13px] text-ink-soft"{" open" if open_ else ""}>
+                    <summary class="flex items-center justify-between gap-2 cursor-pointer list-none font-bold text-ink select-none">
+                        <span>🧭 選んだ根拠{peek}</span>
+                        <span class="text-orange-600 text-xs group-open:rotate-180 transition" aria-hidden="true">▼</span>
+                    </summary>
+                    <ul class="space-y-1.5 mt-2.5 leading-relaxed">{items}</ul>
+                    <p class="mt-2.5 text-[11px] leading-relaxed">{note}価格の安さを保証するものではありません。</p>
+                </details>"""
 
 
 def point_rate_value(deal):
@@ -788,6 +836,7 @@ def featured_card(deal, page_url, root):
                         {score_html(deal['score'])}
                         {price_html(deal)}
                         {reasons_html(deal, "text-[15px] md:text-base")}
+                        {grounds_html(deal, True, True)}
                         {cta_html(deal, page_url, root)}
                     </div>
                 </div>
@@ -811,7 +860,7 @@ def ranked_card(deal, rank, page_url, root):
                 </div>
                 {score_html(deal['score'])}
                 {price_html(deal)}
-                <div class="flex-1">{reasons_html(deal)}</div>
+                <div class="flex-1">{reasons_html(deal)}{grounds_html(deal)}</div>
                 {cta_html(deal, page_url, root)}
             </article>"""
 
@@ -828,7 +877,7 @@ def impulse_card(deal, idx, page_url, root):
                     </div>
                 </div>
                 {price_html(deal)}
-                <div class="flex-1">{reasons_html(deal)}</div>
+                <div class="flex-1">{reasons_html(deal)}{grounds_html(deal, False)}</div>
                 {cta_html(deal, page_url, root)}
             </article>"""
 
@@ -962,13 +1011,13 @@ def archive_html(history, root, page_date):
 
 HOW_TO_STEPS = [
     ("clock", "bg-sky-50", "AIが毎日2回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
-    ("chart", "bg-amber-50", "注目度をスコア化", "値下げ幅・定番度・話題性をAIが判定し、買い時の商品をランキングにします。"),
+    ("chart", "bg-amber-50", "注目度をスコア化", "楽天のレビュー評価・件数や価格の記録をもとにAIが判定し、根拠と一緒にランキングにします。"),
     ("cart", "bg-emerald-50", "各ストアをワンタップ比較", "ボタンからAmazon・楽天などの販売ページへ。ポイント還元込みの実質価格を比べて選べます。"),
 ]
 
 FAQ = [
     ("掲載商品はどうやって選んでいますか？",
-     "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが値下げ幅・定番度・話題性を判定して毎日2回自動で選んでいます。"),
+     "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが楽天のレビュー評価・件数、当サイトの価格記録、ポイント倍率などを見て毎日2回自動で選んでいます。各商品の「この商品を選んだ根拠」で、判断に使ったデータを確認できます。"),
     ("「実質価格」とは何ですか？",
      "販売価格からポイント還元やクーポンを差し引いた、実際の負担額のことです。還元率は会員ランクやキャンペーンのエントリー状況で変わるため、最終的な価格は各ストアでご確認ください。"),
     ("「ついで買い定番」とは何ですか？",
@@ -1412,7 +1461,8 @@ def update_products(products, deals):
         pid = product_id(deal)
         deal["item_page"] = f"item/{pid}.html"
         info = products.get(pid, {"records": []})
-        for key in ("product_name", "category", "slot", "badge", "catch_copy", "deal_reason", "score", "image_url", "item_url"):
+        for key in ("product_name", "category", "slot", "badge", "catch_copy", "deal_reason", "score", "image_url", "item_url",
+                    "review_count", "review_average"):
             if deal.get(key) or key not in info:
                 info[key] = deal.get(key)
         records = [r for r in info["records"] if r.get("t") != TODAY_STR]
@@ -1423,6 +1473,7 @@ def update_products(products, deals):
         deal["price_drop"], deal["record_low"] = price_trend([p for _, p, _ in price_points({"records": records})], cur)
         records.append({"t": TODAY_STR, "price": deal.get("price_yen"), "point": deal.get("point_rate")})
         info["records"] = records[-PRODUCT_RECORDS:]
+        deal["seen_count"] = len(info["records"])
         info["last_seen"] = TODAY_STR
         products[pid] = info
     # 長く掲載されていない商品は削除してデータを肥大化させない
@@ -1537,6 +1588,7 @@ def render_item_page(pid, info):
     if latest:
         deal["price_yen"], deal["point_rate"] = latest[1], latest[2]
         deal["price_drop"], deal["record_low"] = price_trend([p for _, p, _ in points[:-1]], latest[1])
+    deal["seen_count"] = len(info.get("records", []))
     seen = info.get("records", [])
     first_seen = seen[0]["t"][:10].replace("-", "/") if seen else ""
     title = f"{name}の価格推移・セール情報｜{SITE_NAME}"
@@ -1574,6 +1626,7 @@ def render_item_page(pid, info):
                     <p class="mt-2 text-xs text-ink-soft">初掲載 {first_seen}・最終掲載 {html.escape(str(info.get('last_seen', ''))[:10].replace('-', '/'))}</p>
                     {price_html(deal)}
                     {reasons_html(deal, "text-[15px]")}
+                    {grounds_html(deal, False, True)}
                     {cta_html(deal, page_url, root, False)}
                 </div>
             </div>
