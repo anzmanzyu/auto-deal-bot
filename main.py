@@ -1745,7 +1745,9 @@ def matsuri_comment(deals):
     deal = pick_sns_deal(deals)
     if not deal:
         return ""
-    name = re.sub(r"【[^】]*】", "", deal["product_name"]).strip()[:24]
+    name = re.sub(r"【[^】]*】", "", deal["product_name"]).strip()
+    if len(name) > 24:  # 単語の途中で切れないよう、24文字以内の最後の区切りで止める
+        name = name[:24].rsplit(" ", 1)[0]
     price = f"（{deal['price_yen']:,}円）" if isinstance(deal.get("price_yen"), int) and deal["price_yen"] > 0 else ""
     return MATSURI_TEMPLATES[NOW.toordinal() % len(MATSURI_TEMPLATES)].format(name=name, price=price)
 
