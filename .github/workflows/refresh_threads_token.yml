@@ -35,6 +35,23 @@ jobs:
           print(f"::add-mask::{new}")
           print(f"トークンを延長しました（残り約{int(data.get('expires_in', 0)) // 86400}日）。")
           if new and new != old:
-              print("新しいトークン文字列が発行されました。シークレットの更新が必要です。")
-              sys.exit(1)
+              with open(os.path.join(os.environ["RUNNER_TEMP"], "threads_token"), "w") as f:
+                  f.write(new)
+              print("新しいトークン文字列が発行されました。")
           EOF
+
+      # 新しいトークンが出たときは、シークレットを自動で書き換える
+      # （GH_SECRETS_TOKEN = Secrets書き込み権限つきのPATを登録しておくと動きます）
+      - name: Save new token
+        env:
+          GH_TOKEN: ${{ secrets.GH_SECRETS_TOKEN }}
+        run: |
+          f="$RUNNER_TEMP/threads_token"
+          [ -s "$f" ] || { echo "トークン文字列は変わっていないため更新不要です。"; exit 0; }
+          if [ -z "$GH_TOKEN" ]; then
+            echo "GH_SECRETS_TOKEN未登録のため自動保存できません。THREADS_ACCESS_TOKENを手動で更新してください。"
+            rm -f "$f"; exit 1
+          fi
+          gh secret set THREADS_ACCESS_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"
+          rm -f "$f"
+          echo "THREADS_ACCESS_TOKENを新しいトークンに更新しました。"

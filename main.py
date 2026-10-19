@@ -63,7 +63,7 @@ PRODUCT_KEEP_DAYS = 180  # これより長く掲載されていない商品ペ�
 EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
 
-BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番"}
+BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番", "popular": "⭐ 高評価の人気品", "drop": "📉 前回より値下がり"}
 
 # AIが「ついで買い枠」を返さなかった場合に補う定番品
 IMPULSE_STAPLES = [
@@ -308,10 +308,10 @@ def sample_deals():
             "product_name": "Anker Prime Wall Charger (67W, 3 ports, GaN)",
             "category": "ガジェット",
             "slot": "main",
-            "badge": "⚡ 実質最安級",
+            "badge": BADGES["main"],
             "catch_copy": "PCもスマホもこれ1台",
-            "deal_reason": "・ノートPCもスマホもこれ1台で急速充電可能\n・折りたたみ式プラグで持ち運びに最適\n・セール時はポイント還元込みで実質最安クラスに到達",
-            "sns_text": "【本日の注目ガジェット】Ankerの67W 3ポート充電器が実質最安クラスで狙い目！PCとスマホの充電器を1つにまとめたい人はこれ一択です。#ガジェット #セール",
+            "deal_reason": "・ノートPCもスマホもこれ1台で急速充電可能\n・折りたたみ式プラグで持ち運びに最適\n・ノートPCとスマホの充電器をひとつにまとめられる",
+            "sns_text": "【本日の注目ガジェット】Ankerの67W 3ポート充電器が狙い目！PCとスマホの充電器を1つにまとめたい人はこれ一択です。#ガジェット #セール",
             "score": 95,
             "image_url": ""
         },
@@ -344,14 +344,15 @@ def build_prompt(candidates):
     return f"""
 あなたはガジェット・日用品の価格調査およびお買い得判定の専門家です。
 Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内に買った別商品」も報酬対象になります。
-そのため、以下の候補リストと一般的な市場知識をもとに、合計5〜6件を次の内訳で厳選してください。
+そのため、以下の候補リストと一般的な市場知識をもとに、合計6件を次の内訳で厳選してください。
 
-- 目玉ガジェット・家電枠（slot: "main"）を3〜4件：値引き率や注目度が高い製品
+- 目玉ガジェット・家電枠（slot: "main"）を必ず4件：値引き率や注目度が高い製品
 - ついで買い・即決定番枠（slot: "impulse"）を必ず2件：モバイルバッテリー、充電ケーブル、乾電池、炭酸水、日用品など
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
 - image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
 - reviews（楽天レビューの平均評価と件数）が多く高評価な候補を重視すること
 - deal_reason には価格・ポイント倍率や、レビュー・評価に関する言葉を一切書かないこと（サイトの別欄に表示するため）。「こんな人・こんな場面にうれしい」が伝わる、話し言葉寄りの自然な短文にし、「〜搭載」「〜可能」で終わる硬い言い回しは避けること
+- 「最安」「最安値」「底値」「激安」「業界最安」など、価格を断定・誇張する表現は一切使わないこと
 - 候補データに含まれない詳細なスペック数値（重量や解像度など）は推測で書かず、利用シーンやお得感を中心に紹介すること
 
 【出力フォーマット（必ず以下のJSONオブジェクトのみを出力してください）】
@@ -361,7 +362,6 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
       "product_name": "Amazonや楽天で検索しやすい具体的な商品名・型番（40文字以内）",
       "category": "ガジェット または 日用品・家電",
       "slot": "main または impulse",
-      "badge": "🔥 本日の目玉 / ⚡ 実質最安級 / 🛒 ついで買い定番 のいずれか（impulse枠は必ず 🛒 ついで買い定番）",
       "catch_copy": "商品の一番の魅力をひと言で表すキャッチコピー（16文字以内、価格や割引率の数字は書かない）",
       "deal_reason": "おすすめポイントを箇条書き3行（・から始める、各20文字前後）",
       "sns_text": "X（旧Twitter）にそのまま投稿できる110文字以内の魅力的な紹介文（ハッシュタグ付き）",
@@ -462,6 +462,11 @@ def reason_lines(text):
     return [line for line in lines if line]
 
 
+def tone_down(text):
+    """価格を断定・誇張する言い回しを、根拠を問われない表現に置き換える"""
+    return re.sub(r"(業界|実質)?最安(値|級|クラス)?|底値|激安", "お買い得", text)
+
+
 def normalize_deals(deals, candidates=()):
     """AI出力の欠損を補い、ついで買い枠2件を必ず含む5〜6件に整える"""
     # 価格はAIに書かせず、楽天APIで取得した候補と画像URLが一致したときだけ載せる
@@ -482,20 +487,22 @@ def normalize_deals(deals, candidates=()):
             score = 85
         reasons = reason_lines(d.get("deal_reason", ""))
         # レビュー数値などは「AIのチェックポイント」欄に出すので、紹介文からは外す
-        kept = [r for r in reasons if not re.search(r"レビュー|評価|★|件数", r)]
+        kept = [r for r in reasons if not re.search(r"レビュー|評価|★|件数|最安|底値|激安", r)]
         if kept and kept != reasons:
             reasons = kept
             d["deal_reason"] = chr(10).join("・" + r for r in reasons)
-        catch_copy = str(d.get("catch_copy") or (reasons[0] if reasons else ""))[:24]
+        catch_copy = tone_down(str(d.get("catch_copy") or (reasons[0] if reasons else "")))[:24]
         price = src
         cleaned.append({
             "product_name": str(d["product_name"])[:60],
             "category": str(d.get("category") or ("日用品・家電" if slot == "impulse" else "ガジェット")),
             "slot": slot,
-            "badge": BADGES["impulse"] if slot == "impulse" else str(d.get("badge") or BADGES["main"]),
+            "badge": BADGES["impulse"] if slot == "impulse" else (
+                BADGES["popular"] if float(src.get("review_average") or 0) >= 4.5 and int(src.get("review_count") or 0) >= 300
+                else BADGES["main"]),
             "catch_copy": catch_copy,
             "deal_reason": str(d.get("deal_reason", "")),
-            "sns_text": str(d.get("sns_text", "")),
+            "sns_text": tone_down(str(d.get("sns_text", ""))),
             "score": max(0, min(100, score)),
             "image_url": image_url if image_url.startswith("https://") else "",
             "price_yen": price.get("price_yen"),
@@ -503,10 +510,28 @@ def normalize_deals(deals, candidates=()):
             "item_url": rakuten_item_url(src.get("source_url")),
             "review_count": src.get("review_count") or 0,
             "review_average": src.get("review_average") or 0,
+            "candidate_no": src.get("no"),
         })
 
     # 目玉枠はおすすめ度の高い順に並べてランキングにする
     main = sorted((d for d in cleaned if d["slot"] == "main"), key=lambda d: d["score"], reverse=True)[:4]
+    # AIが目玉枠を4件返さなかったときは、レビューの多い楽天候補で補う（紹介文は付けない）
+    used = {d.get("candidate_no") for d in cleaned}
+    spare = sorted((c for c in by_no.values() if c.get("slot_hint") == "main" and c.get("no") not in used),
+                   key=lambda c: int(c.get("review_count") or 0), reverse=True)
+    for c in spare[:max(0, 4 - len(main))]:
+        name = re.sub(r"【[^】]*】|\[[^\]]*\]|＼[^／]*／|★[^★]*★", " ", str(c.get("title", ""))).split()
+        main.append({
+            "product_name": " ".join(name)[:40] or str(c.get("title", ""))[:40],
+            "category": "ガジェット", "slot": "main",
+            "badge": BADGES["popular"] if float(c.get("review_average") or 0) >= 4.5 and int(c.get("review_count") or 0) >= 300 else BADGES["main"],
+            "catch_copy": "楽天でレビューの多い売れ筋", "deal_reason": "", "sns_text": "",
+            "score": max(0, (main[-1]["score"] if main else 85) - 1),
+            "image_url": c["image_url"], "price_yen": c.get("price_yen"), "point_rate": c.get("point_rate"),
+            "item_url": rakuten_item_url(c.get("source_url")),
+            "review_count": c.get("review_count") or 0, "review_average": c.get("review_average") or 0,
+            "candidate_no": c.get("no"),
+        })
     impulse = [d for d in cleaned if d["slot"] == "impulse"][:2]
     for staple in IMPULSE_STAPLES:
         if len(impulse) >= 2:
@@ -691,6 +716,8 @@ def thumbnail_html(deal, box_cls, tone, root):
 
 
 def badges_html(deal):
+    if deal.get("badge") not in BADGES.values():  # 過去データに残る根拠のないバッジは出さない
+        deal = dict(deal, badge=BADGES["impulse"] if deal.get("slot") == "impulse" else BADGES["main"])
     badge_cls = "bg-emerald-50 text-emerald-700 ring-emerald-100" if deal["slot"] == "impulse" else "bg-orange-50 text-orange-700 ring-orange-100"
     return (f'<div class="flex items-center gap-1.5 flex-wrap">'
             f'<span class="{badge_cls} ring-1 text-xs font-bold px-2.5 py-1 rounded-full">{html.escape(deal["badge"])}</span>'
@@ -1301,7 +1328,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
                 {crumbs}
                 <div class="inline-flex items-center gap-2 bg-white ring-1 ring-orange-100 shadow-sm rounded-full px-3.5 py-1.5 text-sm font-bold text-ink">
                     <span class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span></span>
-                    毎日7時・18時にAIが自動更新
+                    毎日 朝・夕方にAIが自動更新
                 </div>
                 <h1 class="mt-5 text-[1.85rem] md:text-5xl font-extrabold text-ink leading-[1.35] md:leading-[1.3]">{h1}</h1>
                 <p class="mt-4 text-ink-soft text-[15px] md:text-lg leading-relaxed">{lead}</p>
@@ -1341,7 +1368,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
                 <span class="shrink-0 w-16 h-16 rounded-[1.25rem] bg-white shadow-soft flex items-center justify-center"><img src="{root}img/icons/share.svg" alt="" class="w-11 h-11"></span>
                 <div>
                     <p class="text-lg md:text-xl font-extrabold text-ink">お得情報を友だちにも教えよう</p>
-                    <p class="text-sm text-ink-soft mt-1 leading-relaxed">このページは毎日7時・18時に自動で更新されます。ブックマークもおすすめです。</p>
+                    <p class="text-sm text-ink-soft mt-1 leading-relaxed">このページは毎日 朝・夕方の2回、自動で更新されます。ブックマークもおすすめです。</p>
                 </div>
             </div>
             <a href="{html.escape(tweet_page_url)}" target="_blank" rel="noopener" class="relative shrink-0 bg-ink hover:bg-ink-soft text-white font-bold px-6 py-3.5 rounded-full text-center shadow-md transition">𝕏 このページをポスト</a>
@@ -1399,7 +1426,7 @@ def footer_html(root):
     <footer class="bg-white border-t border-orange-100 text-[13px] text-ink-soft">
         <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
             <p class="flex items-center gap-2.5 text-ink font-extrabold text-base"><img src="{root}img/logo.svg" alt="" class="w-8 h-8">{html.escape(SITE_NAME)}</p>
-            <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日7時・18時に自動更新しています。</p>
+            <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日 朝・夕方の2回自動更新しています。</p>
             <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。また、{AD_PARTNERS}を利用しています。</p>
             <p>掲載内容はAIが公開情報をもとに自動生成したものです。価格・在庫・ポイント倍率は変動するため、購入前に必ず各販売ページでご確認ください。</p>
             <p class="text-xs">最終更新: {TODAY_STR}（日本時間） © {NOW.year} {html.escape(SITE_NAME)}</p>
@@ -1476,6 +1503,8 @@ def update_products(products, deals):
         except (TypeError, ValueError):
             cur = 0
         deal["price_drop"], deal["record_low"] = price_trend([p for _, p, _ in price_points({"records": records})], cur)
+        if deal.get("slot") == "main" and deal["price_drop"]:
+            deal["badge"] = info["badge"] = BADGES["drop"]
         records.append({"t": TODAY_STR, "price": deal.get("price_yen"), "point": deal.get("point_rate")})
         info["records"] = records[-PRODUCT_RECORDS:]
         deal["seen_count"] = len(info["records"])
@@ -1576,7 +1605,7 @@ def price_history_html(info):
                     <thead><tr class="text-xs text-ink-soft"><th class="text-left font-bold pb-2">掲載日時</th><th class="text-right font-bold pb-2 pr-3">価格</th><th class="text-right font-bold pb-2">ポイント</th></tr></thead>
                     <tbody>{rows}</tbody>
                 </table>
-                <p class="text-xs text-ink-soft mt-4 leading-relaxed">当サイトが毎日7時・18時の更新時に、楽天市場の商品検索で取得した参考価格です。現在の価格・在庫・ポイント倍率は各ストアでご確認ください。</p>
+                <p class="text-xs text-ink-soft mt-4 leading-relaxed">当サイトが毎日 朝・夕方の更新時に、楽天市場の商品検索で取得した参考価格です。現在の価格・在庫・ポイント倍率は各ストアでご確認ください。</p>
             </section>"""
 
 
@@ -1685,7 +1714,7 @@ def notify_discord(deals):
     if not DISCORD_WEBHOOK_URL:
         return
 
-    lines = [f"📢 **【{TODAY_STR} 実質最安値・SNS投稿ドラフト】**\n"]
+    lines = [f"📢 **【{TODAY_STR} 注目商品・SNS投稿ドラフト】**\n"]
     for deal in deals[:3]:
         amz_url, _ = build_affiliate_urls(deal["product_name"])
         lines.append(f"**■ {deal['product_name']}** (Score: {deal['score']})")
@@ -1767,7 +1796,7 @@ def post_to_x(deal):
     res.raise_for_status()
     tweet_id = res.json()["data"]["id"]
     reply = {
-        "text": f"▼詳細・現在の価格チェックはこちら（毎日7時・18時AI自動更新）\n{SITE_URL}",
+        "text": f"▼詳細・現在の価格チェックはこちら（毎日 朝・夕方にAI自動更新）\n{SITE_URL}",
         "reply": {"in_reply_to_tweet_id": tweet_id},
     }
     res = requests.post("https://api.x.com/2/tweets", auth=auth, json=reply, timeout=30)
