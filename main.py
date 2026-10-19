@@ -350,7 +350,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
 - image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
 - reviews（楽天レビューの平均評価と件数）が多く高評価な候補を重視すること
-- deal_reason の1行目は、候補データにある事実（レビュー評価・件数、価格、ポイント倍率）をもとにした根拠にすること
+- deal_reason には価格・レビュー数値・ポイント倍率を書かないこと（サイトの別欄に表示するため）。「こんな人・こんな場面にうれしい」が伝わる、話し言葉寄りの自然な短文にし、「〜搭載」「〜可能」で終わる硬い言い回しは避けること
 - 候補データに含まれない詳細なスペック数値（重量や解像度など）は推測で書かず、利用シーンやお得感を中心に紹介すること
 
 【出力フォーマット（必ず以下のJSONオブジェクトのみを出力してください）】
@@ -362,7 +362,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
       "slot": "main または impulse",
       "badge": "🔥 本日の目玉 / ⚡ 実質最安級 / 🛒 ついで買い定番 のいずれか（impulse枠は必ず 🛒 ついで買い定番）",
       "catch_copy": "商品の一番の魅力をひと言で表すキャッチコピー（16文字以内、価格や割引率の数字は書かない）",
-      "deal_reason": "なぜ注目・お買い得なのかを箇条書き3行（・から始める）で簡潔に解説",
+      "deal_reason": "おすすめポイントを箇条書き3行（・から始める、各20文字前後）",
       "sns_text": "X（旧Twitter）にそのまま投稿できる110文字以内の魅力的な紹介文（ハッシュタグ付き）",
       "score": 80から99までの整数（おすすめ度）,
       "candidate_no": 元にした候補データの no（候補に無い商品を選んだ場合は 0）
@@ -704,42 +704,41 @@ def score_html(score):
 
 
 def grounds_html(deal, show_score=True, open_=False):
-    """AIが何をもとに選んだのかを、確認できる事実だけで示す"""
+    """AIが判断に使ったデータを、確認できる事実だけで短く示す"""
     rows = []
     try:
         count, avg = int(deal.get("review_count") or 0), float(deal.get("review_average") or 0)
     except (TypeError, ValueError):
         count, avg = 0, 0
     if count:
-        rows.append(("★", f"楽天レビュー <b class=\"text-ink\">★{avg:.2f}</b>（{count:,}件）"))
+        rows.append(("評価", f'<b class="text-ink">★{avg:.2f}</b>（{count:,}件・楽天）'))
     if deal.get("item_url"):
-        rows.append(("🔎", "楽天市場の「レビュー件数が多い順」の検索結果から候補にしました"))
+        rows.append(("人気", "楽天でレビューの多い売れ筋"))
     else:
-        rows.append(("🛒", "どこでも買いやすい定番品としてAIが選びました（楽天の価格データなし）"))
+        rows.append(("定番", "どこでも手に入る定番品"))
     seen = int(deal.get("seen_count") or 0)
     if deal.get("record_low"):
-        rows.append(("📉", "当サイトが記録した楽天参考価格の中で最安です"))
+        rows.append(("価格", '<b class="text-emerald-700">当サイトの記録で最安</b>'))
     elif deal.get("price_drop"):
-        rows.append(("📉", f"前回掲載時より ¥{deal['price_drop']:,} 安くなっています"))
+        rows.append(("価格", f'<b class="text-emerald-700">前回より ¥{deal["price_drop"]:,} ダウン</b>'))
     elif seen > 1:
-        rows.append(("📈", f"当サイトでの掲載は{seen}回目。価格は前回から下がっていません"))
+        rows.append(("価格", f"{seen}回目の登場・前回から変わらず"))
     elif deal.get("price_yen"):
-        rows.append(("🆕", "当サイトでは初めての掲載です（今日から価格を記録します）"))
+        rows.append(("価格", "今回が初登場・価格の記録をスタート"))
     if point_rate_value(deal) >= 2:
-        rows.append(("💰", f"楽天ポイント{point_rate_value(deal):g}倍の対象です"))
-    peek = f'<span class="ml-2 font-normal text-ink-soft whitespace-nowrap">レビュー★{avg:.1f}・{count:,}件</span>' if count and not open_ else ""
-    items = "".join(f'<li class="flex gap-2"><span class="w-4 shrink-0 text-center" aria-hidden="true">{icon}</span><span>{text}</span></li>'
-                    for icon, text in rows)
-    note = ("「AI注目度」は、これらのデータと商品説明をもとにAIが付けた目安です。" if show_score
-            else "おすすめ文は、これらのデータと商品説明をもとにAIが作成しています。")
+        rows.append(("還元", f'<b class="text-amber-700">楽天ポイント{point_rate_value(deal):g}倍</b>'))
+    peek = f'<span class="ml-2 font-normal text-ink-soft whitespace-nowrap">★{avg:.1f}・{count:,}件</span>' if count and not open_ else ""
+    items = "".join(f'<dt class="text-[11px] font-bold text-ink-soft bg-white ring-1 ring-slate-200 rounded-full px-2 py-0.5 text-center self-start">{label}</dt>'
+                    f'<dd class="text-ink-soft">{text}</dd>' for label, text in rows)
+    note = "※AI注目度は、上のデータと商品説明からAIが出した目安です。" if show_score else "※紹介文は、上のデータと商品説明をもとにAIが書いています。"
     return f"""
-                <details class="group mt-4 rounded-2xl bg-slate-50 ring-1 ring-slate-200 px-4 py-3 text-[13px] text-ink-soft"{" open" if open_ else ""}>
+                <details class="group mt-4 rounded-2xl bg-slate-50 ring-1 ring-slate-200 px-4 py-3 text-[13px]"{" open" if open_ else ""}>
                     <summary class="flex items-center justify-between gap-2 cursor-pointer list-none font-bold text-ink select-none">
-                        <span>🧭 選んだ根拠{peek}</span>
+                        <span>AIのチェックポイント{peek}</span>
                         <span class="text-orange-600 text-xs group-open:rotate-180 transition" aria-hidden="true">▼</span>
                     </summary>
-                    <ul class="space-y-1.5 mt-2.5 leading-relaxed">{items}</ul>
-                    <p class="mt-2.5 text-[11px] leading-relaxed">{note}価格の安さを保証するものではありません。</p>
+                    <dl class="grid grid-cols-[auto_1fr] gap-x-2.5 gap-y-2 mt-3 leading-relaxed">{items}</dl>
+                    <p class="mt-2.5 text-[11px] text-ink-soft leading-relaxed">{note}</p>
                 </details>"""
 
 
@@ -1011,13 +1010,13 @@ def archive_html(history, root, page_date):
 
 HOW_TO_STEPS = [
     ("clock", "bg-sky-50", "AIが毎日2回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
-    ("chart", "bg-amber-50", "注目度をスコア化", "楽天のレビュー評価・件数や価格の記録をもとにAIが判定し、根拠と一緒にランキングにします。"),
+    ("chart", "bg-amber-50", "注目度をスコア化", "楽天のレビュー評価・件数や価格の記録をもとにAIが判定し、チェックしたデータと一緒にランキングにします。"),
     ("cart", "bg-emerald-50", "各ストアをワンタップ比較", "ボタンからAmazon・楽天などの販売ページへ。ポイント還元込みの実質価格を比べて選べます。"),
 ]
 
 FAQ = [
     ("掲載商品はどうやって選んでいますか？",
-     "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが楽天のレビュー評価・件数、当サイトの価格記録、ポイント倍率などを見て毎日2回自動で選んでいます。各商品の「選んだ根拠」で、判断に使ったデータを確認できます。"),
+     "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが楽天のレビュー評価・件数、当サイトの価格記録、ポイント倍率などを見て毎日2回自動で選んでいます。各商品の「AIのチェックポイント」で、判断に使ったデータを確認できます。"),
     ("「実質価格」とは何ですか？",
      "販売価格からポイント還元やクーポンを差し引いた、実際の負担額のことです。還元率は会員ランクやキャンペーンのエントリー状況で変わるため、最終的な価格は各ストアでご確認ください。"),
     ("「ついで買い定番」とは何ですか？",
