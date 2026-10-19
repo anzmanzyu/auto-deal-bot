@@ -1,4 +1,5 @@
 import os
+import re
 import time
 import json
 import html
@@ -350,7 +351,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
 - image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
 - reviews（楽天レビューの平均評価と件数）が多く高評価な候補を重視すること
-- deal_reason には価格・レビュー数値・ポイント倍率を書かないこと（サイトの別欄に表示するため）。「こんな人・こんな場面にうれしい」が伝わる、話し言葉寄りの自然な短文にし、「〜搭載」「〜可能」で終わる硬い言い回しは避けること
+- deal_reason には価格・ポイント倍率や、レビュー・評価に関する言葉を一切書かないこと（サイトの別欄に表示するため）。「こんな人・こんな場面にうれしい」が伝わる、話し言葉寄りの自然な短文にし、「〜搭載」「〜可能」で終わる硬い言い回しは避けること
 - 候補データに含まれない詳細なスペック数値（重量や解像度など）は推測で書かず、利用シーンやお得感を中心に紹介すること
 
 【出力フォーマット（必ず以下のJSONオブジェクトのみを出力してください）】
@@ -480,6 +481,11 @@ def normalize_deals(deals, candidates=()):
         except (TypeError, ValueError):
             score = 85
         reasons = reason_lines(d.get("deal_reason", ""))
+        # レビュー数値などは「AIのチェックポイント」欄に出すので、紹介文からは外す
+        kept = [r for r in reasons if not re.search(r"レビュー|評価|★|件数", r)]
+        if kept and kept != reasons:
+            reasons = kept
+            d["deal_reason"] = chr(10).join("・" + r for r in reasons)
         catch_copy = str(d.get("catch_copy") or (reasons[0] if reasons else ""))[:24]
         price = src
         cleaned.append({
