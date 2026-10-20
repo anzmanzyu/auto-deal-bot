@@ -4,6 +4,7 @@ import time
 import json
 import html
 import hashlib
+import unicodedata
 import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
@@ -715,6 +716,71 @@ def thumbnail_html(deal, box_cls, tone, root):
             f'<img src="{art}" alt="" loading="lazy" class="relative w-[88%] h-[88%] object-contain"></div>')
 
 
+# 商品名や紹介文から拾うスペック表記（ガジェットらしさを数字で見せる）
+SPEC_PATTERNS = [
+    (r"bluetooth\s?\d\.\d", lambda m: "Bluetooth " + re.sub(r"(?i)bluetooth\s?", "", m)),
+    (r"\d+(?:\.\d+)?\s?インチ", None),
+    (r"(?<![\d.])\d{1,3}(?:,?\d{3})*\s?mah", lambda m: m.replace(" ", "").replace("mah", "mAh").replace("MAH", "mAh")),
+    (r"(?<![\d.])\d+(?:\.\d+)?\s?(?:TB|GB)(?![a-z])", None),
+    (r"(?<![\d.a-z])\d+(?:\.\d+)?\s?W(?![a-z])", None),
+    (r"(?<![\d.a-z])\d+(?:\.\d+)?\s?(?:kg|g)(?![a-z])", None),
+    (r"(?<![\d.a-z])(?:2\.5K|2K|4K|8K)(?![a-z])|フルHD|WQHD|AMOLED|有機EL", None),
+    (r"\d+\s?Hz", None),
+    (r"USB[\s-]?C|Type[\s-]?C", lambda m: "USB-C"),
+    (r"Wi-?Fi\s?\d[E]?", lambda m: "Wi-Fi " + re.sub(r"(?i)wi-?fi\s?", "", m)),
+    (r"IPX?\d{1,2}", None),
+]
+
+
+def spec_chips(deal, limit=4):
+    """商品名・キャッチ・理由から「Bluetooth 5.4」「606g」のようなスペックを最大4つ拾う"""
+    text = unicodedata.normalize("NFKC", " ".join(str(deal.get(k) or "") for k in ("product_name", "catch_copy", "deal_reason")))
+    found, seen = [], set()
+    for pattern, fmt in SPEC_PATTERNS:
+        for m in re.finditer(pattern, text, re.I):
+            val = fmt(m.group(0)) if fmt else m.group(0).replace(" ", "")
+            key = re.sub(r"[\s,]", "", val.lower())
+            if key not in seen:
+                seen.add(key)
+                found.append(val)
+    return found[:limit]
+
+
+def specs_html(deal):
+    chips = "".join(f'<span class="spec">{html.escape(v)}</span>' for v in spec_chips(deal))
+    return f'<div class="flex flex-wrap gap-1.5 mt-2.5">{chips}</div>' if chips else ""
+
+
+def hero_visual_html(deals, root):
+    """トップの絵の代わりに、今日の上位商品の写真を並べる。写真が足りない日は従来のイラスト"""
+    shots = [(i, d) for i, d in enumerate(deals, 1) if d["slot"] == "main" and d.get("image_url")][:3]
+    if len(shots) < 3:
+        return (f'<img src="{root}img/hero.svg" alt="" class="w-full max-w-[28rem] ml-auto">',
+                f'<img src="{root}img/hero.svg" alt="" class="md:hidden w-full max-w-[17rem] mx-auto mt-4 -mb-1">')
+
+    def tile(idx, deal, cls, img_pad):
+        art = f"{root}img/items/{item_art(deal)}.svg"
+        price = ""
+        try:
+            price = f'<span class="num">¥{int(deal["price_yen"]):,}</span>' if deal.get("price_yen") else ""
+        except (TypeError, ValueError):
+            pass
+        return (f'<a href="#deal-{idx}" class="hero-shot {cls}">'
+                f'<img src="{html.escape(deal["image_url"])}" alt="{html.escape(deal["product_name"])}" class="w-full h-full object-contain {img_pad}" '
+                f'onerror="this.onerror=null;this.src=\'{art}\'">'
+                f'<span class="hero-tag"><b>{"No.1" if idx == 1 else f"{idx}位"}</b>{price}</span></a>')
+
+    (i1, d1), (i2, d2), (i3, d3) = shots
+    desktop = (f'<div class="relative w-full max-w-[28rem] aspect-square ml-auto">'
+               + tile(i1, d1, "absolute left-0 top-[12%] w-[62%] aspect-square -rotate-2", "p-5")
+               + tile(i2, d2, "absolute right-0 top-0 w-[42%] aspect-square rotate-3", "p-3")
+               + tile(i3, d3, "absolute right-[4%] bottom-[6%] w-[42%] aspect-square -rotate-1", "p-3")
+               + '</div>')
+    mobile = ('<div class="md:hidden grid grid-cols-3 gap-2.5 mt-5">'
+              + "".join(tile(i, d, "relative aspect-square", "p-2") for i, d in shots) + '</div>')
+    return desktop, mobile
+
+
 def badges_html(deal):
     if deal.get("badge") not in BADGES.values():  # 過去データに残る根拠のないバッジは出さない
         deal = dict(deal, badge=BADGES["impulse"] if deal.get("slot") == "impulse" else BADGES["main"])
@@ -732,7 +798,7 @@ def score_html(score):
                     <div class="flex-1 h-2.5 bg-orange-100 rounded-full overflow-hidden">
                         <div class="h-full rounded-full bg-gradient-to-r from-amber-300 to-orange-500" style="width:{score}%"></div>
                     </div>
-                    <span class="text-lg font-extrabold text-orange-600 tabular-nums leading-none">{score}</span>
+                    <span class="num text-lg font-extrabold text-orange-600 leading-none">{score}</span>
                 </div>"""
 
 
@@ -809,7 +875,7 @@ def price_html(deal):
     return f"""
                 <div class="flex items-center gap-x-2 gap-y-2 mt-4 flex-wrap">
                     <span class="text-xs font-bold text-ink-soft">楽天参考価格</span>
-                    <span class="text-2xl font-extrabold text-ink tabular-nums leading-none">{price}</span>
+                    <span class="num text-[1.7rem] font-extrabold text-ink leading-none">{price}</span>
                     {chips}
                 </div>"""
 
@@ -865,6 +931,7 @@ def featured_card(deal, page_url, root):
                         {badges_html(deal)}
                         <h3 class="text-xl md:text-2xl font-extrabold text-ink leading-snug mt-3">{html.escape(deal['product_name'])}</h3>
                         <p class="mt-1.5 text-orange-600 font-bold md:text-lg">{html.escape(deal['catch_copy'])}</p>
+                        {specs_html(deal)}
                         {score_html(deal['score'])}
                         {price_html(deal)}
                         {reasons_html(deal, "text-[15px] md:text-base")}
@@ -888,6 +955,7 @@ def ranked_card(deal, rank, page_url, root):
                         {badges_html(deal)}
                         <h3 class="text-[17px] md:text-lg font-extrabold text-ink leading-snug mt-2">{html.escape(deal['product_name'])}</h3>
                         <p class="mt-1 text-sm text-orange-600 font-bold">{html.escape(deal['catch_copy'])}</p>
+                        {specs_html(deal)}
                     </div>
                 </div>
                 {score_html(deal['score'])}
@@ -906,6 +974,7 @@ def impulse_card(deal, idx, page_url, root):
                         {badges_html(deal)}
                         <h3 class="text-[17px] font-extrabold text-ink leading-snug mt-2">{html.escape(deal['product_name'])}</h3>
                         <p class="mt-1 text-sm text-emerald-700 font-bold">{html.escape(deal['catch_copy'])}</p>
+                        {specs_html(deal)}
                     </div>
                 </div>
                 {price_html(deal)}
@@ -1113,7 +1182,27 @@ PAGE_CSS = """
                 radial-gradient(40% 45% at 8% 0%, rgba(222, 238, 255, .8), transparent 70%),
                 #fff6ec;
         }
-        .pattern { background-image: url('__ROOT__img/pattern.svg'); background-size: 180px 180px; }
+        .pattern {
+            background-image: radial-gradient(rgba(43, 49, 80, .11) 1px, transparent 1.3px); background-size: 22px 22px;
+            -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%); mask-image: linear-gradient(to bottom, #000, transparent 85%);
+        }
+        /* 価格・点数・スペックの数字は、すっきりした欧文書体で揃える */
+        .num { font-family: 'Inter', 'M PLUS Rounded 1c', sans-serif; font-feature-settings: "tnum"; letter-spacing: -.01em; }
+        .spec {
+            font-family: 'Inter', 'M PLUS Rounded 1c', sans-serif; font-size: 11px; font-weight: 700; line-height: 1;
+            color: #3b4366; background: #f1f3f8; border: 1px solid #dde1ec; border-radius: .4rem; padding: .3rem .45rem;
+        }
+        .hero-shot {
+            display: block; background: #fff; border-radius: 1.5rem; overflow: hidden;
+            box-shadow: 0 0 0 1px #ffe3cc, 0 18px 40px -16px rgba(43, 49, 80, .35); transition: transform .2s;
+        }
+        .hero-shot:hover { transform: translateY(-4px) rotate(0deg); }
+        .hero-tag {
+            position: absolute; left: .5rem; bottom: .5rem; display: inline-flex; align-items: center; gap: .35rem;
+            background: rgba(43, 49, 80, .88); color: #fff; font-size: 11px; font-weight: 700; line-height: 1;
+            padding: .35rem .55rem; border-radius: 999px;
+        }
+        .hero-tag b { color: #ffc46b; font-weight: 800; }
         .marker {
             background: linear-gradient(transparent 62%, #ffd66b 62%, #ffd66b 92%, transparent 92%);
             padding: 0 .08em; -webkit-box-decoration-break: clone; box-decoration-break: clone;
@@ -1230,7 +1319,7 @@ def stat_card(icon, label, value, root):
     return f"""
                     <div class="bg-white rounded-2xl ring-1 ring-orange-100 shadow-sm p-2.5 md:p-4">
                         <p class="flex items-center gap-1 md:gap-1.5 text-xs font-bold text-ink-soft whitespace-nowrap"><img src="{root}img/icons/{icon}.svg" alt="" class="w-4 h-4 md:w-6 md:h-6">{label}</p>
-                        <div class="text-ink font-extrabold leading-tight mt-1.5">{value}</div>
+                        <div class="num text-ink font-extrabold leading-tight mt-1.5">{value}</div>
                     </div>"""
 
 
@@ -1249,12 +1338,15 @@ def render_page(deals, history, page_date, root, page_url, events=()):
         ranking_cards += featured_card(deal, page_url, root) if rank == 1 else ranked_card(deal, rank, page_url, root)
     impulse_cards = "".join(impulse_card(d, len(main_deals) + i, page_url, root) for i, d in enumerate(impulse_deals, 1))
 
+    hero_desktop, hero_mobile = hero_visual_html(deals, root)
     picks = ""
     for i, deal in enumerate(deals, 1):
         picks += (f'<a href="#deal-{i}" class="shrink-0 max-w-[16rem] flex items-center gap-2 bg-white hover:bg-orange-50 ring-1 ring-orange-100 shadow-sm '
                   f'rounded-full pl-1 pr-4 py-1 text-sm font-bold text-ink transition">'
-                  f'<img src="{root}img/items/{item_art(deal)}.svg" alt="" class="w-9 h-9 shrink-0 rounded-full bg-orange-50">'
-                  f'<span class="truncate">{html.escape(deal["product_name"])}</span></a>')
+                  + (f'<img src="{html.escape(deal["image_url"])}" alt="" loading="lazy" class="w-9 h-9 shrink-0 rounded-full bg-white ring-1 ring-slate-100 object-contain p-0.5" '
+                     f'onerror="this.onerror=null;this.src=\'{root}img/items/{item_art(deal)}.svg\'">'
+                     if deal.get("image_url") else f'<img src="{root}img/items/{item_art(deal)}.svg" alt="" class="w-9 h-9 shrink-0 rounded-full bg-orange-50">')
+                  + f'<span class="truncate">{html.escape(deal["product_name"])}</span></a>')
 
     top_names = "、".join(d["product_name"] for d in main_deals[:3])
     description = (f"{page_label}更新｜{top_names}など、AIが厳選した今日のお買い得ガジェット{len(deals)}選。"
@@ -1332,7 +1424,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
                 </div>
                 <h1 class="mt-5 text-[1.85rem] md:text-5xl font-extrabold text-ink leading-[1.35] md:leading-[1.3]">{h1}</h1>
                 <p class="mt-4 text-ink-soft text-[15px] md:text-lg leading-relaxed">{lead}</p>
-                <img src="{root}img/hero.svg" alt="" class="md:hidden w-full max-w-[17rem] mx-auto mt-4 -mb-1">
+                {hero_mobile}
                 <div class="grid grid-cols-3 gap-2 md:gap-3 mt-5 md:mt-7">{stats}
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3 mt-6">
@@ -1341,7 +1433,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
                 </div>
             </div>
             <div class="hidden md:block">
-                <img src="{root}img/hero.svg" alt="" class="w-full max-w-[28rem] ml-auto">
+                {hero_desktop}
             </div>
             <div class="md:col-span-2 mt-7 md:mt-8">
                 <p class="text-sm font-bold text-ink mb-2.5">{"この日" if is_archive else "今日"}のピックアップ</p>
@@ -1409,7 +1501,7 @@ def head_html(title, description, page_url, root, og_type, ld_json):
     <meta name="twitter:image" content="{html.escape(og_image)}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>{TAILWIND_CONFIG}    </script>
     <style>{page_css}    </style>
