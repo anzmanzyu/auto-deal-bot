@@ -1331,7 +1331,7 @@ def stat_card(icon, label, value, root):
                     </div>"""
 
 
-def render_page(deals, history, page_date, root, page_url, events=()):
+def render_page(deals, history, page_date, root, page_url, events=(), groups=None):
     """スマホ・PC対応のページHTMLを組み立てる（root はサイト直下への相対パス）"""
     is_archive = root != ""
     page_dt = datetime.strptime(page_date, "%Y-%m-%d")
@@ -1414,6 +1414,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
                 <a href="#ranking" class="{nav_cls}">ランキング</a>
                 <a href="#impulse" class="{nav_cls}">ついで買い</a>
                 <a href="#sale-info" class="{nav_cls}">セール情報</a>
+                <a href="#category" class="{nav_cls}">カテゴリ</a>
                 <a href="#archive" class="{nav_cls}">アーカイブ</a>
             </nav>
             <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored"
@@ -1473,6 +1474,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
             </div>
             <a href="{html.escape(tweet_page_url)}" target="_blank" rel="noopener" class="relative shrink-0 bg-ink hover:bg-ink-soft text-white font-bold px-6 py-3.5 rounded-full text-center shadow-md transition">𝕏 このページをポスト</a>
         </section>
+        {category_section_html(groups, root) if groups else ""}
         {about_html(root)}
         {archive_html(history, root, page_date)}
     </main>
@@ -1527,6 +1529,7 @@ def footer_html(root):
         <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
             <p class="flex items-center gap-2.5 text-ink font-extrabold text-base"><img src="{root}img/logo.svg" alt="" class="w-8 h-8">{html.escape(SITE_NAME)}</p>
             <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日 朝・夕方の2回自動更新しています。</p>
+            <p class="flex flex-wrap gap-x-4 gap-y-1 font-bold"><a href="{root}index.html#category" class="hover:text-orange-600 hover:underline">カテゴリから探す</a>{"".join(f'<a href="{root}sale/{g["slug"]}.html" class="hover:text-orange-600 hover:underline">{html.escape(g["name"])}{g["year"]}</a>' for g in SALE_GUIDES)}<a href="{root}index.html#archive" class="hover:text-orange-600 hover:underline">アーカイブ</a></p>
             <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。また、{AD_PARTNERS}を利用しています。</p>
             <p>掲載内容はAIが公開情報をもとに自動生成したものです。価格・在庫・ポイント倍率は変動するため、購入前に必ず各販売ページでご確認ください。</p>
             <p class="text-xs">最終更新: {TODAY_STR}（日本時間） © {NOW.year} {html.escape(SITE_NAME)}</p>
@@ -1729,10 +1732,15 @@ def render_item_page(pid, info):
     description = (f"{name}の楽天参考価格の記録と、AIが選んだおすすめポイント。"
                    + (f"記録中の最安 ¥{min(p for _, p, _ in points):,}・掲載{len(seen)}回。" if points else "")
                    + "Amazon・楽天の販売ページもすぐ確認できます。")
+    cat = product_category(name)
+    crumbs = [("ホーム", SITE_URL, f"{root}index.html")]
+    if cat:
+        crumbs.append((cat["name"], f"{SITE_URL}category/{cat['slug']}.html", f"{root}category/{cat['slug']}.html"))
+    crumbs.append((name, page_url, ""))
     ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
-        {"@type": "ListItem", "position": 2, "name": name, "item": page_url},
-    ]}
+        {"@type": "ListItem", "position": n, "name": label, "item": url} for n, (label, url, _) in enumerate(crumbs, 1)]}
+    crumb_html = " › ".join(f'<a href="{href}" class="hover:text-orange-600 underline-offset-2 hover:underline">{html.escape(label)}</a>' if href
+                            else f'<span class="text-ink font-bold">{html.escape(label)}</span>' for label, _, href in crumbs)
     ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
     noindex = len(seen) < INDEX_MIN_RECORDS
     return f"""{head_html(title, description, page_url, root, "article", ld_json, noindex)}
@@ -1750,7 +1758,7 @@ def render_item_page(pid, info):
     </header>
 
     <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
-        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">{html.escape(name)}</span></nav>
+        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト">{crumb_html}</nav>
         <article class="card p-5 md:p-8">
             <div class="flex flex-col md:flex-row gap-5 md:gap-7">
                 {thumbnail_html(deal, "w-full h-60 md:w-64 md:h-64", CARD_TONES[0], root)}
@@ -1767,7 +1775,310 @@ def render_item_page(pid, info):
             </div>
         </article>
         {price_history_html(info)}
+        {f'<a href="{root}category/{cat["slug"]}.html" class="block card card-hover p-5 text-center font-extrabold text-ink">{html.escape(cat["name"])}のセール情報をもっと見る →</a>' if cat else ""}
         <a href="{root}index.html" class="block card card-hover p-5 text-center font-extrabold text-ink">今日のお買い得ランキングを見る →</a>
+    </main>
+{footer_html(root)}"""
+
+
+# カテゴリ別まとめページ public/category/<slug>.html（商品名のキーワードで振り分け、上から順に判定）
+CATEGORY_MIN_ITEMS = 3  # 商品がこの件数そろうまで、カテゴリページは検索に載せない
+CATEGORIES = [
+    {"slug": "mobile-monitor", "name": "モバイルモニター", "keywords": ("モバイルモニター", "モバイルディスプレイ", "ポータブルモニター", "タッチモニター"),
+     "lead": "ノートPCのサブ画面やSwitchの外出先プレイに便利なモバイルモニターのセール・値下げ情報です。",
+     "tips": ["USB-Cケーブル1本で映像と電源をまかなえるか（DisplayPort Alt Mode対応）を、手持ちのPC・スマホと合わせて確認しましょう。",
+              "持ち歩くなら15.6インチ前後・1kg以下、据え置きのサブ画面なら解像度（2K・4K）やスタンドの有無を優先すると選びやすくなります。",
+              "ノーブランド品は価格差が大きいので、レビュー件数と保証期間もあわせてチェックしましょう。"]},
+    {"slug": "gaming-monitor", "name": "ゲーミングモニター", "keywords": ("ゲーミングモニター", "Hz"),
+     "lead": "144Hz以上の高リフレッシュレートモニターを中心に、ゲーミングモニターのセール・値下げ情報をまとめています。",
+     "tips": ["PS5やSwitch 2で使うなら、本体側が出せるリフレッシュレート（120Hzなど）を上回る性能は活かしきれない点に注意しましょう。",
+              "PCゲーム中心なら、24〜27インチで180Hz以上が人気の価格帯です。",
+              "パネルの種類（IPS・VA・TN）で色の鮮やかさや応答速度が変わります。"]},
+    {"slug": "mobile-battery", "name": "モバイルバッテリー", "keywords": ("モバイルバッテリー", "Power Bank", "PowerCore"),
+     "lead": "スマホやノートPCを外出先で充電できるモバイルバッテリーのセール・値下げ情報です。",
+     "tips": ["10,000mAhでスマホ約2回分が目安です。ノートPCも充電するなら、出力45W以上のUSB PD対応を選びましょう。",
+              "飛行機に持ち込めるのは、原則160Wh以下（一般的なモバイルバッテリーはほぼ該当）です。",
+              "PSEマーク付きの製品を選ぶと安心です。"]},
+    {"slug": "portable-power", "name": "ポータブル電源・ソーラーパネル", "keywords": ("ポータブル電源", "ソーラーパネル", "ソーラー", "Solar", "Jackery", "EcoFlow", "PowerArQ"),
+     "lead": "キャンプや防災に使えるポータブル電源・ソーラーパネルのセール・値下げ情報です。",
+     "tips": ["容量（Wh）は、使いたい家電の消費電力×使用時間で見積もると失敗しにくくなります。",
+              "長く使うなら、充放電の寿命が長いリン酸鉄リチウムイオン電池のモデルが人気です。",
+              "大型セールでは、本体とソーラーパネルのセットが大きく値下がりしやすい傾向があります。"]},
+    {"slug": "earbuds", "name": "ワイヤレスイヤホン・ヘッドホン", "keywords": ("イヤホン", "ヘッドホン", "ヘッドフォン", "AirPods", "Buds", "完全ワイヤレス"),
+     "lead": "完全ワイヤレスイヤホンやヘッドホンのセール・値下げ情報をまとめています。",
+     "tips": ["電車や飛行機で使うなら、ノイズキャンセリング（ANC）対応が快適です。",
+              "iPhoneならAAC、AndroidならLDACなど、スマホ側が対応するコーデックもあわせて確認しましょう。",
+              "通話が多い人は、マイクのノイズ低減（ENCなど）の有無もチェックしましょう。"]},
+    {"slug": "speaker", "name": "Bluetoothスピーカー", "keywords": ("スピーカー", "サウンドバー"),
+     "lead": "アウトドアやお風呂で使えるBluetoothスピーカーのセール・値下げ情報です。",
+     "tips": ["屋外や水まわりで使うなら、防水・防塵等級（IP67など）を確認しましょう。",
+              "同じ機種を2台つなげるステレオ再生に対応したモデルもあります。"]},
+    {"slug": "smartwatch", "name": "スマートウォッチ", "keywords": ("スマートウォッチ", "ウォッチ", "Watch", "スマートバンド"),
+     "lead": "健康管理や通知確認に便利なスマートウォッチのセール・値下げ情報です。",
+     "tips": ["iPhoneで使う場合、一部の機能（通知への返信など）が使えないモデルもあります。",
+              "バッテリー持ちは数日〜2週間程度と、モデルによって大きく差があります。"]},
+    {"slug": "storage", "name": "SDカード・ストレージ", "keywords": ("microSD", "SDカード", "SSD", "HDD", "USBメモリ"),
+     "lead": "microSDカードやSSDなど、ストレージのセール・値下げ情報です。",
+     "tips": ["Switchやドラレコ用のmicroSDは、書き込み速度の規格（U3・V30など）を確認しましょう。",
+              "大容量品ほど、セール時の値下がり幅が大きくなりやすい傾向があります。"]},
+    {"slug": "charger-cable", "name": "充電器・ケーブル", "keywords": ("充電器", "充電ステーション", "ケーブル", "GaN", "アダプタ", "電源タップ", "延長コード"),
+     "lead": "USB PD急速充電器やケーブル、電源タップのセール・値下げ情報です。",
+     "tips": ["ノートPCも充電するなら65W以上、スマホ中心なら20〜30Wが目安です。",
+              "GaN（窒化ガリウム）採用の充電器は、同じ出力でも小型・軽量です。",
+              "送料無料ラインやポイントアップ条件にあと少し届かないときの「ついで買い」にも向いています。"]},
+    {"slug": "dashcam", "name": "ドライブレコーダー", "keywords": ("ドライブレコーダー", "ドラレコ"),
+     "lead": "前後2カメラやミラー型を中心に、ドライブレコーダーのセール・値下げ情報です。",
+     "tips": ["あおり運転対策なら、前後2カメラのモデルがおすすめです。",
+              "夜間の映像は、解像度だけでなくHDRや暗所撮影の性能で差が出ます。"]},
+    {"slug": "robot-cleaner", "name": "ロボット掃除機", "keywords": ("ロボット掃除機", "掃除ロボット", "Roomba", "ルンバ", "DEEBOT"),
+     "lead": "ルンバやDEEBOTなど、ロボット掃除機のセール・値下げ情報です。",
+     "tips": ["ゴミ収集ステーション付きのモデルは、ゴミ捨ての手間が数週間に1回まで減ります。",
+              "水拭き対応モデルは、モップの自動洗浄・乾燥の有無で手入れの手間が大きく変わります。",
+              "家具の下を通すなら、本体の高さ（薄型かどうか）を確認しましょう。"]},
+    {"slug": "keyboard-mouse", "name": "キーボード・マウス", "keywords": ("キーボード", "マウス", "トラックボール"),
+     "lead": "ワイヤレスキーボードやマウスなど、PC周辺機器のセール・値下げ情報です。",
+     "tips": ["複数のPC・タブレットを切り替えて使うなら、マルチペアリング対応が便利です。",
+              "静音クリックのマウスは、カフェや夜の作業でも気になりにくくなります。"]},
+    {"slug": "water", "name": "炭酸水・ミネラルウォーター", "keywords": ("炭酸水", "ミネラルウォーター", "天然水", "SODA"),
+     "lead": "炭酸水やミネラルウォーターの箱買い・まとめ買いのセール情報です。送料無料ラインに届かせたいときの「ついで買い」にも向いています。",
+     "tips": ["1本あたりの価格（総額÷本数）で比べると、セール価格のお得さが分かりやすくなります。",
+              "長期保存水は、防災用の備蓄にも使えます。"]},
+    {"slug": "drycell", "name": "乾電池", "keywords": ("乾電池", "電池"),
+     "lead": "アルカリ乾電池のまとめ買いセール情報です。",
+     "tips": ["40本セットなどの大容量パックは、1本あたりの価格がかなり下がります。",
+              "リモコンや時計など消費電力の小さい機器には、アルカリ乾電池が長持ちで向いています。"]},
+    {"slug": "tv-streaming", "name": "Fire TV・映像機器", "keywords": ("Fire TV", "テレビ", "プロジェクター", "Chromecast"),
+     "lead": "Fire TV Stickやプロジェクターなど、映像機器のセール・値下げ情報です。",
+     "tips": ["Fire TV Stickは、Amazonの大型セールで大きく値下がりしやすい定番商品です。",
+              "4Kテレビで使うなら、4K対応モデル（4K Maxなど）を選びましょう。"]},
+]
+
+# 大型セールの特集ページ public/sale/<slug>.html（日程が発表されたら year_dates を更新する）
+SALE_GUIDES = [
+    {
+        "slug": "black-friday", "name": "Amazonブラックフライデー", "year": 2026,
+        "dates": [],  # 例: [("先行セール", "11月20日(金)〜11月22日(日)"), ("本セール", "11月23日(月)〜11月30日(月)")]
+        "past": [("2025年 先行セール", "11月21日(金)〜11月23日(日)"), ("2025年 本セール", "11月24日(月)〜12月1日(月)")],
+        "lead": "Amazonブラックフライデーは、プライム会員以外も参加できる年末の大型セールです。ガジェット・家電は1年の中でも値下がりしやすいタイミングなので、狙いのジャンルと事前準備をまとめました。",
+        "prep": [
+            ("ポイントアップキャンペーンにエントリー", "期間中の合計購入額に応じてポイント還元が上乗せされるキャンペーンは、エントリーが必要です。2025年は本セールの約10日前から受付が始まりました。"),
+            ("ほしい物リストに入れて普段の価格を見ておく", "セール価格が本当に安いかは、普段の価格と比べないと分かりません。当サイトの各商品ページの「価格の記録」も参考にしてください。"),
+            ("先行セールもチェック", "2025年は本セールの3日前から先行セールがあり、一部の対象商品は本セールと同じ価格で先に購入できました。"),
+            ("楽天のイベントとも比べる", "同じ時期に楽天市場でもブラックフライデーやお買い物マラソンが開かれることがあります。ポイント込みの実質価格で比べましょう。"),
+        ],
+        "faq": [
+            ("2026年のAmazonブラックフライデーはいつから？", "2026年の日程は、まだAmazonから発表されていません（このページの最終更新時点）。2025年は先行セールが11月21日から、本セールが11月24日から12月1日まででした。発表され次第、このページを更新します。"),
+            ("プライム会員でなくても参加できますか？", "はい。プライム感謝祭やプライムデーと違い、ブラックフライデーは会員以外も参加できます。ただし、配送の特典などは会員と異なります。"),
+            ("どんなガジェットが安くなりやすいですか？", "Amazonデバイス（Fire TV Stick・Echo・Kindleなど）、Ankerなどの充電器・モバイルバッテリー、ワイヤレスイヤホン、モニターなどが値下がりしやすい定番です。"),
+        ],
+        "source": ("マイナビニュース（2025年11月14日）", "https://news.mynavi.jp/article/20251114-3666546/"),
+    },
+]
+
+
+def product_category(name):
+    """商品名からカテゴリ（CATEGORIES の要素）を決める。当てはまらなければ None"""
+    low = str(name).lower()
+    for cat in CATEGORIES:
+        if any(k.lower() in low for k in cat["keywords"]):
+            return cat
+    return None
+
+
+def products_by_category(products):
+    groups = {cat["slug"]: [] for cat in CATEGORIES}
+    for pid, info in products.items():
+        cat = product_category(clean_product_name(info.get("product_name", "")))
+        if cat:
+            groups[cat["slug"]].append((pid, info))
+    for items in groups.values():
+        items.sort(key=lambda x: x[1].get("last_seen", ""), reverse=True)
+    return groups
+
+
+def simple_header_html(root, max_w="max-w-3xl"):
+    return f"""
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
+        <div class="{max_w} mx-auto px-4 h-16 flex items-center justify-between gap-3">
+            <a href="{root}index.html" class="flex items-center gap-2.5 min-w-0">
+                <img src="{root}img/logo.svg" alt="" class="w-10 h-10 shrink-0">
+                <span class="leading-tight min-w-0">
+                    <span class="block text-xs font-bold text-orange-600">AI厳選</span>
+                    <span class="block font-extrabold text-[17px] text-ink truncate">ガジェット特価速報</span>
+                </span>
+            </a>
+            <a href="{root}index.html" class="btn btn-main shrink-0 text-sm font-bold px-4 py-2.5 rounded-full">今日の特価 →</a>
+        </div>
+    </header>"""
+
+
+def item_list_card(pid, info, root):
+    """カテゴリページ用の商品カード（価格の記録の要約つき）"""
+    name = clean_product_name(info.get("product_name", "")) or info.get("product_name", "")
+    deal = {"product_name": name, "image_url": info.get("image_url") or "", "slot": info.get("slot") or "main"}
+    points = price_points(info)
+    seen = len(info.get("records", []))
+    if points:
+        prices = [p for _, p, _ in points]
+        price_line = (f'<span class="num text-xl font-extrabold text-ink">¥{prices[-1]:,}</span>'
+                      f'<span class="text-xs text-ink-soft">最新の楽天参考価格</span>')
+        if len(prices) >= 2:
+            price_line += f'<span class="text-xs font-bold text-emerald-700">最安記録 ¥{min(prices):,}</span>'
+    else:
+        price_line = '<span class="text-xs text-ink-soft">価格は各ストアでご確認ください</span>'
+    amz_url, rkt_url = build_affiliate_urls(name, info.get("item_url", ""))
+    last = str(info.get("last_seen", ""))[:10].replace("-", "/")
+    return f"""
+            <article class="card p-4 md:p-5 flex gap-4">
+                {thumbnail_html(deal, "w-24 h-24 md:w-28 md:h-28", CARD_TONES[0], root)}
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-extrabold text-ink leading-snug"><a href="{root}item/{pid}.html" class="hover:text-orange-600 hover:underline underline-offset-2">{html.escape(name)}</a></h3>
+                    <p class="text-sm text-orange-600 font-bold mt-1">{html.escape(info.get("catch_copy") or "")}</p>
+                    <div class="flex items-baseline gap-x-2 gap-y-1 flex-wrap mt-2">{price_line}</div>
+                    <p class="text-xs text-ink-soft mt-1">最終掲載 {last}・掲載{seen}回</p>
+                    <div class="flex gap-2 mt-3 flex-wrap text-sm font-bold">
+                        <a href="{root}item/{pid}.html" class="text-orange-600 hover:underline underline-offset-2">価格の記録 ›</a>
+                        <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored" class="text-ink-soft hover:text-ink hover:underline underline-offset-2">Amazon ›</a>
+                        <a href="{html.escape(rkt_url)}" target="_blank" rel="nofollow noopener sponsored" class="text-ink-soft hover:text-ink hover:underline underline-offset-2">楽天 ›</a>
+                    </div>
+                </div>
+            </article>"""
+
+
+def category_links_html(groups, root, current=""):
+    """カテゴリへのリンク一覧（商品があるカテゴリだけ）"""
+    links = ""
+    for cat in CATEGORIES:
+        count = len(groups.get(cat["slug"], []))
+        if not count:
+            continue
+        active = "bg-orange-500 text-white ring-orange-500" if cat["slug"] == current else "bg-white text-ink ring-orange-100 hover:bg-orange-50"
+        links += (f'<a href="{root}category/{cat["slug"]}.html" class="{active} ring-1 shadow-sm rounded-full px-4 py-2 text-sm font-bold transition">'
+                  f'{html.escape(cat["name"])} <span class="text-xs opacity-70">{count}</span></a>')
+    return f'<div class="flex flex-wrap gap-2">{links}</div>' if links else ""
+
+
+def category_section_html(groups, root):
+    """トップページの「カテゴリから探す」と特集ページへの入口"""
+    links = category_links_html(groups, root)
+    sale_links = "".join(
+        f'<a href="{root}sale/{g["slug"]}.html" class="block card card-hover p-5 font-extrabold text-ink">'
+        f'{html.escape(g["name"])} {g["year"]} の狙い目と準備 <span aria-hidden="true">›</span></a>'
+        for g in SALE_GUIDES)
+    return f"""
+        <section id="category" class="scroll-mt-24">
+            {section_head("cart", "カテゴリから探す", "これまでに紹介した商品を、ジャンルごとに価格の記録と一緒にまとめています。", root)}
+            {links}
+            <div class="grid gap-3 md:grid-cols-2 mt-5">{sale_links}</div>
+        </section>"""
+
+
+def render_category_page(cat, items, groups, top_deals):
+    root = "../"
+    page_url = f"{SITE_URL}category/{cat['slug']}.html"
+    name = cat["name"]
+    title = f"{name}のセール・値下げ情報と価格推移｜{SITE_NAME}"
+    names = "、".join(clean_product_name(i.get("product_name", "")) for _, i in items[:2])
+    description = (f"{name}のセール・値下げ情報を、楽天参考価格の記録と一緒にまとめています。"
+                   + (f"{names}など{len(items)}件掲載。" if items else "") + "毎日 朝・夕方に自動更新。")
+    ld = {"@context": "https://schema.org", "@graph": [
+        {"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
+            {"@type": "ListItem", "position": 2, "name": name, "item": page_url}]},
+        {"@type": "ItemList", "name": f"{name}のセール・値下げ情報", "itemListElement": [
+            {"@type": "ListItem", "position": n, "name": clean_product_name(i.get("product_name", "")), "url": f"{SITE_URL}item/{pid}.html"}
+            for n, (pid, i) in enumerate(items[:30], 1)]},
+    ]}
+    ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
+    cards = "".join(item_list_card(pid, info, root) for pid, info in items[:30])
+    if not cards:
+        cards = '<p class="card p-5 text-ink-soft">このカテゴリの商品は、まだ掲載されていません。毎日の更新で見つかり次第ここに追加されます。</p>'
+    tips = "".join(f'<li class="flex gap-2.5"><span class="w-5 h-5 mt-0.5 shrink-0 rounded-full bg-emerald-100 text-emerald-600 text-[11px] font-extrabold flex items-center justify-center">✓</span>'
+                   f'<span>{html.escape(t)}</span></li>' for t in cat["tips"])
+    today = "".join(f'<li><a href="{root}index.html#deal-{n}" class="hover:text-orange-600 hover:underline underline-offset-2">{html.escape(d["product_name"])}</a></li>'
+                    for n, d in enumerate(top_deals[:4], 1))
+    noindex = len(items) < CATEGORY_MIN_ITEMS
+    return f"""{head_html(title, description, page_url, root, "article", ld_json, noindex)}
+    {simple_header_html(root)}
+    <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
+        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">{html.escape(name)}</span></nav>
+        <section class="card p-5 md:p-7">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">{html.escape(name)}のセール・値下げ情報</h1>
+            <p class="mt-3 text-ink-soft leading-relaxed">{html.escape(cat["lead"])}当サイトが毎日 朝・夕方に紹介した商品と、楽天参考価格の記録を新しい順に並べています。</p>
+            <p class="mt-2 text-xs text-ink-soft">掲載 {len(items)}件・最終更新 {TODAY_STR}</p>
+        </section>
+        <section class="space-y-4">{cards}
+        </section>
+        <section class="card p-5 md:p-7">
+            <h2 class="text-lg md:text-xl font-extrabold text-ink">{html.escape(name)}を選ぶときのポイント</h2>
+            <ul class="space-y-2 text-[15px] text-ink leading-relaxed mt-4">{tips}</ul>
+        </section>
+        <section class="card p-5 md:p-7">
+            <h2 class="text-lg md:text-xl font-extrabold text-ink">ほかのカテゴリ</h2>
+            <div class="mt-4">{category_links_html(groups, root, cat["slug"])}</div>
+            {f'<h2 class="text-lg md:text-xl font-extrabold text-ink mt-6">今日のお買い得</h2><ul class="list-disc pl-5 mt-3 space-y-1 text-[15px] font-bold text-ink">{today}</ul>' if today else ""}
+        </section>
+    </main>
+{footer_html(root)}"""
+
+
+def render_sale_page(guide, groups, top_deals):
+    root = "../"
+    page_url = f"{SITE_URL}sale/{guide['slug']}.html"
+    year, name = guide["year"], guide["name"]
+    title = f"{name}{year}はいつから？ガジェットの狙い目と準備｜{SITE_NAME}"
+    when = "・".join(f"{k} {v}" for k, v in guide["dates"]) if guide["dates"] else "日程は未発表"
+    description = (f"{name}{year}の開催日程（{when}）と、ガジェット・家電の狙い目カテゴリ、ポイントアップのエントリーなど事前準備をまとめました。")
+    ld = {"@context": "https://schema.org", "@graph": [
+        {"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
+            {"@type": "ListItem", "position": 2, "name": f"{name}{year}", "item": page_url}]},
+        {"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in guide["faq"]]},
+    ]}
+    ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
+    row = lambda k, v: f'<tr class="border-t border-orange-100"><th class="py-2.5 pr-3 text-left font-bold whitespace-nowrap">{html.escape(k)}</th><td class="py-2.5">{html.escape(v)}</td></tr>'
+    date_rows = "".join(row(f"{year}年 {k}", v) for k, v in guide["dates"]) or row(f"{year}年", "未発表（発表され次第更新します）")
+    date_rows += "".join(row(k, v) for k, v in guide["past"])
+    prep = "".join(f'<li class="card p-4 md:p-5"><p class="font-extrabold text-ink">{n}. {html.escape(t)}</p><p class="text-[15px] text-ink-soft leading-relaxed mt-1.5">{html.escape(b)}</p></li>'
+                   for n, (t, b) in enumerate(guide["prep"], 1))
+    picks = "".join(
+        f'<li><a href="{root}category/{c["slug"]}.html" class="block card card-hover p-4 font-bold text-ink">{html.escape(c["name"])}'
+        f'<span class="block text-xs text-ink-soft font-normal mt-1">掲載{len(groups.get(c["slug"], []))}件・価格の記録つき</span></a></li>'
+        for c in CATEGORIES if groups.get(c["slug"]))
+    faq = "".join(f'<details class="card p-4 md:p-5"><summary class="font-extrabold text-ink cursor-pointer">{html.escape(q)}</summary>'
+                  f'<p class="text-[15px] text-ink-soft leading-relaxed mt-2">{html.escape(a)}</p></details>' for q, a in guide["faq"])
+    today = "".join(f'<li><a href="{root}index.html#deal-{n}" class="hover:text-orange-600 hover:underline underline-offset-2">{html.escape(d["product_name"])}</a></li>'
+                    for n, d in enumerate(top_deals[:4], 1))
+    src_name, src_url = guide["source"]
+    return f"""{head_html(title, description, page_url, root, "article", ld_json)}
+    {simple_header_html(root)}
+    <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
+        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">{html.escape(name)}{year}</span></nav>
+        <section class="card p-5 md:p-7">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">{html.escape(name)}{year}はいつから？ガジェットの狙い目と準備</h1>
+            <p class="mt-3 text-ink-soft leading-relaxed">{html.escape(guide["lead"])}</p>
+            <p class="mt-2 text-xs text-ink-soft">最終更新 {TODAY_STR}</p>
+        </section>
+        <section class="card p-5 md:p-7">
+            <h2 class="text-lg md:text-xl font-extrabold text-ink">開催日程</h2>
+            <table class="w-full text-[15px] mt-3"><tbody>{date_rows}</tbody></table>
+            <p class="text-xs text-ink-soft mt-3">過去の日程の出典: <a href="{html.escape(src_url)}" target="_blank" rel="noopener" class="underline">{html.escape(src_name)}</a></p>
+        </section>
+        <section>
+            <h2 class="text-lg md:text-xl font-extrabold text-ink mb-3">セール前にやっておくこと</h2>
+            <ol class="space-y-3">{prep}</ol>
+        </section>
+        <section>
+            <h2 class="text-lg md:text-xl font-extrabold text-ink mb-3">狙い目のカテゴリ</h2>
+            <p class="text-[15px] text-ink-soft leading-relaxed mb-3">当サイトが記録している普段の価格と比べながら、セール価格をチェックできます。</p>
+            <ul class="grid gap-3 md:grid-cols-2">{picks}</ul>
+        </section>
+        {f'<section class="card p-5 md:p-7"><h2 class="text-lg md:text-xl font-extrabold text-ink">今日のお買い得</h2><ul class="list-disc pl-5 mt-3 space-y-1 text-[15px] font-bold text-ink">{today}</ul></section>' if today else ""}
+        <section>
+            <h2 class="text-lg md:text-xl font-extrabold text-ink mb-3">よくある質問</h2>
+            <div class="space-y-3">{faq}</div>
+        </section>
     </main>
 {footer_html(root)}"""
 
@@ -1778,12 +2089,13 @@ def generate_site(deals):
     history = update_history(load_history(), deals)
     products = update_products(load_products(), deals)
     events = load_events()
+    groups = products_by_category(products)
 
     with open("public/index.html", "w", encoding="utf-8") as f:
-        f.write(render_page(deals, history, TODAY_DATE, "", SITE_URL, events))
+        f.write(render_page(deals, history, TODAY_DATE, "", SITE_URL, events, groups))
     archive_url = f"{SITE_URL}archive/{TODAY_DATE}.html"
     with open(f"public/archive/{TODAY_DATE}.html", "w", encoding="utf-8") as f:
-        f.write(render_page(deals, history, TODAY_DATE, "../", archive_url, events))
+        f.write(render_page(deals, history, TODAY_DATE, "../", archive_url, events, groups))
 
     # 商品ページは毎回すべて作り直す（記録が消えた商品のページは削除する）
     os.makedirs("public/item", exist_ok=True)
@@ -1794,11 +2106,26 @@ def generate_site(deals):
         with open(f"public/item/{pid}.html", "w", encoding="utf-8") as f:
             f.write(render_item_page(pid, info))
 
+    top_deals = [d for d in deals if d.get("slot") == "main"]
+    os.makedirs("public/category", exist_ok=True)
+    for cat in CATEGORIES:
+        with open(f"public/category/{cat['slug']}.html", "w", encoding="utf-8") as f:
+            f.write(render_category_page(cat, groups[cat["slug"]], groups, top_deals))
+    os.makedirs("public/sale", exist_ok=True)
+    for guide in SALE_GUIDES:
+        with open(f"public/sale/{guide['slug']}.html", "w", encoding="utf-8") as f:
+            f.write(render_sale_page(guide, groups, top_deals))
+
     # 実在するアーカイブだけをサイトマップに載せる
     archive_dates = sorted((n[:-5] for n in os.listdir("public/archive") if n.endswith(".html")), reverse=True)
     urls = [f"  <url><loc>{SITE_URL}</loc><lastmod>{TODAY_DATE}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>"]
     for d in archive_dates:
         urls.append(f"  <url><loc>{SITE_URL}archive/{d}.html</loc><lastmod>{d}</lastmod><priority>0.6</priority></url>")
+    for guide in SALE_GUIDES:
+        urls.append(f"  <url><loc>{SITE_URL}sale/{guide['slug']}.html</loc><lastmod>{TODAY_DATE}</lastmod><priority>0.8</priority></url>")
+    for cat in CATEGORIES:
+        if len(groups[cat["slug"]]) >= CATEGORY_MIN_ITEMS:
+            urls.append(f"  <url><loc>{SITE_URL}category/{cat['slug']}.html</loc><lastmod>{groups[cat['slug']][0][1]['last_seen'][:10]}</lastmod><priority>0.8</priority></url>")
     # 記録が少ない商品ページは中身が薄いので、サイトマップに載せない（ページ側も noindex）
     for pid, info in products.items():
         if len(info.get("records", [])) < INDEX_MIN_RECORDS:
