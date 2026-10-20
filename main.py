@@ -61,9 +61,15 @@ UPDATE_HOURS = (7, 18)  # workflow の cron（UTC 22:00 / 9:00）を日本時間
 HISTORY_PATH = "data/history.json"
 HISTORY_DAYS = 30
 PRODUCTS_PATH = "data/products.json"
-PRODUCT_RECORDS = 120  # 1商品あたりの価格記録の上限
+PRODUCT_RECORDS = 200  # 1商品あたりの価格記録の上限（紹介時＋1日1回の価格チェックで約半年分）
 PRODUCT_KEEP_DAYS = 180  # これより長く掲載されていない商品ページは削除する
-INDEX_MIN_RECORDS = 3  # 価格の記録がこの回数たまるまで、商品ページは検索に載せない（noindex・サイトマップ除外）
+# 商品ページを検索に載せる条件（満たすまでは noindex・サイトマップ除外）
+INDEX_MIN_RECORDS = 3  # 3回以上紹介した商品
+INDEX_MIN_DAYS = 7  # または、価格の記録が1週間分（INDEX_MIN_POINTS 回以上）たまった商品
+INDEX_MIN_POINTS = 5
+TRACK_MAX_CALLS = 110  # 1回の更新で価格チェックに使う楽天APIの回数の上限（1回あたり約1.5秒）
+TRACK_MAX_MISSES = 4  # 続けてこの日数見つからなかった商品は、販売終了とみなしてチェックをやめる
+DROP_SHOW = 6  # トップの「値下がりを見つけた商品」に出す件数
 EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
 
@@ -144,10 +150,36 @@ def safe_status(e):
     return getattr(getattr(e, "response", None), "status_code", type(e).__name__)
 
 
+def rakuten_request(params):
+    """楽天市場の商品検索APIを1回呼び、商品のリストを返す（失敗したら例外）"""
+    params = dict(params, applicationId=RAKUTEN_APP_ID)
+    if RAKUTEN_ACCESS_KEY:
+        # 新方式: アクセスキー + 許可ドメイン(Origin)で認証する
+        params["accessKey"] = RAKUTEN_ACCESS_KEY
+        url = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701"
+    else:
+        url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601"
+    # 楽天に登録済みの許可サイト（独自ドメインに移っても github.io のまま送る）
+    headers = {"Origin": RAKUTEN_ORIGIN, "Referer": RAKUTEN_ORIGIN + "/auto-deal-bot/"}
+    res = requests.get(url, params=params, headers=headers, timeout=15)
+    res.raise_for_status()
+    return [item.get("Item", item) for item in res.json().get("Items", [])]
+
+
+def rakuten_error_detail(e):
+    resp = getattr(e, "response", None)
+    if resp is None:
+        return ""
+    try:
+        body = resp.json()
+        return " " + str(body.get("error", "")) + " " + str(body.get("error_description", body.get("message", "")))[:200]
+    except Exception:
+        return ""
+
+
 def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None, page=1):
     """楽天市場APIから商品候補を取得する（画像URL付き）"""
     params = {
-        "applicationId": RAKUTEN_APP_ID,
         "keyword": keyword,
         "sort": "-reviewCount",
         "hits": hits,
@@ -158,20 +190,9 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None, page
         params["minPrice"] = min_price
     if max_price:
         params["maxPrice"] = max_price
-    if RAKUTEN_ACCESS_KEY:
-        # 新方式: アクセスキー + 許可ドメイン(Origin)で認証する
-        params["accessKey"] = RAKUTEN_ACCESS_KEY
-        url = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701"
-    else:
-        url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601"
-    # 楽天に登録済みの許可サイト（独自ドメインに移っても github.io のまま送る）
-    headers = {"Origin": RAKUTEN_ORIGIN, "Referer": RAKUTEN_ORIGIN + "/auto-deal-bot/"}
     items = []
     try:
-        res = requests.get(url, params=params, headers=headers, timeout=15)
-        res.raise_for_status()
-        for item in res.json().get("Items", []):
-            info = item.get("Item", item)
+        for info in rakuten_request(params):
             images = info.get("mediumImageUrls") or info.get("smallImageUrls") or []
             image_url = ""
             if images:
@@ -187,19 +208,12 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None, page
                 "review_average": info.get("reviewAverage") or 0,
                 "description": info.get("itemCaption", "")[:200],
                 "source_url": info.get("itemUrl", ""),
+                "item_code": info.get("itemCode", ""),
                 "image_url": image_url,
                 "slot_hint": slot_hint,
             })
     except Exception as e:
-        detail = ""
-        resp = getattr(e, "response", None)
-        if resp is not None:
-            try:
-                body = resp.json()
-                detail = " " + str(body.get("error", "")) + " " + str(body.get("error_description", body.get("message", "")))[:200]
-            except Exception:
-                detail = ""
-        print(f"Rakuten API fetch notice ({keyword}): {safe_status(e)}{detail}")
+        print(f"Rakuten API fetch notice ({keyword}): {safe_status(e)}{rakuten_error_detail(e)}")
     return items
 
 
@@ -519,6 +533,7 @@ def normalize_deals(deals, candidates=()):
             "price_yen": price.get("price_yen"),
             "point_rate": price.get("point_rate"),
             "item_url": rakuten_item_url(src.get("source_url")),
+            "item_code": src.get("item_code") or "",
             "review_count": src.get("review_count") or 0,
             "review_average": src.get("review_average") or 0,
             "candidate_no": src.get("no"),
@@ -540,6 +555,7 @@ def normalize_deals(deals, candidates=()):
             "score": max(0, (main[-1]["score"] if main else 85) - 1),
             "image_url": c["image_url"], "price_yen": c.get("price_yen"), "point_rate": c.get("point_rate"),
             "item_url": rakuten_item_url(c.get("source_url")),
+            "item_code": c.get("item_code") or "",
             "review_count": c.get("review_count") or 0, "review_average": c.get("review_average") or 0,
             "candidate_no": c.get("no"),
         })
@@ -829,9 +845,9 @@ def grounds_html(deal, show_score=True, open_=False):
     if deal.get("record_low"):
         rows.append(("価格", '<b class="text-emerald-700">当サイトの記録で最安</b>'))
     elif deal.get("price_drop"):
-        rows.append(("価格", f'<b class="text-emerald-700">前回より ¥{deal["price_drop"]:,} ダウン</b>'))
+        rows.append(("価格", f'<b class="text-emerald-700">前回の記録より ¥{deal["price_drop"]:,} ダウン</b>'))
     elif seen > 1:
-        rows.append(("価格", f"{seen}回目の登場・前回から変わらず"))
+        rows.append(("価格", f"{seen}回目の登場" + ("・前回の記録から変わらず" if deal.get("price_same") else "")))
     elif deal.get("price_yen"):
         rows.append(("価格", "今回が初登場・価格の記録をスタート"))
     if point_rate_value(deal) >= 2:
@@ -878,7 +894,7 @@ def price_html(deal):
         chips += f'<span class="text-xs font-bold text-amber-800 bg-amber-50 ring-1 ring-amber-200 px-2.5 py-1 rounded-full">ポイント{rate:g}倍</span>'
     if deal.get("price_drop"):
         chips += (f'<span class="text-xs font-bold text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200 px-2.5 py-1 rounded-full" '
-                  f'title="当サイトが前回掲載したときの楽天参考価格との差です">前回掲載より ¥{deal["price_drop"]:,} 値下がり</span>')
+                  f'title="当サイトが前回記録した楽天参考価格との差です">前回の記録より ¥{deal["price_drop"]:,} 値下がり</span>')
     if deal.get("record_low"):
         chips += ('<span class="text-xs font-bold text-white bg-emerald-600 px-2.5 py-1 rounded-full" '
                   'title="当サイトが記録した楽天参考価格の中で最も安い価格です">当サイト記録で最安</span>')
@@ -899,7 +915,20 @@ def reasons_html(deal, text_cls="text-sm"):
     return f'<ul class="space-y-2 {text_cls} text-ink leading-relaxed mt-4">{items}</ul>'
 
 
-def cta_html(deal, page_url, root="", detail_link=True):
+# GoatCounter でストアへのリンクのクリック数を数える（Cookieなし）。管理画面には click-ストア-場所 の名前で出る
+CLICK_STORES = {"amazon": "Amazon", "rakuten": "楽天", "yahoo": "Yahoo!", "event": "セール会場"}
+CLICK_PLACES = {"top": "トップ", "archive": "アーカイブ", "item": "商品ページ", "category": "カテゴリ", "drop": "値下がり欄",
+                "header": "ヘッダー", "hero": "トップ上部", "bar": "画面下ボタン", "salecard": "セール情報", "eventbar": "セール告知バー"}
+SHOP_CLICK_KEYS = {"amz": "amazon", "rkt": "rakuten", "yahoo": "yahoo"}
+
+
+def click_attrs(store, place):
+    return (f'data-goatcounter-click="click-{store}-{place}" '
+            f'data-goatcounter-title="{CLICK_STORES[store]}（{CLICK_PLACES[place]}）"')
+
+
+def cta_html(deal, page_url, root="", detail_link=True, place=None):
+    place = place or ("top" if root == "" else "archive")
     amz_url, rkt_url = build_affiliate_urls(deal["product_name"], deal.get("item_url", ""))
     # ストアのボタンは同じ大きさで横に並べ、ブランド色は文字と縁取りだけに使う
     shops = [("amz", amz_url, "Amazon", "Amazonで見る"), ("rkt", rkt_url, "楽天", "楽天で見る")]
@@ -907,8 +936,8 @@ def cta_html(deal, page_url, root="", detail_link=True):
     if yahoo_url:
         shops.append(("yahoo", yahoo_url, "Yahoo!", "Yahoo!ショッピングで見る"))
     buttons = "".join(
-        f'\n                    <a href="{html.escape(url)}" target="_blank" rel="nofollow noopener sponsored" class="shop shop-{key}" title="{label}">'
-        f'<b>{name}</b><small>で見る <span aria-hidden="true">›</span></small></a>'
+        f'\n                    <a href="{html.escape(url)}" target="_blank" rel="nofollow noopener sponsored" class="shop shop-{key}" title="{label}" '
+        f'{click_attrs(SHOP_CLICK_KEYS[key], place)}><b>{name}</b><small>で見る <span aria-hidden="true">›</span></small></a>'
         for key, url, name, label in shops)
     detail = "<span></span>"
     if detail_link and deal.get("item_page"):
@@ -1029,7 +1058,7 @@ def event_bar_html(events):
     for i, ev in enumerate(events):
         hidden = "" if i == 0 else " hidden"
         items += f"""
-        <a href="{html.escape(ev['url'])}" target="_blank" rel="nofollow noopener sponsored" data-event-bar {event_attrs(ev)}{hidden}
+        <a href="{html.escape(ev['url'])}" target="_blank" rel="nofollow noopener sponsored" data-event-bar {event_attrs(ev)} {click_attrs("event", "eventbar")}{hidden}
            class="block max-w-5xl mx-auto px-4 py-2.5 text-center text-sm font-bold leading-relaxed hover:underline">
             <span class="ev-state text-xs font-extrabold px-2.5 py-0.5 rounded-full mr-1.5">{'開催中' if ev['start'] <= NOW else 'まもなく開始'}</span>
             {html.escape(ev['name'])}
@@ -1066,7 +1095,7 @@ def sale_info_html(events, root):
                     <p class="text-[15px] font-extrabold text-rose-600 mt-1" data-event-countdown></p>
                     {note}"""
         cards += sale_card(ev["url"], "megaphone", "bg-orange-50", label, ev["store"], ev["name"], body,
-                           "セール会場を見る", "text-orange-600", root, event_attrs(ev))
+                           "セール会場を見る", "text-orange-600", root, f'{event_attrs(ev)} {click_attrs("event", "salecard")}')
     cards += sale_card(
         RAKUTEN_TOP_URL, "coin", "bg-amber-50",
         '<span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-red-600 text-white whitespace-nowrap">毎月6回</span>',
@@ -1074,7 +1103,7 @@ def sale_info_html(events, root):
         f"""
                     <p class="text-[15px] font-extrabold text-rose-600 mt-2" id="rakuten-day">{next_rakuten_point_day()}</p>
                     <p class="text-sm text-ink-soft mt-1 leading-relaxed">エントリー＆楽天カード決済でポイントアップ。高額ガジェットはこの日にまとめるのが定番です。</p>""",
-        "楽天市場を見る", "text-red-600", root, "data-rakuten-day")
+        "楽天市場を見る", "text-red-600", root, f'data-rakuten-day {click_attrs("rakuten", "salecard")}')
     cards += sale_card(
         AMAZON_SALE_URL, "clock", "bg-sky-50",
         '<span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-ink text-amber-200 whitespace-nowrap">毎日開催</span>',
@@ -1082,7 +1111,7 @@ def sale_info_html(events, root):
         """
                     <p class="text-[15px] font-extrabold text-orange-700 mt-2">人気商品が日替わりで登場</p>
                     <p class="text-sm text-ink-soft mt-1 leading-relaxed">数量限定の特選タイムセールは売り切れ次第終了。気になる商品は早めのチェックがおすすめです。</p>""",
-        "タイムセール会場を見る", "text-orange-600", root)
+        "タイムセール会場を見る", "text-orange-600", root, click_attrs("amazon", "salecard"))
     # 楽天・Amazonの常設カード2枚を足した枚数で、空きマスが出にくい列数にする
     cols = "md:grid-cols-2" if (len(events) + 2) % 2 == 0 and len(events) + 2 < 6 else "md:grid-cols-2 lg:grid-cols-3"
     return f"""
@@ -1122,8 +1151,8 @@ def archive_html(history, root, page_date):
 
 HOW_TO_STEPS = [
     ("clock", "bg-sky-50", "AIが毎日2回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
-    ("chart", "bg-amber-50", "注目度をスコア化", "楽天のレビュー評価・件数や価格の記録をもとにAIが判定し、チェックしたデータと一緒にランキングにします。"),
-    ("cart", "bg-emerald-50", "各ストアをワンタップ比較", "ボタンからAmazon・楽天などの販売ページへ。ポイント還元込みの実質価格を比べて選べます。"),
+    ("chart", "bg-amber-50", "注目度をスコア化", "楽天のレビュー評価・件数や価格の記録をもとにAIが判定。紹介した商品はその後も毎日価格をチェックし、値下がりした商品はトップにまとめます。"),
+    ("cart", "bg-emerald-50", "各ストアをワンタップ比較", "ボタンからAmazon・楽天などの販売ページへ。価格やポイント還元はストアごとに違うので、見比べてから選べます。"),
 ]
 
 FAQ = [
@@ -1131,6 +1160,8 @@ FAQ = [
      "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが楽天のレビュー評価・件数、当サイトの価格記録、ポイント倍率などを見て毎日2回自動で選んでいます。各商品の「AIのチェックポイント」で、判断に使ったデータを確認できます。"),
     ("「実質価格」とは何ですか？",
      "販売価格からポイント還元やクーポンを差し引いた、実際の負担額のことです。還元率は会員ランクやキャンペーンのエントリー状況で変わるため、最終的な価格は各ストアでご確認ください。"),
+    ("「値下がりを見つけた商品」とは何ですか？",
+     "当サイトで紹介した商品は、紹介した後も1日1回、楽天市場の商品検索で価格をチェックしています。前回の記録より値下がりしていた商品を、トップページにまとめて表示しています。楽天市場での参考価格のため、Amazonなど他のストアの価格とは異なる場合があります。"),
     ("「ついで買い定番」とは何ですか？",
      "送料無料ラインやポイントアップ条件に届かせたいときに追加しやすい、手頃な定番品です。ケーブルや乾電池など、いつか必ず使うものを選んでいます。"),
 ]
@@ -1325,7 +1356,7 @@ def stat_card(icon, label, value, root):
                     </div>"""
 
 
-def render_page(deals, history, page_date, root, page_url, events=(), groups=None):
+def render_page(deals, history, page_date, root, page_url, events=(), groups=None, drops=()):
     """スマホ・PC対応のページHTMLを組み立てる（root はサイト直下への相対パス）"""
     is_archive = root != ""
     page_dt = datetime.strptime(page_date, "%Y-%m-%d")
@@ -1368,7 +1399,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
     else:
         title = f"【{md_date(page_dt)}更新】今日のお買い得ガジェット{len(deals)}選・セール情報｜{SITE_NAME}"
         h1 = 'AIが選ぶ、今日の<br><span class="marker">お買い得ガジェット</span>'
-        lead = "Amazon・楽天市場のセールや値下げ情報から、AIが買い時の商品を毎日2回ピックアップ。ポイント還元込みの「実質価格」を各ストアですぐ比較できます。"
+        lead = "楽天市場の売れ筋やガジェット系ニュースから、AIがお買い得な商品を毎日2回ピックアップ。紹介した商品はその後も毎日価格をチェックし、値下がりや最安記録をひと目で確認できます。"
         third_stat = ("calendar", "次回更新", *next_update_text().split(" ", 1))
         crumbs = ""
         archive_notice = ""
@@ -1392,6 +1423,16 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
             </div>
         </section>"""
 
+    drop_section = ""
+    if drops:
+        drop_cards = "".join(drop_card(pid, info, root) for pid, info in drops)
+        drop_section = f"""
+        <section id="price-drop" class="scroll-mt-24">
+            {section_head("chart", "値下がりを見つけた商品", "これまでに紹介した商品の楽天参考価格を毎日チェックし、前回の記録から下がったものを並べています。", root)}
+            <div class="grid gap-5 md:grid-cols-2">{drop_cards}
+            </div>
+        </section>"""
+
     nav_cls = "px-3 py-2 rounded-full hover:bg-orange-50 hover:text-orange-600 transition"
     return f"""{head_html(title, description, page_url, root, 'article' if is_archive else 'website', json_ld(deals, page_url, page_label), is_archive)}
     {event_bar_html(events)}
@@ -1406,12 +1447,12 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
             </a>
             <nav class="hidden md:flex items-center gap-1 text-sm font-bold text-ink-soft">
                 <a href="#ranking" class="{nav_cls}">ランキング</a>
-                <a href="#impulse" class="{nav_cls}">ついで買い</a>
+                <a href="#impulse" class="{nav_cls}">ついで買い</a>{f'<a href="#price-drop" class="{nav_cls}">値下がり</a>' if drops else ""}
                 <a href="#sale-info" class="{nav_cls}">セール情報</a>
                 <a href="#category" class="{nav_cls}">カテゴリ</a>
                 <a href="#archive" class="{nav_cls}">アーカイブ</a>
             </nav>
-            <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored"
+            <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("amazon", "header")}
                class="btn btn-main shrink-0 text-sm font-bold px-4 py-2.5 rounded-full">セール会場 ↗</a>
         </div>
     </header>
@@ -1432,7 +1473,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3 mt-6">
                     <a href="#ranking" class="btn btn-main text-center font-extrabold px-6 py-3.5 rounded-full">{"この日" if is_archive else "今日"}のランキングを見る</a>
-                    <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="text-center bg-white hover:bg-orange-50 ring-1 ring-orange-200 text-ink font-bold px-6 py-3.5 rounded-full shadow-sm transition">Amazonタイムセール会場 ↗</a>
+                    <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("amazon", "hero")} class="text-center bg-white hover:bg-orange-50 ring-1 ring-orange-200 text-ink font-bold px-6 py-3.5 rounded-full shadow-sm transition">Amazonタイムセール会場 ↗</a>
                 </div>
             </div>
             <div class="hidden md:block">
@@ -1456,6 +1497,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
             </div>
         </section>
         {impulse_section}
+        {drop_section}
         {sale_info_html(events, root)}
         <section class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-amber-100 via-orange-50 to-orange-100 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5">
             <div class="pattern absolute inset-0" aria-hidden="true"></div>
@@ -1530,8 +1572,8 @@ def footer_html(root):
     </footer>
 
     <div class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur border-t border-orange-100 px-3 pt-2.5 pb-[calc(.75rem+env(safe-area-inset-bottom))] grid grid-cols-2 gap-2.5">
-        <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" class="shop shop-amz shop-row">Amazonセール会場 <span aria-hidden="true">›</span></a>
-        <a href="{html.escape(RAKUTEN_TOP_URL)}" target="_blank" rel="nofollow noopener sponsored" class="shop shop-rkt shop-row">楽天市場を見る <span aria-hidden="true">›</span></a>
+        <a href="{html.escape(AMAZON_SALE_URL)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("amazon", "bar")} class="shop shop-amz shop-row">Amazonセール会場 <span aria-hidden="true">›</span></a>
+        <a href="{html.escape(RAKUTEN_TOP_URL)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("rakuten", "bar")} class="shop shop-rkt shop-row">楽天市場を見る <span aria-hidden="true">›</span></a>
     </div>
     <script>{PAGE_JS}</script>
 </body>
@@ -1590,7 +1632,7 @@ def update_products(products, deals):
         deal["item_page"] = f"item/{pid}.html"
         info = products.get(pid, {"records": []})
         for key in ("product_name", "category", "slot", "badge", "catch_copy", "deal_reason", "score", "image_url", "item_url",
-                    "review_count", "review_average"):
+                    "item_code", "review_count", "review_average"):
             if deal.get(key) or key not in info:
                 info[key] = deal.get(key)
         records = [r for r in info["records"] if r.get("t") != TODAY_STR]
@@ -1598,21 +1640,150 @@ def update_products(products, deals):
             cur = int(deal.get("price_yen"))
         except (TypeError, ValueError):
             cur = 0
-        deal["price_drop"], deal["record_low"] = price_trend([p for _, p, _ in price_points({"records": records})], cur)
+        prev_prices = [p for _, p, _ in price_points({"records": records})]
+        deal["price_drop"], deal["record_low"] = price_trend(prev_prices, cur)
+        deal["price_same"] = bool(cur and prev_prices and prev_prices[-1] == cur)
         if deal.get("slot") == "main" and deal["price_drop"]:
             deal["badge"] = info["badge"] = BADGES["drop"]
         records.append({"t": TODAY_STR, "price": deal.get("price_yen"), "point": deal.get("point_rate")})
         info["records"] = records[-PRODUCT_RECORDS:]
-        deal["seen_count"] = len(info["records"])
+        deal["seen_count"] = featured_count(info)
         info["last_seen"] = TODAY_STR
+        if cur:
+            info["last_checked"] = TODAY_STR  # 今日の価格は記録済みなので、今日の価格チェックからは外す
+        if deal.get("item_code"):  # 紹介し直した商品は、販売終了扱いでも価格チェックを再開する
+            info.pop("track_off", None)
+            info.pop("track_miss", None)
         products[pid] = info
     # 長く掲載されていない商品は削除してデータを肥大化させない
     cutoff = (NOW - timedelta(days=PRODUCT_KEEP_DAYS)).strftime("%Y-%m-%d")
     products = {k: v for k, v in products.items() if v.get("last_seen", "") >= cutoff}
+    save_products(products)
+    return products
+
+
+def save_products(products):
     os.makedirs(os.path.dirname(PRODUCTS_PATH), exist_ok=True)
     with open(PRODUCTS_PATH, "w", encoding="utf-8") as f:
         json.dump(products, f, ensure_ascii=False, indent=1)
-    return products
+
+
+def featured_count(info):
+    """価格チェックの記録を除いた、実際にサイトで紹介した回数"""
+    return sum(1 for r in info.get("records", []) if r.get("via") != "track")
+
+
+def item_url_key(url):
+    """楽天の商品ページURLから「ショップ/商品管理番号」を取り出す（?以降は無視）"""
+    m = re.match(r"https://item\.rakuten\.co\.jp/([^/?#]+)/([^/?#]+)", str(url or ""))
+    return f"{m[1]}/{m[2]}" if m else ""
+
+
+def tracking_queries(info):
+    """価格チェックの検索条件。商品コードが分かれば1回、分からなければショップ内を探す"""
+    if info.get("item_code"):
+        return [{"itemCode": info["item_code"]}]
+    shop = item_url_key(info.get("item_url")).split("/")[0]
+    words = [w for w in clean_product_name(info.get("product_name", "")).split() if len(w) >= 2][:3]
+    queries = [{"shopCode": shop, "keyword": " ".join(words), "field": 0}] if words else []
+    return queries + [{"shopCode": shop, "sort": "-reviewCount"}]
+
+
+def track_prices(skip_pids=()):
+    """これまでに紹介した商品の楽天参考価格を、紹介した後も1日1回チェックして記録する"""
+    if not RAKUTEN_APP_ID:
+        return
+    products = load_products()
+    targets = sorted((str(info.get("last_checked") or ""), pid) for pid, info in products.items()
+                     if pid not in skip_pids and not info.get("track_off") and item_url_key(info.get("item_url"))
+                     and str(info.get("last_checked") or "")[:10] != TODAY_DATE)
+    calls = errors = 0
+    found, missed = [], []
+    for _, pid in targets:
+        if calls >= TRACK_MAX_CALLS or errors >= 3:
+            break
+        info = products[pid]
+        key = item_url_key(info["item_url"])
+        item, failed = None, False
+        for params in tracking_queries(info):
+            if calls >= TRACK_MAX_CALLS:
+                failed = True
+                break
+            time.sleep(1.2)  # 楽天APIのレート制限(1秒1回)対策
+            calls += 1
+            try:
+                hits = rakuten_request(dict(params, hits=30, availability=0))
+            except Exception as e:
+                print(f"価格チェック notice（{safe_status(e)}{rakuten_error_detail(e)}）")
+                if getattr(getattr(e, "response", None), "status_code", None) == 400:
+                    continue  # 検索語が使えないなど、この商品だけの問題
+                errors += 1
+                failed = True
+                break
+            errors = 0
+            item = next((h for h in hits if (info.get("item_code") and h.get("itemCode") == info["item_code"])
+                         or item_url_key(h.get("itemUrl")) == key), None)
+            if item:
+                break
+        if failed:
+            continue
+        if not item:
+            missed.append(pid)
+            continue
+        info["last_checked"] = TODAY_STR
+        info.pop("track_miss", None)
+        info["item_code"] = item.get("itemCode") or info.get("item_code")
+        try:
+            price = int(item.get("itemPrice") or 0)
+        except (TypeError, ValueError):
+            price = 0
+        if price <= 0 or item.get("availability") == 0:
+            continue  # 売り切れ中は記録しない
+        records = [r for r in info.get("records", []) if not (r.get("via") == "track" and str(r.get("t", ""))[:10] == TODAY_DATE)]
+        records.append({"t": TODAY_STR, "price": price, "point": item.get("pointRate", 1), "via": "track"})
+        info["records"] = records[-PRODUCT_RECORDS:]
+        found.append(pid)
+    # ほとんど見つからないときは検索方法の問題とみなし、「販売終了」の判定に数えない
+    if found or len(missed) < 5:
+        for pid in missed:
+            info = products[pid]
+            info["last_checked"] = TODAY_STR
+            info["track_miss"] = int(info.get("track_miss") or 0) + 1
+            if info["track_miss"] >= TRACK_MAX_MISSES:
+                info["track_off"] = True
+    elif missed:
+        print(f"価格チェック: {len(missed)}件すべて見つからなかったため、今回は販売終了の判定に数えません。")
+    save_products(products)
+    print(f"   価格チェック: 対象{len(targets)}件中 記録{len(found)}件・見つからず{len(missed)}件（API {calls}回）")
+
+
+def price_drops(products, skip_pids=()):
+    """前回の記録から値下がりした紹介済みの商品（直近1日以内に記録したもの・下げ幅の大きい順）"""
+    since = (NOW - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    drops = []
+    for pid, info in products.items():
+        points = price_points(info)
+        if pid in skip_pids or len(points) < 2 or points[-1][0] < since:
+            continue
+        prev, latest = points[-2][1], points[-1][1]
+        if prev - latest >= max(50, prev * 0.02):
+            drops.append(((prev - latest) / prev, pid, info))
+    drops.sort(key=lambda x: x[0], reverse=True)
+    return [(pid, info) for _, pid, info in drops[:DROP_SHOW]]
+
+
+def item_indexable(info):
+    """商品ページを検索に載せるか：3回以上紹介した商品か、価格の記録が1週間分以上たまった商品"""
+    if featured_count(info) >= INDEX_MIN_RECORDS:
+        return True
+    points = price_points(info)
+    if len(points) < INDEX_MIN_POINTS:
+        return False
+    try:
+        span = datetime.strptime(points[-1][0][:10], "%Y-%m-%d") - datetime.strptime(points[0][0][:10], "%Y-%m-%d")
+    except ValueError:
+        return False
+    return span.days >= INDEX_MIN_DAYS
 
 
 def price_points(info):
@@ -1642,7 +1813,7 @@ def price_chart_svg(points):
     coords = [xy(i, p) for i, (_, p, _) in enumerate(points)]
     line = " ".join(f"{x:.1f},{y:.1f}" for x, y in coords)
     area = f"{coords[0][0]:.1f},{h - pad_y} {line} {coords[-1][0]:.1f},{h - pad_y}"
-    dots = "".join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.5" fill="#fff" stroke="#f97316" stroke-width="3"/>' for x, y in coords)
+    dots = "".join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.5" fill="#fff" stroke="#f97316" stroke-width="3"/>' for x, y in coords) if len(coords) <= 40 else ""
     labels = ""
     for value in (max(prices), min(prices)):
         _, y = xy(0, value)
@@ -1660,7 +1831,7 @@ def price_chart_svg(points):
 
 def price_history_html(info):
     points = price_points(info)
-    seen = len(info.get("records", []))
+    seen = featured_count(info)
     if not points:
         return f"""
             <section class="card p-5 md:p-7">
@@ -1680,15 +1851,18 @@ def price_history_html(info):
     stats = "".join(
         f'<div class="bg-orange-50/60 rounded-2xl p-3 text-center"><p class="text-xs font-bold text-ink-soft">{label}</p>'
         f'<p class="text-lg md:text-xl font-extrabold text-ink tabular-nums mt-1">{value}</p></div>'
-        for label, value in (("最新", f"¥{latest:,}"), ("最安記録", f"¥{min(prices):,}"), ("最高記録", f"¥{max(prices):,}"), ("掲載回数", f"{seen}回"))
+        for label, value in (("最新", f"¥{latest:,}"), ("最安記録", f"¥{min(prices):,}"), ("最高記録", f"¥{max(prices):,}"), ("記録回数", f"{len(points)}回"))
     )
     chart = price_chart_svg(points) if len(points) >= 2 else ""
+    featured_times = {r.get("t") for r in info.get("records", []) if r.get("via") != "track"}
     rows = "".join(
-        f'<tr class="border-t border-orange-100"><td class="py-2.5 pr-3 whitespace-nowrap">{html.escape(t[:16].replace("-", "/"))}</td>'
-        f'<td class="py-2.5 pr-3 text-right font-bold tabular-nums">¥{p:,}</td>'
+        f'<tr class="border-t border-orange-100"><td class="py-2.5 pr-3 whitespace-nowrap">{html.escape(t[:16].replace("-", "/"))}'
+        + (' <span class="ml-1 text-[11px] font-bold text-orange-700 bg-orange-50 ring-1 ring-orange-100 rounded-full px-1.5 py-0.5">紹介</span>' if t in featured_times else "")
+        + f'</td><td class="py-2.5 pr-3 text-right font-bold tabular-nums">¥{p:,}</td>'
         f'<td class="py-2.5 text-right whitespace-nowrap">{html.escape(str(pt))}倍</td></tr>'
-        for t, p, pt in reversed(points)
+        for t, p, pt in list(reversed(points))[:30]
     )
+    more = f"（直近30件を表示・全{len(points)}件）" if len(points) > 30 else ""
     return f"""
             <section class="card p-5 md:p-7">
                 <div class="flex items-center justify-between gap-3 flex-wrap">
@@ -1698,10 +1872,10 @@ def price_history_html(info):
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mt-4">{stats}</div>
                 <div class="mt-5">{chart}</div>
                 <table class="w-full text-sm mt-4">
-                    <thead><tr class="text-xs text-ink-soft"><th class="text-left font-bold pb-2">掲載日時</th><th class="text-right font-bold pb-2 pr-3">価格</th><th class="text-right font-bold pb-2">ポイント</th></tr></thead>
+                    <thead><tr class="text-xs text-ink-soft"><th class="text-left font-bold pb-2">記録日時{more}</th><th class="text-right font-bold pb-2 pr-3">価格</th><th class="text-right font-bold pb-2">ポイント</th></tr></thead>
                     <tbody>{rows}</tbody>
                 </table>
-                <p class="text-xs text-ink-soft mt-4 leading-relaxed">当サイトが毎日 朝・夕方の更新時に、楽天市場の商品検索で取得した参考価格です。現在の価格・在庫・ポイント倍率は各ストアでご確認ください。</p>
+                <p class="text-xs text-ink-soft mt-4 leading-relaxed">当サイトが楽天市場の商品検索で取得した参考価格です。「紹介」は当サイトで紹介したときの価格で、紹介した後も1日1回価格をチェックして記録しています（掲載{seen}回）。現在の価格・在庫・ポイント倍率は各ストアでご確認ください。</p>
             </section>"""
 
 
@@ -1718,12 +1892,14 @@ def render_item_page(pid, info):
     if latest:
         deal["price_yen"], deal["point_rate"] = latest[1], latest[2]
         deal["price_drop"], deal["record_low"] = price_trend([p for _, p, _ in points[:-1]], latest[1])
-    deal["seen_count"] = len(info.get("records", []))
-    seen = info.get("records", [])
+        deal["price_same"] = len(points) >= 2 and points[-2][1] == latest[1]
+    deal["seen_count"] = featured_count(info)
+    seen = [r for r in info.get("records", []) if r.get("via") != "track"] or info.get("records", [])
     first_seen = seen[0]["t"][:10].replace("-", "/") if seen else ""
+    checked = f"・価格チェック {latest[0][:10].replace('-', '/')}" if latest else ""
     title = f"{name}の価格推移・セール情報｜{SITE_NAME}"
     description = (f"{name}の楽天参考価格の記録と、AIが選んだおすすめポイント。"
-                   + (f"記録中の最安 ¥{min(p for _, p, _ in points):,}・掲載{len(seen)}回。" if points else "")
+                   + (f"記録中の最安 ¥{min(p for _, p, _ in points):,}・価格の記録{len(points)}回。" if points else "")
                    + "Amazon・楽天の販売ページもすぐ確認できます。")
     cat = product_category(name)
     crumbs = [("ホーム", SITE_URL, f"{root}index.html")]
@@ -1735,7 +1911,7 @@ def render_item_page(pid, info):
     crumb_html = " › ".join(f'<a href="{href}" class="hover:text-orange-600 underline-offset-2 hover:underline">{html.escape(label)}</a>' if href
                             else f'<span class="text-ink font-bold">{html.escape(label)}</span>' for label, _, href in crumbs)
     ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
-    noindex = len(seen) < INDEX_MIN_RECORDS
+    noindex = not item_indexable(info)
     return f"""{head_html(title, description, page_url, root, "article", ld_json, noindex)}
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
         <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
@@ -1759,11 +1935,11 @@ def render_item_page(pid, info):
                     {badges_html(deal)}
                     <h1 class="text-xl md:text-2xl font-extrabold text-ink leading-snug mt-3">{html.escape(name)}</h1>
                     <p class="mt-1.5 text-orange-600 font-bold">{html.escape(deal['catch_copy'])}</p>
-                    <p class="mt-2 text-xs text-ink-soft">初掲載 {first_seen}・最終掲載 {html.escape(str(info.get('last_seen', ''))[:10].replace('-', '/'))}</p>
+                    <p class="mt-2 text-xs text-ink-soft">初掲載 {first_seen}・最終掲載 {html.escape(str(info.get('last_seen', ''))[:10].replace('-', '/'))}{checked}</p>
                     {price_html(deal)}
                     {reasons_html(deal, "text-[15px]")}
                     {grounds_html(deal, False, True)}
-                    {cta_html(deal, page_url, root, False)}
+                    {cta_html(deal, page_url, root, False, "item")}
                 </div>
             </div>
         </article>
@@ -1910,12 +2086,14 @@ def item_list_card(pid, info, root):
     name = clean_product_name(info.get("product_name", "")) or info.get("product_name", "")
     deal = {"product_name": name, "image_url": info.get("image_url") or "", "slot": info.get("slot") or "main"}
     points = price_points(info)
-    seen = len(info.get("records", []))
+    seen = featured_count(info)
     if points:
         prices = [p for _, p, _ in points]
         price_line = (f'<span class="num text-xl font-extrabold text-ink">¥{prices[-1]:,}</span>'
                       f'<span class="text-xs text-ink-soft">最新の楽天参考価格</span>')
-        if len(prices) >= 2:
+        if len(prices) >= 2 and prices[-1] < prices[-2]:
+            price_line += f'<span class="text-xs font-bold text-emerald-700">前回の記録より ¥{prices[-2] - prices[-1]:,} 値下がり</span>'
+        elif len(prices) >= 2:
             price_line += f'<span class="text-xs font-bold text-emerald-700">最安記録 ¥{min(prices):,}</span>'
     else:
         price_line = '<span class="text-xs text-ink-soft">価格は各ストアでご確認ください</span>'
@@ -1931,8 +2109,40 @@ def item_list_card(pid, info, root):
                     <p class="text-xs text-ink-soft mt-1">最終掲載 {last}・掲載{seen}回</p>
                     <div class="flex gap-2 mt-3 flex-wrap text-sm font-bold">
                         <a href="{root}item/{pid}.html" class="text-orange-600 hover:underline underline-offset-2">価格の記録 ›</a>
-                        <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored" class="text-ink-soft hover:text-ink hover:underline underline-offset-2">Amazon ›</a>
-                        <a href="{html.escape(rkt_url)}" target="_blank" rel="nofollow noopener sponsored" class="text-ink-soft hover:text-ink hover:underline underline-offset-2">楽天 ›</a>
+                        <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("amazon", "category")} class="text-ink-soft hover:text-ink hover:underline underline-offset-2">Amazon ›</a>
+                        <a href="{html.escape(rkt_url)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("rakuten", "category")} class="text-ink-soft hover:text-ink hover:underline underline-offset-2">楽天 ›</a>
+                    </div>
+                </div>
+            </article>"""
+
+
+def drop_card(pid, info, root):
+    """トップの「値下がりを見つけた商品」用のカード（前回の記録→最新の価格）"""
+    name = clean_product_name(info.get("product_name", "")) or info.get("product_name", "")
+    deal = {"product_name": name, "image_url": info.get("image_url") or "", "slot": info.get("slot") or "main"}
+    prices = [p for _, p, _ in price_points(info)]
+    prev, latest = prices[-2], prices[-1]
+    chips = (f'<span class="text-[11px] md:text-xs font-bold text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200 px-2 py-0.5 rounded-full">'
+             f'¥{prev - latest:,} 値下がり</span>')
+    if latest <= min(prices[:-1]):
+        chips += ('<span class="text-[11px] md:text-xs font-bold text-white bg-emerald-600 px-2 py-0.5 rounded-full" '
+                  'title="当サイトが記録した楽天参考価格の中で最も安い価格です">記録中の最安</span>')
+    amz_url, rkt_url = build_affiliate_urls(name, info.get("item_url", ""))
+    return f"""
+            <article class="card card-hover p-4 md:p-5 flex gap-3 md:gap-4">
+                {thumbnail_html(deal, "w-20 h-20 md:w-28 md:h-28", CARD_TONES[0], root)}
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-[15px] md:text-base font-extrabold text-ink leading-snug line-clamp-2"><a href="{root}item/{pid}.html" class="hover:text-orange-600 hover:underline underline-offset-2">{html.escape(name)}</a></h3>
+                    <div class="flex items-baseline gap-x-1.5 gap-y-1 flex-wrap mt-1.5">
+                        <span class="text-xs text-ink-soft line-through tabular-nums"><span class="sr-only">前回の記録 </span>¥{prev:,}</span>
+                        <span class="text-xs text-ink-soft" aria-hidden="true">→</span>
+                        <span class="num text-xl font-extrabold text-ink"><span class="sr-only">最新 </span>¥{latest:,}</span>
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap mt-1.5">{chips}</div>
+                    <div class="flex gap-x-3 gap-y-1 mt-2.5 flex-wrap text-[13px] md:text-sm font-bold">
+                        <a href="{root}item/{pid}.html" class="text-orange-600 hover:underline underline-offset-2">価格の記録 ›</a>
+                        <a href="{html.escape(amz_url)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("amazon", "drop")} class="text-ink-soft hover:text-ink hover:underline underline-offset-2">Amazon ›</a>
+                        <a href="{html.escape(rkt_url)}" target="_blank" rel="nofollow noopener sponsored" {click_attrs("rakuten", "drop")} class="text-ink-soft hover:text-ink hover:underline underline-offset-2">楽天 ›</a>
                     </div>
                 </div>
             </article>"""
@@ -2121,12 +2331,12 @@ def render_about_page():
         </section>
         {section("このサイトについて",
                  "<p>ガジェット好きの個人が運営している、セール・値下げ情報のまとめサイトです。Amazon・楽天市場などのセール情報や人気商品の公開情報をもとに、AIが毎日 朝・夕方の2回、注目の商品を選んで紹介しています。</p>"
-                 "<p>紹介文と「AIのチェックポイント」はAIが自動で作成しています。楽天参考価格は、更新時に楽天市場の商品検索で取得した価格を記録したものです。価格・在庫・ポイント倍率は変わるため、購入前に必ず各販売ページでご確認ください。</p>")}
+                 "<p>紹介文と「AIのチェックポイント」はAIが自動で作成しています。楽天参考価格は、楽天市場の商品検索で取得した価格を記録したものです。一度紹介した商品は、その後も1日1回価格をチェックして記録しています。価格・在庫・ポイント倍率は変わるため、購入前に必ず各販売ページでご確認ください。</p>")}
         {section("広告について",
                  f"<p>当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。また、{html.escape(AD_PARTNERS)}を利用しています。</p>"
                  "<p>商品リンクから購入された場合、当サイトが紹介料を受け取ることがあります。紹介料の有無によって、掲載順位や紹介内容を変えることはありません。</p>")}
         {section("プライバシーポリシー",
-                 "<p>当サイトはアクセス解析に GoatCounter を使っています。GoatCounter は Cookie を使わず、個人を特定する情報を保存しない解析ツールです。</p>"
+                 "<p>当サイトはアクセス解析に GoatCounter を使っています。GoatCounter は Cookie を使わず、個人を特定する情報を保存しない解析ツールです。どのリンクやボタンが何回押されたかも、同じ仕組みで数えています。</p>"
                  "<p>リンク先の Amazon・楽天市場などのサイトでは、各社が Cookie を使って紹介元を判別することがあります。取り扱いは各社のプライバシーポリシーをご確認ください。</p>"
                  "<p>お問い合わせでいただいたメールアドレスなどの情報は、返信のためにのみ使います。</p>")}
     </main>
@@ -2141,8 +2351,10 @@ def generate_site(deals):
     events = load_events()
     groups = products_by_category(products)
 
+    # 値下がり欄は、今日のランキングに出ている商品を除いて並べる
+    drops = price_drops(products, {product_id(d) for d in deals if not d.get("is_sample")})
     with open("public/index.html", "w", encoding="utf-8") as f:
-        f.write(render_page(deals, history, TODAY_DATE, "", SITE_URL, events, groups))
+        f.write(render_page(deals, history, TODAY_DATE, "", SITE_URL, events, groups, drops))
     archive_url = f"{SITE_URL}archive/{TODAY_DATE}.html"
     with open(f"public/archive/{TODAY_DATE}.html", "w", encoding="utf-8") as f:
         f.write(render_page(deals, history, TODAY_DATE, "../", archive_url, events, groups))
@@ -2180,9 +2392,10 @@ def generate_site(deals):
             urls.append(f"  <url><loc>{SITE_URL}category/{cat['slug']}.html</loc><lastmod>{groups[cat['slug']][0][1]['last_seen'][:10]}</lastmod><priority>0.8</priority></url>")
     # 記録が少ない商品ページは中身が薄いので、サイトマップに載せない（ページ側も noindex）
     for pid, info in products.items():
-        if len(info.get("records", [])) < INDEX_MIN_RECORDS:
+        if not item_indexable(info):
             continue
-        urls.append(f"  <url><loc>{SITE_URL}item/{pid}.html</loc><lastmod>{info['last_seen'][:10]}</lastmod><priority>0.7</priority></url>")
+        lastmod = max(str(info.get("last_seen", ""))[:10], str((info.get("records") or [{}])[-1].get("t", ""))[:10])
+        urls.append(f"  <url><loc>{SITE_URL}item/{pid}.html</loc><lastmod>{lastmod}</lastmod><priority>0.7</priority></url>")
     with open("public/sitemap.xml", "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(urls) + "\n</urlset>\n")
@@ -2255,9 +2468,9 @@ def select_deals(candidates):
 
 
 def pick_sns_deal(deals):
-    """SNSに投稿する1件（目玉枠でおすすめ度が最も高い商品）を選ぶ"""
+    """SNSに投稿する1件（目玉枠で、値下がり・最安記録の商品を優先し、その中でおすすめ度が最も高い商品）を選ぶ"""
     main = [d for d in deals if d["slot"] == "main" and not d.get("is_sample")]
-    return max(main, key=lambda d: d["score"]) if main else None
+    return max(main, key=lambda d: (bool(d.get("price_drop") or d.get("record_low")), d["score"])) if main else None
 
 
 def sns_body(deal, limit):
@@ -2389,6 +2602,7 @@ if __name__ == "__main__":
 
     print("3. Webサイト更新＆通知送信中...")
     attach_yahoo_items(selected_deals)
+    track_prices({product_id(d) for d in selected_deals if not d.get("is_sample")})
     generate_site(selected_deals)
     notify_discord(selected_deals)
 
