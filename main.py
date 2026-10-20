@@ -1162,16 +1162,8 @@ def about_html(root):
         </section>"""
 
 
-TAILWIND_CONFIG = """
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { ink: { DEFAULT: '#2b3150', soft: '#555d80' }, cream: '#fffaf3' },
-                    boxShadow: { soft: '0 1px 2px rgba(43,49,80,.05), 0 12px 32px -12px rgba(43,49,80,.18)' }
-                }
-            }
-        };
-"""
+# 見た目は Tailwind CSS。ワークフローで public/**/*.html から public/css/site.css をビルドする（設定は tailwind.config.js）
+CSS_VERSION = NOW.strftime("%Y%m%d%H%M")
 
 # __ROOT__ はページの階層に合わせて render_page で置き換える
 PAGE_CSS = """
@@ -1399,7 +1391,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
         </section>"""
 
     nav_cls = "px-3 py-2 rounded-full hover:bg-orange-50 hover:text-orange-600 transition"
-    return f"""{head_html(title, description, page_url, root, 'article' if is_archive else 'website', json_ld(deals, page_url, page_label))}
+    return f"""{head_html(title, description, page_url, root, 'article' if is_archive else 'website', json_ld(deals, page_url, page_label), is_archive)}
     {event_bar_html(events)}
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
@@ -1512,8 +1504,7 @@ def head_html(title, description, page_url, root, og_type, ld_json, noindex=Fals
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>{TAILWIND_CONFIG}    </script>
+    <link rel="stylesheet" href="{root}css/site.css?v={CSS_VERSION}">
     <style>{page_css}    </style>
     <script type="application/ld+json">{ld_json}</script>
     <script data-goatcounter="https://namikilog.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
@@ -2083,6 +2074,23 @@ def render_sale_page(guide, groups, top_deals):
 {footer_html(root)}"""
 
 
+def upgrade_old_archives():
+    """以前に生成した日別アーカイブにも noindex とビルド済みCSSを反映する（何度実行しても同じ結果）"""
+    for name in os.listdir("public/archive"):
+        if not name.endswith(".html"):
+            continue
+        path = os.path.join("public/archive", name)
+        with open(path, encoding="utf-8") as f:
+            page = f.read()
+        new = re.sub(r'<script src="https://cdn\.tailwindcss\.com"></script>\s*<script>\s*tailwind\.config = .*?</script>',
+                     f'<link rel="stylesheet" href="../css/site.css?v={CSS_VERSION}">', page, flags=re.S)
+        if 'name="robots"' not in new:
+            new = re.sub(r'(<link rel="canonical" href="[^"]*">)', r'\1<meta name="robots" content="noindex, follow">', new, count=1)
+        if new != page:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new)
+
+
 def generate_site(deals):
     """トップページ・日別アーカイブ・sitemap.xml・robots.txt を生成する"""
     os.makedirs("public/archive", exist_ok=True)
@@ -2096,6 +2104,8 @@ def generate_site(deals):
     archive_url = f"{SITE_URL}archive/{TODAY_DATE}.html"
     with open(f"public/archive/{TODAY_DATE}.html", "w", encoding="utf-8") as f:
         f.write(render_page(deals, history, TODAY_DATE, "../", archive_url, events, groups))
+
+    upgrade_old_archives()
 
     # 商品ページは毎回すべて作り直す（記録が消えた商品のページは削除する）
     os.makedirs("public/item", exist_ok=True)
@@ -2116,11 +2126,8 @@ def generate_site(deals):
         with open(f"public/sale/{guide['slug']}.html", "w", encoding="utf-8") as f:
             f.write(render_sale_page(guide, groups, top_deals))
 
-    # 実在するアーカイブだけをサイトマップに載せる
-    archive_dates = sorted((n[:-5] for n in os.listdir("public/archive") if n.endswith(".html")), reverse=True)
+    # 日別アーカイブはトップとほぼ同じ内容なので、サイトマップに載せない（ページ側も noindex）
     urls = [f"  <url><loc>{SITE_URL}</loc><lastmod>{TODAY_DATE}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>"]
-    for d in archive_dates:
-        urls.append(f"  <url><loc>{SITE_URL}archive/{d}.html</loc><lastmod>{d}</lastmod><priority>0.6</priority></url>")
     for guide in SALE_GUIDES:
         urls.append(f"  <url><loc>{SITE_URL}sale/{guide['slug']}.html</loc><lastmod>{TODAY_DATE}</lastmod><priority>0.8</priority></url>")
     for cat in CATEGORIES:
