@@ -61,6 +61,7 @@ HISTORY_DAYS = 30
 PRODUCTS_PATH = "data/products.json"
 PRODUCT_RECORDS = 120  # 1商品あたりの価格記録の上限
 PRODUCT_KEEP_DAYS = 180  # これより長く掲載されていない商品ページは削除する
+INDEX_MIN_RECORDS = 3  # 価格の記録がこの回数たまるまで、商品ページは検索に載せない（noindex・サイトマップ除外）
 EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
 
@@ -468,6 +469,13 @@ def tone_down(text):
     return re.sub(r"(業界|実質)?最安(値|級|クラス)?|底値|激安", "お買い得", text)
 
 
+def clean_product_name(name):
+    """商品名から「楽天1位」「【送料無料】」などの売り文句を外す"""
+    name = re.sub(r"【[^】]*】|［[^］]*］|\[[^\]]*\]", " ", str(name))
+    name = re.sub(r"(楽天)?(ランキング)?\s*\d+\s*位(獲得|受賞)?(?=\s|$)|送料無料", " ", name)
+    return re.sub(r"\s+", " ", name).strip()
+
+
 def normalize_deals(deals, candidates=()):
     """AI出力の欠損を補い、ついで買い枠2件を必ず含む5〜6件に整える"""
     # 価格はAIに書かせず、楽天APIで取得した候補と画像URLが一致したときだけ載せる
@@ -495,7 +503,7 @@ def normalize_deals(deals, candidates=()):
         catch_copy = tone_down(str(d.get("catch_copy") or (reasons[0] if reasons else "")))[:24]
         price = src
         cleaned.append({
-            "product_name": str(d["product_name"])[:60],
+            "product_name": (clean_product_name(d["product_name"]) or str(d["product_name"]))[:60],
             "category": str(d.get("category") or ("日用品・家電" if slot == "impulse" else "ガジェット")),
             "slot": slot,
             "badge": BADGES["impulse"] if slot == "impulse" else (
@@ -1471,7 +1479,7 @@ def render_page(deals, history, page_date, root, page_url, events=()):
 {footer_html(root)}"""
 
 
-def head_html(title, description, page_url, root, og_type, ld_json):
+def head_html(title, description, page_url, root, og_type, ld_json, noindex=False):
     """全ページ共通の <head> と【PR】表記"""
     og_image = f"{SITE_URL}{OG_IMAGE}"
     page_css = PAGE_CSS.replace("__ROOT__", root)
@@ -1482,7 +1490,7 @@ def head_html(title, description, page_url, root, og_type, ld_json):
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{html.escape(title)}</title>
     <meta name="description" content="{html.escape(description)}">
-    <link rel="canonical" href="{html.escape(page_url)}">
+    <link rel="canonical" href="{html.escape(page_url)}">{'<meta name="robots" content="noindex, follow">' if noindex else ''}
     <meta name="theme-color" content="#fff5ea">
     <link rel="icon" type="image/svg+xml" href="{root}img/logo.svg">
     <link rel="apple-touch-icon" href="{root}apple-touch-icon.png">
@@ -1708,7 +1716,7 @@ def render_item_page(pid, info):
     deal = dict(info, slot=info.get("slot") or "main", badge=info.get("badge") or BADGES["main"],
                 category=info.get("category") or "ガジェット", catch_copy=info.get("catch_copy") or "",
                 deal_reason=info.get("deal_reason") or "", image_url=info.get("image_url") or "")
-    name = deal["product_name"]
+    name = deal["product_name"] = clean_product_name(deal["product_name"]) or deal["product_name"]
     points = price_points(info)
     latest = points[-1] if points else None
     if latest:
@@ -1726,7 +1734,8 @@ def render_item_page(pid, info):
         {"@type": "ListItem", "position": 2, "name": name, "item": page_url},
     ]}
     ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
-    return f"""{head_html(title, description, page_url, root, "article", ld_json)}
+    noindex = len(seen) < INDEX_MIN_RECORDS
+    return f"""{head_html(title, description, page_url, root, "article", ld_json, noindex)}
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
         <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
             <a href="{root}index.html" class="flex items-center gap-2.5 min-w-0">
@@ -1790,7 +1799,10 @@ def generate_site(deals):
     urls = [f"  <url><loc>{SITE_URL}</loc><lastmod>{TODAY_DATE}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>"]
     for d in archive_dates:
         urls.append(f"  <url><loc>{SITE_URL}archive/{d}.html</loc><lastmod>{d}</lastmod><priority>0.6</priority></url>")
+    # 記録が少ない商品ページは中身が薄いので、サイトマップに載せない（ページ側も noindex）
     for pid, info in products.items():
+        if len(info.get("records", [])) < INDEX_MIN_RECORDS:
+            continue
         urls.append(f"  <url><loc>{SITE_URL}item/{pid}.html</loc><lastmod>{info['last_seen'][:10]}</lastmod><priority>0.7</priority></url>")
     with open("public/sitemap.xml", "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
