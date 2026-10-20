@@ -217,18 +217,25 @@
     "t": "2026-10-16 22:40",
     "price": 1000,
     "point": 3
+   },
+   {
+    "t": "2026-10-20 21:41",
+    "price": 1000,
+    "point": 3
    }
   ],
-  "product_name": "急速PD対応 USB-C ケーブル",
-  "category": "ガジェット",
+  "product_name": "PD 15-100W 急速充電 USB-Cケーブル",
+  "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "高速充電で時間短縮",
-  "deal_reason": "・最新PD規格で最大100W出力\n・耐久性の高いスパイラル構造\n・2本目半額クーポンで更にお得",
-  "score": 85,
+  "catch_copy": "高速PDで即充電",
+  "deal_reason": "・最大100W出力で高速充電・耐久性に優れたケーブル設計・コンパクトで持ち運び便利",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/case-by-case/cabinet/08655288/10418282/10793930/imgrc0081848715.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/case-by-case/1000/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-16 22:40"
+  "last_seen": "2026-10-20 21:41",
+  "review_count": 15156,
+  "review_average": 4.55
  },
  "8c95df4f40": {
   "records": [
@@ -2031,5 +2038,110 @@
   "review_count": 149,
   "review_average": 4.7,
   "last_seen": "2026-10-20 11:25"
+ },
+ "be83c1957b": {
+  "records": [
+   {
+    "t": "2026-10-20 21:41",
+    "price": 26300,
+    "point": 1
+   }
+  ],
+  "product_name": "コムテック ZDR065 前後2カメラドライブレコーダー",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "安全運転の必需品",
+  "deal_reason": "・夜間でもはっきり撮影・衝撃で自動保存・長期保証で安心",
+  "score": 95,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/syatihoko/cabinet/02548057/065_no1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/syatihoko/zdr065/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1915,
+  "review_average": 4.78,
+  "last_seen": "2026-10-20 21:41"
+ },
+ "85a92a879d": {
+  "records": [
+   {
+    "t": "2026-10-20 21:41",
+    "price": 10980,
+    "point": 1
+   }
+  ],
+  "product_name": "SONYセンサー 前後2カメラドライブレコーダー",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "高画質で安心録画",
+  "deal_reason": "・1440Pの鮮明映像・前後カメラで死角ゼロ・簡単取り付けで即使用",
+  "score": 93,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/yumenomori/cabinet/b2h211440he/h21prozt_m.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/yumenomori/b1jlh26he/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 2512,
+  "review_average": 4.36,
+  "last_seen": "2026-10-20 21:41"
+ },
+ "7a150caf85": {
+  "records": [
+   {
+    "t": "2026-10-20 21:41",
+    "price": 19990,
+    "point": 1
+   }
+  ],
+  "product_name": "Pixio PX278WAVE 27インチ WQHDモニター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "滑らか180Hzで快適",
+  "deal_reason": "・高リフレッシュで遅延なし・WQHDで細部まで鮮明・IPSで広視野角",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/pixiogaming/cabinet/px278wave/px278wave.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/pixiogaming/px278wave/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 144,
+  "review_average": 4.61,
+  "last_seen": "2026-10-20 21:41"
+ },
+ "2d6a018255": {
+  "records": [
+   {
+    "t": "2026-10-20 21:41",
+    "price": 49900,
+    "point": 1
+   }
+  ],
+  "product_name": "Jackery Solar Generator 240 Mini",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "アウトドアの電源革命",
+  "deal_reason": "・ソーラーパネルで充電可能・コンパクトで持ち運び楽々・大容量で長時間使用",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jackery-japan/cabinet/13934099/13934159/imgrc0120314259.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/jackery-japan/60-0304-jpb1a1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 1010,
+  "review_average": 4.65,
+  "last_seen": "2026-10-20 21:41"
+ },
+ "78e3f7cd37": {
+  "records": [
+   {
+    "t": "2026-10-20 21:41",
+    "price": 1370,
+    "point": 1
+   }
+  ],
+  "product_name": "彩水 あやみず 500ml×24本",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "やさしい軟水でリフレッシュ",
+  "deal_reason": "・ミネラルバランスが良好・軟らかい味で飲みやすい・24本セットでコスパ抜群",
+  "score": 86,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lifedrinkcompany/cabinet/item-water/ayamizu/proper/mizu24-.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/lifedrinkcompany/ayamizu-500/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "review_count": 3719,
+  "review_average": 4.72,
+  "last_seen": "2026-10-20 21:41"
  }
 }
