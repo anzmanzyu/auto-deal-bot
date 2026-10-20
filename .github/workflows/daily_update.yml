@@ -60,6 +60,9 @@ jobs:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
         run: python main.py
 
+      - name: Build CSS
+        run: npx --yes tailwindcss@3.4.17 -c tailwind.config.js -i tailwind.css -o public/css/site.css --minify
+
       - name: Commit archive and history
         run: |
           git config user.name "github-actions[bot]"
