@@ -46,6 +46,8 @@ def guess_site_url():
 SITE_URL = guess_site_url()
 RAKUTEN_ORIGIN = os.getenv("RAKUTEN_ORIGIN", "https://anzmanzyu.github.io")
 SITE_NAME = "AI厳選 ガジェット特価速報"
+OPERATOR_NAME = "Namiki"
+OPERATOR_EMAIL = "takumi.tsuta.pr@gmail.com"
 SITE_TAGLINE = "Amazon・楽天のお買い得ガジェットを、AIが毎日2回厳選"
 OG_IMAGE = "og.png"  # public/og.png（1200x630）
 
@@ -1520,7 +1522,7 @@ def footer_html(root):
         <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
             <p class="flex items-center gap-2.5 text-ink font-extrabold text-base"><img src="{root}img/logo.svg" alt="" class="w-8 h-8">{html.escape(SITE_NAME)}</p>
             <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日 朝・夕方の2回自動更新しています。</p>
-            <p class="flex flex-wrap gap-x-4 gap-y-1 font-bold"><a href="{root}index.html#category" class="hover:text-orange-600 hover:underline">カテゴリから探す</a>{"".join(f'<a href="{root}sale/{g["slug"]}.html" class="hover:text-orange-600 hover:underline">{html.escape(g["name"])}{g["year"]}</a>' for g in SALE_GUIDES)}<a href="{root}index.html#archive" class="hover:text-orange-600 hover:underline">アーカイブ</a></p>
+            <p class="flex flex-wrap gap-x-4 gap-y-1 font-bold"><a href="{root}index.html#category" class="hover:text-orange-600 hover:underline">カテゴリから探す</a>{"".join(f'<a href="{root}sale/{g["slug"]}.html" class="hover:text-orange-600 hover:underline">{html.escape(g["name"])}{g["year"]}</a>' for g in SALE_GUIDES)}<a href="{root}index.html#archive" class="hover:text-orange-600 hover:underline">アーカイブ</a><a href="{root}about.html" class="hover:text-orange-600 hover:underline">運営者情報・お問い合わせ</a></p>
             <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。また、{AD_PARTNERS}を利用しています。</p>
             <p>掲載内容はAIが公開情報をもとに自動生成したものです。価格・在庫・ポイント倍率は変動するため、購入前に必ず各販売ページでご確認ください。</p>
             <p class="text-xs">最終更新: {TODAY_STR}（日本時間） © {NOW.year} {html.escape(SITE_NAME)}</p>
@@ -2091,6 +2093,46 @@ def upgrade_old_archives():
                 f.write(new)
 
 
+def render_about_page():
+    """運営者情報・お問い合わせ・プライバシーポリシー"""
+    root = ""
+    page_url = f"{SITE_URL}about.html"
+    title = f"運営者情報・お問い合わせ｜{SITE_NAME}"
+    description = f"{SITE_NAME}の運営者情報、お問い合わせ先、掲載内容の選び方、広告とプライバシーポリシーについて。"
+    ld = {"@context": "https://schema.org", "@type": "AboutPage", "name": title, "url": page_url,
+          "publisher": {"@type": "Person", "name": OPERATOR_NAME, "email": OPERATOR_EMAIL}}
+    ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
+    section = lambda h, body: (f'<section class="card p-5 md:p-7"><h2 class="text-lg md:text-xl font-extrabold text-ink">{h}</h2>'
+                               f'<div class="mt-3 space-y-3 text-[15px] text-ink leading-relaxed">{body}</div></section>')
+    mail = html.escape(OPERATOR_EMAIL)
+    return f"""{head_html(title, description, page_url, root, "website", ld_json)}
+    {simple_header_html(root)}
+    <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
+        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">運営者情報</span></nav>
+        <section class="card p-5 md:p-7">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">運営者情報・お問い合わせ</h1>
+            <table class="w-full text-[15px] mt-4"><tbody>
+                <tr class="border-t border-orange-100"><th class="py-2.5 pr-4 text-left font-bold whitespace-nowrap">サイト名</th><td class="py-2.5">{html.escape(SITE_NAME)}</td></tr>
+                <tr class="border-t border-orange-100"><th class="py-2.5 pr-4 text-left font-bold whitespace-nowrap">URL</th><td class="py-2.5">{html.escape(SITE_URL)}</td></tr>
+                <tr class="border-t border-orange-100"><th class="py-2.5 pr-4 text-left font-bold whitespace-nowrap">運営者</th><td class="py-2.5">{html.escape(OPERATOR_NAME)}</td></tr>
+                <tr class="border-t border-orange-100"><th class="py-2.5 pr-4 text-left font-bold whitespace-nowrap">お問い合わせ</th><td class="py-2.5"><a href="mailto:{mail}" class="text-orange-600 underline underline-offset-2 break-all">{mail}</a></td></tr>
+            </tbody></table>
+            <p class="text-sm text-ink-soft mt-4 leading-relaxed">掲載内容の誤り、商品情報の修正・削除のご依頼などは、上記のメールアドレスまでご連絡ください。</p>
+        </section>
+        {section("このサイトについて",
+                 "<p>ガジェット好きの個人が運営している、セール・値下げ情報のまとめサイトです。Amazon・楽天市場などのセール情報や人気商品の公開情報をもとに、AIが毎日 朝・夕方の2回、注目の商品を選んで紹介しています。</p>"
+                 "<p>紹介文と「AIのチェックポイント」はAIが自動で作成しています。楽天参考価格は、更新時に楽天市場の商品検索で取得した価格を記録したものです。価格・在庫・ポイント倍率は変わるため、購入前に必ず各販売ページでご確認ください。</p>")}
+        {section("広告について",
+                 f"<p>当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。また、{html.escape(AD_PARTNERS)}を利用しています。</p>"
+                 "<p>商品リンクから購入された場合、当サイトが紹介料を受け取ることがあります。紹介料の有無によって、掲載順位や紹介内容を変えることはありません。</p>")}
+        {section("プライバシーポリシー",
+                 "<p>当サイトはアクセス解析に GoatCounter を使っています。GoatCounter は Cookie を使わず、個人を特定する情報を保存しない解析ツールです。</p>"
+                 "<p>リンク先の Amazon・楽天市場などのサイトでは、各社が Cookie を使って紹介元を判別することがあります。取り扱いは各社のプライバシーポリシーをご確認ください。</p>"
+                 "<p>お問い合わせでいただいたメールアドレスなどの情報は、返信のためにのみ使います。</p>")}
+    </main>
+{footer_html(root)}"""
+
+
 def generate_site(deals):
     """トップページ・日別アーカイブ・sitemap.xml・robots.txt を生成する"""
     os.makedirs("public/archive", exist_ok=True)
@@ -2106,6 +2148,8 @@ def generate_site(deals):
         f.write(render_page(deals, history, TODAY_DATE, "../", archive_url, events, groups))
 
     upgrade_old_archives()
+    with open("public/about.html", "w", encoding="utf-8") as f:
+        f.write(render_about_page())
 
     # 商品ページは毎回すべて作り直す（記録が消えた商品のページは削除する）
     os.makedirs("public/item", exist_ok=True)
@@ -2128,6 +2172,7 @@ def generate_site(deals):
 
     # 日別アーカイブはトップとほぼ同じ内容なので、サイトマップに載せない（ページ側も noindex）
     urls = [f"  <url><loc>{SITE_URL}</loc><lastmod>{TODAY_DATE}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>"]
+    urls.append(f"  <url><loc>{SITE_URL}about.html</loc><lastmod>{TODAY_DATE}</lastmod><priority>0.3</priority></url>")
     for guide in SALE_GUIDES:
         urls.append(f"  <url><loc>{SITE_URL}sale/{guide['slug']}.html</loc><lastmod>{TODAY_DATE}</lastmod><priority>0.8</priority></url>")
     for cat in CATEGORIES:
