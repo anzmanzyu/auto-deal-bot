@@ -20,6 +20,12 @@
     "t": "2026-10-17 21:37",
     "price": 3979,
     "point": 10
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3979,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "楽天1位 ワイヤレスイヤホン Bluetooth5.4",
@@ -31,7 +37,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/r1-shop/cabinet/10018776/10041819/g16-10.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/r1-shop/ejg16d/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 21:37"
+  "last_seen": "2026-10-17 21:37",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "r1-shop:10000080"
  },
  "aaa053d4f8": {
   "records": [
@@ -54,18 +62,27 @@
     "t": "2026-10-17 21:37",
     "price": 16800,
     "point": 10
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 16800,
+    "point": 10
    }
   ],
   "product_name": "WINTEN 15.6インチ モバイルモニター",
   "category": "ガジェット",
   "slot": "main",
-  "badge": "⚡ 実質最安級",
-  "catch_copy": "テレワークに最適な軽量モニター",
-  "deal_reason": "・期間限定P10倍でポイント大量獲得・フルHDで映像が鮮明・持ち運びやすいサイズでデュアルモニター化が簡単",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "テレワークが快適に",
+  "deal_reason": "・デュアルディスプレイで作業効率UP\n・軽量で持ち運びが楽々\n・フルHD映像で鮮やか表示",
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/win10/cabinet/monitor/imgrc0112809238.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/win10/5523/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 21:37"
+  "last_seen": "2026-10-21 08:11",
+  "item_code": "win10:10009635",
+  "review_count": 5186,
+  "review_average": 4.61,
+  "last_checked": "2026-10-21 08:11"
  },
  "37c70ef5a6": {
   "records": [
@@ -78,6 +95,12 @@
     "t": "2026-10-17 09:16",
     "price": 3690,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3690,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "1.9インチ 超大画面 スマートウォッチ",
@@ -89,7 +112,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/rainbowshoji/cabinet/coupon/imgrc0088053681.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/rainbowshoji/q9pro/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 09:16"
+  "last_seen": "2026-10-17 09:16",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "rainbowshoji:10002227"
  },
  "47c0d032e1": {
   "records": [
@@ -107,6 +132,12 @@
     "t": "2026-10-17 21:37",
     "price": 1580,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1580,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "iPhone対応 軽量モバイルバッテリー",
@@ -118,7 +149,9 @@
   "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/gracevally/cabinet/09355687/09895983/imgrc0132050701.gif?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/gracevally/grace-xpb/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 21:37"
+  "last_seen": "2026-10-17 21:37",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "gracevally:10000026"
  },
  "c963e9172b": {
   "records": [
@@ -136,6 +169,12 @@
     "t": "2026-10-17 21:37",
     "price": 1650,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1650,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "VOX 強炭酸水 500ml 24本",
@@ -147,7 +186,9 @@
   "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/vox-official-store/cabinet/product-thumb/vox_ll_thumb1.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/vox-official-store/10000000/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 21:37"
+  "last_seen": "2026-10-17 21:37",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "vox-official-store:10000000"
  },
  "347ab93ddb": {
   "records": [
@@ -155,6 +196,12 @@
     "t": "2026-10-16 22:40",
     "price": 5980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Primo レディース スマートウォッチ",
@@ -166,7 +213,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/unboxroom/cabinet/sw/sw-p20/sw-p20main2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/unboxroom/sw-p18t_c/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-16 22:40"
+  "last_seen": "2026-10-16 22:40",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "unboxroom:10000113"
  },
  "71ac26262e": {
   "records": [
@@ -179,6 +228,12 @@
     "t": "2026-10-17 09:16",
     "price": 12490,
     "point": 2
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 13990,
+    "point": 2,
+    "via": "track"
    }
   ],
   "product_name": "AIRROBO P20 薄型ロボット掃除機",
@@ -190,7 +245,9 @@
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/airrobo/cabinet/09562581/2023/p20.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/airrobo/airrobo-p20/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 09:16"
+  "last_seen": "2026-10-17 09:16",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "airrobo:10000001"
  },
  "b7d628b0a3": {
   "records": [
@@ -198,6 +255,12 @@
     "t": "2026-10-16 22:40",
     "price": 1690,
     "point": 2
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1690,
+    "point": 2,
+    "via": "track"
    }
   ],
   "product_name": "超軽量 大容量 モバイルバッテリー",
@@ -209,7 +272,9 @@
   "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/case-by-case/cabinet/08655288/09616085/12363017/imgrc0093368206.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/case-by-case/3017/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-16 22:40"
+  "last_seen": "2026-10-16 22:40",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "case-by-case:10002035"
  },
  "0d17ac703e": {
   "records": [
@@ -222,6 +287,12 @@
     "t": "2026-10-20 21:41",
     "price": 1000,
     "point": 3
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1000,
+    "point": 3,
+    "via": "track"
    }
   ],
   "product_name": "PD 15-100W 急速充電 USB-Cケーブル",
@@ -235,7 +306,9 @@
   "item_url": "https://item.rakuten.co.jp/case-by-case/1000/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-20 21:41",
   "review_count": 15156,
-  "review_average": 4.55
+  "review_average": 4.55,
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "case-by-case:10002065"
  },
  "8c95df4f40": {
   "records": [
@@ -243,18 +316,27 @@
     "t": "2026-10-17 21:37",
     "price": 12999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 10999,
+    "point": 1
    }
   ],
-  "product_name": "楽天1位 15.6インチ 4K タッチモニター",
+  "product_name": "15.6インチ 4K タッチモバイルモニター",
   "category": "ガジェット",
   "slot": "main",
-  "badge": "🔥 本日の目玉",
-  "catch_copy": "タッチ操作で直感的操作",
-  "deal_reason": "・4Kタッチパネルで高精細表示・バッテリー内蔵で電源不要・累計販売100万台の信頼感",
+  "badge": "📉 前回より値下がり",
+  "catch_copy": "高解像度タッチ操作",
+  "deal_reason": "・4K映像で細部までクリアに\n・タッチ操作で直感的操作\n・バッテリー内蔵で電源不要",
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/puchirabbit/cabinet/monitor/156/156.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/puchirabbit/1-monitor-b-m156b05/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 21:37"
+  "last_seen": "2026-10-21 08:11",
+  "item_code": "puchirabbit:10000042",
+  "review_count": 1420,
+  "review_average": 4.53,
+  "last_checked": "2026-10-21 08:11"
  },
  "8cd0626b6b": {
   "records": [
@@ -281,6 +363,12 @@
     "t": "2026-10-17 22:42",
     "price": 18700,
     "point": 20
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 18700,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "JBL LIVE BUDS3 完全ワイヤレスイヤホン",
@@ -292,7 +380,9 @@
   "score": 94,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jblstore/cabinet/event/2610m2_thumb/th_livebuds3_2610m2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/jblstore/live-buds3/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 22:42"
+  "last_seen": "2026-10-17 22:42",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "jblstore:10000187"
  },
  "506b45ed56": {
   "records": [
@@ -300,6 +390,12 @@
     "t": "2026-10-17 22:42",
     "price": 8030,
     "point": 20
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 8030,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "JBL WAVE BEAM 2 ワイヤレスイヤホン",
@@ -311,7 +407,9 @@
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jblstore/cabinet/event/2610m2_thumb/th_wavebeam2_2610m2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/jblstore/wave-beam2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 22:42"
+  "last_seen": "2026-10-17 22:42",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "jblstore:10000198"
  },
  "563284f598": {
   "records": [
@@ -319,6 +417,12 @@
     "t": "2026-10-17 22:42",
     "price": 1090,
     "point": 9
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1090,
+    "point": 9,
+    "via": "track"
    }
   ],
   "product_name": "GaN搭載 急速充電器 Type-Cケーブル付き",
@@ -330,7 +434,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/case-by-case/cabinet/08655288/10418282/12211884/imgrc0094269156.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/case-by-case/1000-2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 22:42"
+  "last_seen": "2026-10-17 22:42",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "case-by-case:10002069"
  },
  "d5befca5a1": {
   "records": [
@@ -338,6 +444,12 @@
     "t": "2026-10-17 22:42",
     "price": 1280,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "アイリスオーヤマ 強炭酸水 500ml 24本",
@@ -349,7 +461,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/irisplaza-r/cabinet/talent/crystalspark/312010_312012_rg.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/irisplaza-r/312010/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 22:42"
+  "last_seen": "2026-10-17 22:42",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "irisplaza-r:10158174"
  },
  "c65ddd6d1e": {
   "records": [
@@ -376,6 +490,12 @@
     "t": "2026-10-18 08:55",
     "price": 5990,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5990,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Anker SoundCore 2 ワイヤレススピーカー",
@@ -387,7 +507,9 @@
   "score": 94,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3105_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a3105/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 08:55"
+  "last_seen": "2026-10-18 08:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "anker:10000451"
  },
  "0b787180fc": {
   "records": [
@@ -414,6 +536,12 @@
     "t": "2026-10-18 08:55",
     "price": 4510,
     "point": 10
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 4510,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "JBL GO ESSENTIAL 2 Bluetoothスピーカー",
@@ -425,7 +553,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jblstore/cabinet/event/2610m2_thumb/th_goes_2610m2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/jblstore/go-essential/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 08:55"
+  "last_seen": "2026-10-18 08:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "jblstore:10000105"
  },
  "137f90c626": {
   "records": [
@@ -433,6 +563,12 @@
     "t": "2026-10-18 08:55",
     "price": 1680,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1680,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "iPhone 20W 急速充電器",
@@ -444,7 +580,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/liberesta/cabinet/10036473/10036487/z.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/liberesta/pd20/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 08:55"
+  "last_seen": "2026-10-18 08:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "liberesta:10000082"
  },
  "f83bdae29c": {
   "records": [
@@ -452,6 +590,12 @@
     "t": "2026-10-18 08:55",
     "price": 2297,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1952,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "USB付き 延長コード 電源タップ",
@@ -463,7 +607,9 @@
   "score": 87,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/sybr17/cabinet/09936826/2c2u-0.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/sybr17/2c2u/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 08:55"
+  "last_seen": "2026-10-18 08:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "sybr17:10000136"
  },
  "c64279ea5a": {
   "records": [
@@ -471,6 +617,12 @@
     "t": "2026-10-18 21:54",
     "price": 20999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 20999,
+    "point": 2,
+    "via": "track"
    }
   ],
   "product_name": "23.8インチ 240Hz ゲーミングモニター",
@@ -482,7 +634,9 @@
   "score": 95,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/12866454/12866455/imgrc0145076725.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/hg-238h/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 21:54"
+  "last_seen": "2026-10-18 21:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qifeng:10000074"
  },
  "7e56692148": {
   "records": [
@@ -490,6 +644,12 @@
     "t": "2026-10-18 21:54",
     "price": 25800,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 25800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "LACITA 81W ソーラーパネル",
@@ -501,7 +661,9 @@
   "score": 94,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_gold/c-c-s/citasr01_top_6.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/c-c-s/citasr-01-1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 21:54"
+  "last_seen": "2026-10-18 21:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "c-c-s:10000140"
  },
  "e342e119dc": {
   "records": [
@@ -509,6 +671,12 @@
     "t": "2026-10-18 21:54",
     "price": 8660,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 8660,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミラードライブレコーダー 前後カメラ",
@@ -520,7 +688,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kimiplus/cabinet/08514256/08514257/compass1783063984.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/kimiplus/ad-886-ss/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 21:54"
+  "last_seen": "2026-10-18 21:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "kimiplus:10000071"
  },
  "deed7544cd": {
   "records": [
@@ -528,6 +698,12 @@
     "t": "2026-10-18 21:54",
     "price": 18999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 18999,
+    "point": 2,
+    "via": "track"
    }
   ],
   "product_name": "27インチ 180Hz ゲーミングモニター",
@@ -539,7 +715,9 @@
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10249172/10249174/imgrc0100153303.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/yc-27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 21:54"
+  "last_seen": "2026-10-18 21:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qifeng:10000075"
  },
  "035b070c87": {
   "records": [
@@ -547,6 +725,12 @@
     "t": "2026-10-18 21:54",
     "price": 1900,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1900,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "32GB microSDカード",
@@ -558,7 +742,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bonz/cabinet/03957598/micro32_main02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/bonz/377-00038-micro/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 21:54"
+  "last_seen": "2026-10-18 21:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "bonz:10033080"
  },
  "dd566b2af5": {
   "records": [
@@ -566,6 +752,12 @@
     "t": "2026-10-18 21:54",
     "price": 1580,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1580,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミニハンディ扇風機",
@@ -577,7 +769,9 @@
   "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/aidort/cabinet/1800-1849/1825-zhu.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/aidort/slub-598a2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 21:54"
+  "last_seen": "2026-10-18 21:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "aidort:10000722"
  },
  "2cf758c449": {
   "records": [
@@ -585,6 +779,12 @@
     "t": "2026-10-18 23:49",
     "price": 35999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 35999,
+    "point": 2,
+    "via": "track"
    }
   ],
   "product_name": "2K 260Hz ゲーミングモニター 27インチ",
@@ -596,7 +796,9 @@
   "score": 93,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/13169327/13169329/111.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/hg-4k27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 23:49"
+  "last_seen": "2026-10-18 23:49",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qifeng:10000116"
  },
  "f531a8f8a4": {
   "records": [
@@ -604,6 +806,12 @@
     "t": "2026-10-18 23:49",
     "price": 21980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 21980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ドライブレコーダー 前後2カメラ 4K",
@@ -615,7 +823,9 @@
   "score": 89,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/yumenomori/cabinet/09856724/h36yh10980.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/yumenomori/b1h36dhe/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 23:49"
+  "last_seen": "2026-10-18 23:49",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "yumenomori:10000232"
  },
  "7e8e39cc9e": {
   "records": [
@@ -623,6 +833,12 @@
     "t": "2026-10-18 23:49",
     "price": 35900,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 35900,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "PowerArQ Solar 120W 折り畳み",
@@ -634,7 +850,9 @@
   "score": 86,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kashima-tokeiten/cabinet/thumnail/sale/imgrc0137322057.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/kashima-tokeiten/stsl120d/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 23:49"
+  "last_seen": "2026-10-18 23:49",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "kashima-tokeiten:10096070"
  },
  "230664ba66": {
   "records": [
@@ -642,6 +860,12 @@
     "t": "2026-10-18 23:49",
     "price": 2280,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "microSDカード 64GB アダプター付き",
@@ -653,7 +877,9 @@
   "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bonz/cabinet/03957598/micro64_main02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/bonz/10033097/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 23:49"
+  "last_seen": "2026-10-18 23:49",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "bonz:10033097"
  },
  "87057f2e7f": {
   "records": [
@@ -661,6 +887,12 @@
     "t": "2026-10-18 23:49",
     "price": 2380,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2380,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スマホスタンド 2段式",
@@ -672,7 +904,9 @@
   "score": 82,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ioroi/cabinet/08743967/08743968/xxkjzjcqths-01i.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ioroi/10000230/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 23:49"
+  "last_seen": "2026-10-18 23:49",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "ioroi:10000230"
  },
  "cdc0803ae4": {
   "records": [
@@ -680,6 +914,12 @@
     "t": "2026-10-19 00:02",
     "price": 4380,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 4380,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Mi Tune01 ワイヤレスイヤホン",
@@ -691,7 +931,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/milink-inc/cabinet/sn/tune01bk.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/milink-inc/qcy-t1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:02"
+  "last_seen": "2026-10-19 00:02",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "milink-inc:10000203"
  },
  "381315fc87": {
   "records": [
@@ -699,6 +941,12 @@
     "t": "2026-10-19 00:02",
     "price": 3680,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3680,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "QS16 Pro スマートウォッチ",
@@ -710,7 +958,9 @@
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/smahoservice/cabinet/w/w301984/w301984-02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/smahoservice/w301984-1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:02"
+  "last_seen": "2026-10-19 00:02",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "smahoservice:10003769"
  },
  "5cb2f7ae60": {
   "records": [
@@ -718,6 +968,12 @@
     "t": "2026-10-19 00:02",
     "price": 15999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 15999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "VisionOwl 14インチ モバイルモニター",
@@ -729,7 +985,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/09820502/11638583/imgrc0111583018.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/xl-14/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:02"
+  "last_seen": "2026-10-19 00:02",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qifeng:10000004"
  },
  "6c7725a6e8": {
   "records": [
@@ -737,6 +995,12 @@
     "t": "2026-10-19 00:02",
     "price": 1280,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "オシャモバ 5000mAh モバイルバッテリー",
@@ -748,7 +1012,9 @@
   "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/corsage/cabinet/03257720/oshamoba/co_5000mini_plus01.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/corsage/1005-174_2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:02"
+  "last_seen": "2026-10-19 00:02",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "corsage:10001821"
  },
  "ae4fd4892f": {
   "records": [
@@ -756,6 +1022,12 @@
     "t": "2026-10-19 00:02",
     "price": 590,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 590,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "PD急速充電 シリコンケーブル",
@@ -767,7 +1039,9 @@
   "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/idealife/cabinet/11475677/13429386/imgrc0110300127.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/idealife/i-c001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:02"
+  "last_seen": "2026-10-19 00:02",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "idealife:10000221"
  },
  "3496034d86": {
   "records": [
@@ -775,6 +1049,12 @@
     "t": "2026-10-19 00:04",
     "price": 15999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 15999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "kksmart 13.3インチ 2.5K モバイルモニター",
@@ -786,7 +1066,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/13057332/13057336/1.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/nk-133/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:04"
+  "last_seen": "2026-10-19 00:04",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qifeng:10000000"
  },
  "3a30731f9b": {
   "records": [
@@ -805,7 +1087,9 @@
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/huawei-official/cabinet/12523701/12523702/honma-itemid-1000.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/huawei-official/55026953/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:04"
+  "last_seen": "2026-10-19 00:04",
+  "last_checked": "2026-10-21 08:11",
+  "track_miss": 1
  },
  "5c1126ced9": {
   "records": [
@@ -813,6 +1097,12 @@
     "t": "2026-10-19 00:04",
     "price": 13999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 13999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スタンドセット 15.6インチ フルHD モバイルモニター",
@@ -824,7 +1114,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/puchirabbit/cabinet/ev/156j03s218/j03s218.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/puchirabbit/1-monitor-b-m156j03/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:04"
+  "last_seen": "2026-10-19 00:04",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "puchirabbit:10000052"
  },
  "f797964d16": {
   "records": [
@@ -832,6 +1124,12 @@
     "t": "2026-10-19 00:04",
     "price": 1299,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1299,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "RoiCiel マグネット充電ケーブル",
@@ -843,7 +1141,9 @@
   "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/roiciel/cabinet/08816048/10418553/10452724/imgrc0195106473.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/roiciel/rc-22-gp03/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:04"
+  "last_seen": "2026-10-19 00:04",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "roiciel:10000246"
  },
  "13b2e238a7": {
   "records": [
@@ -851,6 +1151,12 @@
     "t": "2026-10-19 00:04",
     "price": 1229,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1429,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "OZA SODA プレーン炭酸水 500ml 24本",
@@ -862,7 +1168,9 @@
   "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lifedrinkcompany/cabinet/item-soda/ozasoda/proper/oza24_peach.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/lifedrinkcompany/zaosoda-500/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:04"
+  "last_seen": "2026-10-19 00:04",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "lifedrinkcompany:10000004"
  },
  "1387d748ec": {
   "records": [
@@ -870,6 +1178,12 @@
     "t": "2026-10-19 00:19",
     "price": 34800,
     "point": 5
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 34800,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "WINTEN 15.6インチ モバイルモニター",
@@ -881,7 +1195,9 @@
   "score": 95,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/win10/cabinet/monitor/156ltf_sam2025.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/win10/5581/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:19"
+  "last_seen": "2026-10-19 00:19",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "win10:10009706"
  },
  "96a7e13242": {
   "records": [
@@ -900,7 +1216,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/irobotstore/cabinet/03016688/20261017_brandday/202610_505c.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/irobotstore/n185060/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:19"
+  "last_seen": "2026-10-19 00:19",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "irobotstore:10000558"
  },
  "08fe0cdebe": {
   "records": [
@@ -908,6 +1226,12 @@
     "t": "2026-10-19 00:19",
     "price": 3680,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3680,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "超安価 ワイヤレスイヤホン",
@@ -919,7 +1243,9 @@
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/rainbowshoji/cabinet/coupon/imgrc0088150958.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/rainbowshoji/s15/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:19"
+  "last_seen": "2026-10-19 00:19",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "rainbowshoji:10002211"
  },
  "7382cee31b": {
   "records": [
@@ -927,6 +1253,12 @@
     "t": "2026-10-19 00:19",
     "price": 1000,
     "point": 15
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1000,
+    "point": 15,
+    "via": "track"
    }
   ],
   "product_name": "USB-C 急速充電ケーブル 2本セット",
@@ -938,7 +1270,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/case-by-case/cabinet/08655288/08964230/imgrc0087940772.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/case-by-case/1-250-2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:19"
+  "last_seen": "2026-10-19 00:19",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "case-by-case:10002043"
  },
  "1319f6d766": {
   "records": [
@@ -946,6 +1280,12 @@
     "t": "2026-10-19 00:19",
     "price": 2370,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2550,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "OZA 無糖炭酸水 500ml 48本",
@@ -957,7 +1297,9 @@
   "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lifedrinkcompany/cabinet/item-soda/ozasoda/proper/oza48_peach.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/lifedrinkcompany/zaosoda-500-48/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:19"
+  "last_seen": "2026-10-19 00:19",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "lifedrinkcompany:10000022"
  },
  "8fefac7e9e": {
   "records": [
@@ -965,6 +1307,12 @@
     "t": "2026-10-19 09:05",
     "price": 5980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Bluetooth5.3 CDプレーヤー",
@@ -976,7 +1324,9 @@
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/aosasi-store/cabinet/09286135/12754068/imgrc0110309944.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/aosasi-store/appvq200w/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05"
+  "last_seen": "2026-10-19 09:05",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "aosasi-store:10000007"
  },
  "eb90d688ef": {
   "records": [
@@ -984,6 +1334,12 @@
     "t": "2026-10-19 09:05",
     "price": 7990,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 7990,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Anker Soundcore P40i 完全ワイヤレス",
@@ -995,7 +1351,9 @@
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3955_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a3955/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05"
+  "last_seen": "2026-10-19 09:05",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "anker:10001894"
  },
  "fbeabdaa4b": {
   "records": [
@@ -1003,6 +1361,12 @@
     "t": "2026-10-19 09:05",
     "price": 69800,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 69800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "DEEBOT N20 PRO PLUS ロボット掃除機",
@@ -1014,7 +1378,9 @@
   "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/store-ecovacs-japan/cabinet/campaign/261014/dkx55-12ee.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/store-ecovacs-japan/dkx55-12ee/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05"
+  "last_seen": "2026-10-19 09:05",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "store-ecovacs-japan:10000405"
  },
  "2444d26beb": {
   "records": [
@@ -1022,6 +1388,12 @@
     "t": "2026-10-19 09:05",
     "price": 11682,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 11682,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "kksmart 15.6インチ モバイルモニター",
@@ -1033,7 +1405,9 @@
   "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/09898335/1zf.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/x-156/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05"
+  "last_seen": "2026-10-19 09:05",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qifeng:10000077"
  },
  "f20dd58c68": {
   "records": [
@@ -1041,6 +1415,12 @@
     "t": "2026-10-19 09:05",
     "price": 2980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "20800mAh 大容量モバイルバッテリー",
@@ -1052,7 +1432,9 @@
   "score": 93,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/hitidear/cabinet/10065696/10914652/q8---2180.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/hitidear/q8-1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05"
+  "last_seen": "2026-10-19 09:05",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "hitidear:10000115"
  },
  "ba8c85e549": {
   "records": [
@@ -1060,6 +1442,12 @@
     "t": "2026-10-19 09:05",
     "price": 2360,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2840,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "アイリスオーヤマ 炭酸水 500ml",
@@ -1071,7 +1459,9 @@
   "score": 91,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kurashikenkou/cabinet/jisyakura2/ranking_310997.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/kurashikenkou/310997/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05"
+  "last_seen": "2026-10-19 09:05",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "kurashikenkou:10201845"
  },
  "707c01c904": {
   "records": [
@@ -1079,6 +1469,12 @@
     "t": "2026-10-19 10:44",
     "price": 129800,
     "point": 10
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 129800,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "DEEBOT T50 OMNI ロボット掃除機",
@@ -1092,7 +1488,9 @@
   "item_url": "https://item.rakuten.co.jp/store-ecovacs-japan/ddx57-12ee/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1569,
   "review_average": 4.55,
-  "last_seen": "2026-10-19 10:44"
+  "last_seen": "2026-10-19 10:44",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "store-ecovacs-japan:10000468"
  },
  "ea4c6834b7": {
   "records": [
@@ -1100,6 +1498,12 @@
     "t": "2026-10-19 10:44",
     "price": 12999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 12999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "VisionOwl 10.5インチ モバイルモニター",
@@ -1113,7 +1517,9 @@
   "item_url": "https://item.rakuten.co.jp/qifeng/xl-105/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 301,
   "review_average": 4.69,
-  "last_seen": "2026-10-19 10:44"
+  "last_seen": "2026-10-19 10:44",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qifeng:10000130"
  },
  "04b814fe88": {
   "records": [
@@ -1121,6 +1527,12 @@
     "t": "2026-10-19 10:44",
     "price": 4980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 4980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Mi Tune05 ワイヤレスイヤホン",
@@ -1134,7 +1546,9 @@
   "item_url": "https://item.rakuten.co.jp/milink-inc/qcy-t1_s/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 2324,
   "review_average": 4.3,
-  "last_seen": "2026-10-19 10:44"
+  "last_seen": "2026-10-19 10:44",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "milink-inc:10000210"
  },
  "51f25a3c02": {
   "records": [
@@ -1142,6 +1556,12 @@
     "t": "2026-10-19 10:44",
     "price": 19800,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 19800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "コンパクト自動掃除ロボット",
@@ -1155,7 +1575,9 @@
   "item_url": "https://item.rakuten.co.jp/tsukamotoaim/7245-0139-005/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1524,
   "review_average": 4.4,
-  "last_seen": "2026-10-19 10:44"
+  "last_seen": "2026-10-19 10:44",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "tsukamotoaim:10000409"
  },
  "1f90f97b88": {
   "records": [
@@ -1163,6 +1585,12 @@
     "t": "2026-10-19 10:44",
     "price": 2280,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Ennice 20000mAh モバイルバッテリー",
@@ -1176,7 +1604,9 @@
   "item_url": "https://item.rakuten.co.jp/dasimon/ennice-n2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 7614,
   "review_average": 4.52,
-  "last_seen": "2026-10-19 10:44"
+  "last_seen": "2026-10-19 10:44",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "dasimon:10000004"
  },
  "5e364425ea": {
   "records": [
@@ -1205,6 +1635,12 @@
     "t": "2026-10-19 10:54",
     "price": 3680,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3680,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "QS16 Pro限定版 スマートウォッチ",
@@ -1218,7 +1654,9 @@
   "item_url": "https://item.rakuten.co.jp/smahoservice/w302045/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1881,
   "review_average": 4.38,
-  "last_seen": "2026-10-19 10:54"
+  "last_seen": "2026-10-19 10:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "smahoservice:10003822"
  },
  "001428a732": {
   "records": [
@@ -1226,6 +1664,12 @@
     "t": "2026-10-19 10:54",
     "price": 4580,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 4580,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "AI搭載 2.08インチ スマートウォッチ",
@@ -1239,7 +1683,9 @@
   "item_url": "https://item.rakuten.co.jp/daiwasangyou/b06helt/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1851,
   "review_average": 4.45,
-  "last_seen": "2026-10-19 10:54"
+  "last_seen": "2026-10-19 10:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "daiwasangyou:10000345"
  },
  "ff7333402b": {
   "records": [
@@ -1247,6 +1693,12 @@
     "t": "2026-10-19 10:54",
     "price": 45800,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 45800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Plus 405 Combo",
@@ -1260,7 +1712,9 @@
   "item_url": "https://item.rakuten.co.jp/irobotstore/g185060/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1428,
   "review_average": 4.45,
-  "last_seen": "2026-10-19 10:54"
+  "last_seen": "2026-10-19 10:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "irobotstore:10000557"
  },
  "27810de552": {
   "records": [
@@ -1268,6 +1722,12 @@
     "t": "2026-10-19 10:54",
     "price": 980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "シリコン iPhone 充電ケーブル",
@@ -1281,7 +1741,9 @@
   "item_url": "https://item.rakuten.co.jp/smartphonecase/cable-silicon/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1499,
   "review_average": 4.6,
-  "last_seen": "2026-10-19 10:54"
+  "last_seen": "2026-10-19 10:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "smartphonecase:10005517"
  },
  "cccffc30dc": {
   "records": [
@@ -1289,6 +1751,12 @@
     "t": "2026-10-19 10:54",
     "price": 1380,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1380,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミネラルウォーター 500ml 24本",
@@ -1302,7 +1770,9 @@
   "item_url": "https://item.rakuten.co.jp/jyonetsubatake/1127-c1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 4714,
   "review_average": 4.85,
-  "last_seen": "2026-10-19 10:54"
+  "last_seen": "2026-10-19 10:54",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "jyonetsubatake:10000160"
  },
  "da2edd0197": {
   "records": [
@@ -1310,6 +1780,12 @@
     "t": "2026-10-19 10:55",
     "price": 4980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 4980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "CLASSIC スマートウォッチ レディース",
@@ -1323,7 +1799,9 @@
   "item_url": "https://item.rakuten.co.jp/unboxroom/sw-fm08/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1842,
   "review_average": 4.39,
-  "last_seen": "2026-10-19 10:55"
+  "last_seen": "2026-10-19 10:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "unboxroom:10000086"
  },
  "26ebe2227c": {
   "records": [
@@ -1331,6 +1809,12 @@
     "t": "2026-10-19 10:55",
     "price": 8980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 8980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Rotondo2 スマートウォッチ AMOLED",
@@ -1344,7 +1828,9 @@
   "item_url": "https://item.rakuten.co.jp/unboxroom/sw-t8/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1694,
   "review_average": 4.28,
-  "last_seen": "2026-10-19 10:55"
+  "last_seen": "2026-10-19 10:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "unboxroom:10000128"
  },
  "50a42dc853": {
   "records": [
@@ -1373,6 +1859,12 @@
     "t": "2026-10-19 10:55",
     "price": 1280,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "オシャモバ 5000mAh ミニモバイルバッテリー",
@@ -1386,7 +1878,9 @@
   "item_url": "https://item.rakuten.co.jp/corsage/1005-174/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 7082,
   "review_average": 4.21,
-  "last_seen": "2026-10-19 10:55"
+  "last_seen": "2026-10-19 10:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "corsage:10001817"
  },
  "fe8ceda8b4": {
   "records": [
@@ -1394,6 +1888,12 @@
     "t": "2026-10-19 10:55",
     "price": 1528,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1528,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "LDC 国産炭酸水 500ml 24本",
@@ -1407,7 +1907,9 @@
   "item_url": "https://item.rakuten.co.jp/jyonetsubatake/1055-c2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 4173,
   "review_average": 4.76,
-  "last_seen": "2026-10-19 10:55"
+  "last_seen": "2026-10-19 10:55",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "jyonetsubatake:10000152"
  },
  "b721d24712": {
   "records": [
@@ -1415,6 +1917,12 @@
     "t": "2026-10-19 21:08",
     "price": 5999,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN 空気伝導ワイヤレスイヤホン",
@@ -1428,7 +1936,9 @@
   "item_url": "https://item.rakuten.co.jp/ugreen-gear/45785/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1488,
   "review_average": 4.55,
-  "last_seen": "2026-10-19 21:08"
+  "last_seen": "2026-10-19 21:08",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "ugreen-gear:10001200"
  },
  "48d683fb28": {
   "records": [
@@ -1436,6 +1946,12 @@
     "t": "2026-10-19 21:08",
     "price": 8980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 8980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "EDIFIER W820NB PLUS ワイヤレスヘッドホン",
@@ -1449,7 +1965,9 @@
   "item_url": "https://item.rakuten.co.jp/edifier-2022/w820nbplus/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1009,
   "review_average": 4.59,
-  "last_seen": "2026-10-19 21:08"
+  "last_seen": "2026-10-19 21:08",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "edifier-2022:10000021"
  },
  "a5cd3c2953": {
   "records": [
@@ -1457,6 +1975,12 @@
     "t": "2026-10-19 21:08",
     "price": 8903,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 11880,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Shokz OpenMove 骨伝導イヤホン",
@@ -1470,7 +1994,9 @@
   "item_url": "https://item.rakuten.co.jp/aftershokz-official/aft-sp-000054/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 970,
   "review_average": 4.51,
-  "last_seen": "2026-10-19 21:08"
+  "last_seen": "2026-10-19 21:08",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "aftershokz-official:10000007"
  },
  "69eb0c34da": {
   "records": [
@@ -1478,6 +2004,12 @@
     "t": "2026-10-19 21:08",
     "price": 78248,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 78248,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "GMKtec M8 ミニPC Ryzen5",
@@ -1491,7 +2023,9 @@
   "item_url": "https://item.rakuten.co.jp/gmktecdirect/m8/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 174,
   "review_average": 4.55,
-  "last_seen": "2026-10-19 21:08"
+  "last_seen": "2026-10-19 21:08",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "gmktecdirect:10000093"
  },
  "796f53f368": {
   "records": [
@@ -1499,6 +2033,12 @@
     "t": "2026-10-19 21:08",
     "price": 1380,
     "point": 10
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1380,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "iPhone 20W 急速充電ケーブルセット",
@@ -1512,7 +2052,9 @@
   "item_url": "https://item.rakuten.co.jp/akiya/tan-3216-seto-ayx/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 9445,
   "review_average": 4.5,
-  "last_seen": "2026-10-19 21:08"
+  "last_seen": "2026-10-19 21:08",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "akiya:10000081"
  },
  "43ac575fbe": {
   "records": [
@@ -1520,6 +2062,12 @@
     "t": "2026-10-19 21:08",
     "price": 1490,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1490,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "東芝 アルカリ乾電池 40本セット",
@@ -1533,7 +2081,9 @@
   "item_url": "https://item.rakuten.co.jp/ho-metec/denti40p-t34/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 234,
   "review_average": 4.8,
-  "last_seen": "2026-10-19 21:08"
+  "last_seen": "2026-10-19 21:08",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "ho-metec:10008022"
  },
  "05de08e65c": {
   "records": [
@@ -1541,6 +2091,12 @@
     "t": "2026-10-19 22:03",
     "price": 24800,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 24800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Transcend 512GB スティックSSD",
@@ -1554,7 +2110,9 @@
   "item_url": "https://item.rakuten.co.jp/esupply/ts512gesd310c/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 42,
   "review_average": 4.83,
-  "last_seen": "2026-10-19 22:03"
+  "last_seen": "2026-10-19 22:03",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "esupply:10098992"
  },
  "3a5c03ea39": {
   "records": [
@@ -1562,6 +2120,12 @@
     "t": "2026-10-19 22:03",
     "price": 5980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Mi T23 OWS ワイヤレスイヤホン",
@@ -1575,7 +2139,9 @@
   "item_url": "https://item.rakuten.co.jp/milink-inc/r01qt0005/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1013,
   "review_average": 4.44,
-  "last_seen": "2026-10-19 22:03"
+  "last_seen": "2026-10-19 22:03",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "milink-inc:10000260"
  },
  "7e2d399a25": {
   "records": [
@@ -1583,6 +2149,12 @@
     "t": "2026-10-19 22:03",
     "price": 3201,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3201,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Logitech K295GP ワイヤレスキーボード",
@@ -1596,7 +2168,9 @@
   "item_url": "https://item.rakuten.co.jp/logicool/k295gp/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1063,
   "review_average": 4.5,
-  "last_seen": "2026-10-19 22:03"
+  "last_seen": "2026-10-19 22:03",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "logicool:10000345"
  },
  "c619ecc78a": {
   "records": [
@@ -1604,6 +2178,12 @@
     "t": "2026-10-19 22:03",
     "price": 5280,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN ワイヤレスキーボード",
@@ -1617,7 +2197,9 @@
   "item_url": "https://item.rakuten.co.jp/ugreen-gear/25441/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 494,
   "review_average": 4.55,
-  "last_seen": "2026-10-19 22:03"
+  "last_seen": "2026-10-19 22:03",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "ugreen-gear:10000702"
  },
  "37fdf2a411": {
   "records": [
@@ -1625,6 +2207,12 @@
     "t": "2026-10-19 22:03",
     "price": 1380,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1380,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "急速充電ケーブルセット 20W",
@@ -1638,7 +2226,9 @@
   "item_url": "https://item.rakuten.co.jp/asukapainting/cdqsjx/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 4128,
   "review_average": 4.6,
-  "last_seen": "2026-10-19 22:03"
+  "last_seen": "2026-10-19 22:03",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "asukapainting:10000005"
  },
  "ac95d77cbc": {
   "records": [
@@ -1646,6 +2236,12 @@
     "t": "2026-10-19 22:03",
     "price": 2280,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Panasonic 40本セット 乾電池",
@@ -1659,7 +2255,9 @@
   "item_url": "https://item.rakuten.co.jp/bp-shop/10027126/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 223,
   "review_average": 4.75,
-  "last_seen": "2026-10-19 22:03"
+  "last_seen": "2026-10-19 22:03",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "bp-shop:10027126"
  },
  "6e72221bdf": {
   "records": [
@@ -1667,6 +2265,12 @@
     "t": "2026-10-19 22:29",
     "price": 12800,
     "point": 20
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 12800,
+    "point": 20,
+    "via": "track"
    }
   ],
   "product_name": "SUNEAST ポータブル SSD Nano 256GB",
@@ -1680,7 +2284,9 @@
   "item_url": "https://item.rakuten.co.jp/fastonline/nano/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 41,
   "review_average": 4.49,
-  "last_seen": "2026-10-19 22:29"
+  "last_seen": "2026-10-19 22:29",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "fastonline:10001131"
  },
  "4fb0c6b8e9": {
   "records": [
@@ -1688,6 +2294,12 @@
     "t": "2026-10-19 22:29",
     "price": 40980,
     "point": 5
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 40980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "シリコンパワー 外付け SSD 2TB",
@@ -1701,7 +2313,9 @@
   "item_url": "https://item.rakuten.co.jp/silicon-power-direct/sp020tbpsds05saktc/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 44,
   "review_average": 4.45,
-  "last_seen": "2026-10-19 22:29"
+  "last_seen": "2026-10-19 22:29",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "silicon-power-direct:10000074"
  },
  "19804baeba": {
   "records": [
@@ -1709,6 +2323,12 @@
     "t": "2026-10-19 22:29",
     "price": 3980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ワイヤレス折りたたみキーボード",
@@ -1722,7 +2342,9 @@
   "item_url": "https://item.rakuten.co.jp/ezone/100376/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 391,
   "review_average": 4.43,
-  "last_seen": "2026-10-19 22:29"
+  "last_seen": "2026-10-19 22:29",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "ezone:10000222"
  },
  "8564ac2994": {
   "records": [
@@ -1730,6 +2352,12 @@
     "t": "2026-10-19 22:29",
     "price": 3980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ワイヤレスマウスセット",
@@ -1743,7 +2371,9 @@
   "item_url": "https://item.rakuten.co.jp/ezone/100775/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 296,
   "review_average": 4.41,
-  "last_seen": "2026-10-19 22:29"
+  "last_seen": "2026-10-19 22:29",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "ezone:10001303"
  },
  "e448a81a85": {
   "records": [
@@ -1751,6 +2381,12 @@
     "t": "2026-10-19 22:29",
     "price": 1250,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1250,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "単3アルカリ乾電池 40本",
@@ -1764,7 +2400,9 @@
   "item_url": "https://item.rakuten.co.jp/watch-me/lr6t/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 137,
   "review_average": 4.82,
-  "last_seen": "2026-10-19 22:29"
+  "last_seen": "2026-10-19 22:29",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "watch-me:10006181"
  },
  "87bc717973": {
   "records": [
@@ -1772,6 +2410,12 @@
     "t": "2026-10-19 22:29",
     "price": 1180,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1180,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "QISI 20W USB-C 2ポート充電器",
@@ -1785,7 +2429,9 @@
   "item_url": "https://item.rakuten.co.jp/qisi/4571552421187-1014/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1343,
   "review_average": 4.41,
-  "last_seen": "2026-10-19 22:29"
+  "last_seen": "2026-10-19 22:29",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "qisi:10000090"
  },
  "b7073beaa5": {
   "records": [
@@ -1793,6 +2439,12 @@
     "t": "2026-10-20 08:43",
     "price": 5980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "FUNLOGY ポータブル防水Bluetoothスピーカー",
@@ -1806,7 +2458,9 @@
   "item_url": "https://item.rakuten.co.jp/entamefactory/funlogy_portable2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 311,
   "review_average": 4.63,
-  "last_seen": "2026-10-20 08:43"
+  "last_seen": "2026-10-20 08:43",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "entamefactory:10000459"
  },
  "d5c45ee059": {
   "records": [
@@ -1814,6 +2468,12 @@
     "t": "2026-10-20 08:43",
     "price": 5390,
     "point": 5
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 5390,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "JBL GO 4 コンパクトBluetoothスピーカー",
@@ -1827,7 +2487,9 @@
   "item_url": "https://item.rakuten.co.jp/jblstore/go-4/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 287,
   "review_average": 4.79,
-  "last_seen": "2026-10-20 08:43"
+  "last_seen": "2026-10-20 08:43",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "jblstore:10000180"
  },
  "d174c7f616": {
   "records": [
@@ -1835,6 +2497,12 @@
     "t": "2026-10-20 08:43",
     "price": 2180,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 2180,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Bluetooth 5ボタン ワイヤレスマウス",
@@ -1848,7 +2516,9 @@
   "item_url": "https://item.rakuten.co.jp/sanwadirect/400-mabt158/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 684,
   "review_average": 4.36,
-  "last_seen": "2026-10-20 08:43"
+  "last_seen": "2026-10-20 08:43",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "sanwadirect:10096798"
  },
  "b9163e57e6": {
   "records": [
@@ -1856,6 +2526,12 @@
     "t": "2026-10-20 08:43",
     "price": 15992,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 15992,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Luxmia ポータブルプロジェクター",
@@ -1869,7 +2545,9 @@
   "item_url": "https://item.rakuten.co.jp/maclogi/mc-0001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 223,
   "review_average": 4.49,
-  "last_seen": "2026-10-20 08:43"
+  "last_seen": "2026-10-20 08:43",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "maclogi:10000110"
  },
  "56ba549e66": {
   "records": [
@@ -1877,6 +2555,12 @@
     "t": "2026-10-20 08:43",
     "price": 1180,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1180,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "microSDHC Class10 128GB カード",
@@ -1890,7 +2574,9 @@
   "item_url": "https://item.rakuten.co.jp/flashstore/4984279105924/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 463,
   "review_average": 4.61,
-  "last_seen": "2026-10-20 08:43"
+  "last_seen": "2026-10-20 08:43",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "flashstore:10005393"
  },
  "1a92ff0be7": {
   "records": [
@@ -1911,7 +2597,9 @@
   "item_url": "https://item.rakuten.co.jp/sktadv/km-4582480300468/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 157,
   "review_average": 4.87,
-  "last_seen": "2026-10-20 08:43"
+  "last_seen": "2026-10-20 08:43",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "sktadv:10001820"
  },
  "7246f43322": {
   "records": [
@@ -1919,6 +2607,12 @@
     "t": "2026-10-20 11:25",
     "price": 24980,
     "point": 10
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 24980,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "Marshall EMBERTON III Bluetoothスピーカー",
@@ -1932,7 +2626,9 @@
   "item_url": "https://item.rakuten.co.jp/marshall-official/7340055399449/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 302,
   "review_average": 4.88,
-  "last_seen": "2026-10-20 11:25"
+  "last_seen": "2026-10-20 11:25",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "marshall-official:10000035"
  },
  "21e6f188aa": {
   "records": [
@@ -1940,6 +2636,12 @@
     "t": "2026-10-20 11:25",
     "price": 69800,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 69800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "XGIMI Elfin Flip Pro プロジェクター",
@@ -1953,7 +2655,9 @@
   "item_url": "https://item.rakuten.co.jp/xgimi-store/elfinflippro/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 218,
   "review_average": 4.73,
-  "last_seen": "2026-10-20 11:25"
+  "last_seen": "2026-10-20 11:25",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "xgimi-store:10000066"
  },
  "2be2872325": {
   "records": [
@@ -1961,6 +2665,12 @@
     "t": "2026-10-20 11:25",
     "price": 4400,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 4400,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Logitech Signature M650 ワイヤレスマウス",
@@ -1974,7 +2684,9 @@
   "item_url": "https://item.rakuten.co.jp/logicool/m650mgr/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 394,
   "review_average": 4.58,
-  "last_seen": "2026-10-20 11:25"
+  "last_seen": "2026-10-20 11:25",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "logicool:10000444"
  },
  "e18b8ce44a": {
   "records": [
@@ -1982,6 +2694,12 @@
     "t": "2026-10-20 11:25",
     "price": 17980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 17980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "GPS搭載 11インチ Androidタブレット",
@@ -1995,7 +2713,9 @@
   "item_url": "https://item.rakuten.co.jp/tabletpckoubou/at60947/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 5371,
   "review_average": 4.33,
-  "last_seen": "2026-10-20 11:25"
+  "last_seen": "2026-10-20 11:25",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "tabletpckoubou:10002164"
  },
  "785cac52a9": {
   "records": [
@@ -2016,7 +2736,9 @@
   "item_url": "https://item.rakuten.co.jp/clinkshop425/microsdxchccard12/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 446,
   "review_average": 4.28,
-  "last_seen": "2026-10-20 11:25"
+  "last_seen": "2026-10-20 11:25",
+  "last_checked": "2026-10-21 08:11",
+  "track_miss": 1
  },
  "a396a69932": {
   "records": [
@@ -2024,6 +2746,12 @@
     "t": "2026-10-20 11:25",
     "price": 1785,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1785,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "くまモン 2L天然水（6年保存）",
@@ -2037,7 +2765,9 @@
   "item_url": "https://item.rakuten.co.jp/mizuomoi/4571461293615/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 149,
   "review_average": 4.7,
-  "last_seen": "2026-10-20 11:25"
+  "last_seen": "2026-10-20 11:25",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "mizuomoi:10000009"
  },
  "be83c1957b": {
   "records": [
@@ -2045,6 +2775,12 @@
     "t": "2026-10-20 21:41",
     "price": 26300,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 26300,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "コムテック ZDR065 前後2カメラドライブレコーダー",
@@ -2058,7 +2794,9 @@
   "item_url": "https://item.rakuten.co.jp/syatihoko/zdr065/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1915,
   "review_average": 4.78,
-  "last_seen": "2026-10-20 21:41"
+  "last_seen": "2026-10-20 21:41",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "syatihoko:10004444"
  },
  "85a92a879d": {
   "records": [
@@ -2066,6 +2804,12 @@
     "t": "2026-10-20 21:41",
     "price": 10980,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 10980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SONYセンサー 前後2カメラドライブレコーダー",
@@ -2079,7 +2823,9 @@
   "item_url": "https://item.rakuten.co.jp/yumenomori/b1jlh26he/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 2512,
   "review_average": 4.36,
-  "last_seen": "2026-10-20 21:41"
+  "last_seen": "2026-10-20 21:41",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "yumenomori:10000183"
  },
  "7a150caf85": {
   "records": [
@@ -2087,6 +2833,12 @@
     "t": "2026-10-20 21:41",
     "price": 19990,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 39980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Pixio PX278WAVE 27インチ WQHDモニター",
@@ -2100,7 +2852,9 @@
   "item_url": "https://item.rakuten.co.jp/pixiogaming/px278wave/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 144,
   "review_average": 4.61,
-  "last_seen": "2026-10-20 21:41"
+  "last_seen": "2026-10-20 21:41",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "pixiogaming:10000125"
  },
  "2d6a018255": {
   "records": [
@@ -2108,6 +2862,12 @@
     "t": "2026-10-20 21:41",
     "price": 49900,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 49900,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Jackery Solar Generator 240 Mini",
@@ -2121,7 +2881,9 @@
   "item_url": "https://item.rakuten.co.jp/jackery-japan/60-0304-jpb1a1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 1010,
   "review_average": 4.65,
-  "last_seen": "2026-10-20 21:41"
+  "last_seen": "2026-10-20 21:41",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "jackery-japan:10000120"
  },
  "78e3f7cd37": {
   "records": [
@@ -2129,6 +2891,12 @@
     "t": "2026-10-20 21:41",
     "price": 1370,
     "point": 1
+   },
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1370,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "彩水 あやみず 500ml×24本",
@@ -2142,6 +2910,100 @@
   "item_url": "https://item.rakuten.co.jp/lifedrinkcompany/ayamizu-500/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 3719,
   "review_average": 4.72,
-  "last_seen": "2026-10-20 21:41"
+  "last_seen": "2026-10-20 21:41",
+  "last_checked": "2026-10-21 08:11",
+  "item_code": "lifedrinkcompany:10000013"
+ },
+ "be279eec93": {
+  "records": [
+   {
+    "t": "2026-10-21 08:11",
+    "price": 24800,
+    "point": 1
+   }
+  ],
+  "product_name": "HUAWEI FreeClip 2 S ワイヤレスイヤホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "長時間快適リスニング",
+  "deal_reason": "・38時間の連続再生で外出も安心\n・イヤーカフでずれにくくフィット感抜群\n・軽量設計で長時間装着が楽",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/huawei-official/cabinet/freeclip-2-s/13899223/freeclip2s-all.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/huawei-official/55037246/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "huawei-official:10000516",
+  "review_count": 1116,
+  "review_average": 4.67,
+  "last_seen": "2026-10-21 08:11",
+  "last_checked": "2026-10-21 08:11"
+ },
+ "82781293ed": {
+  "records": [
+   {
+    "t": "2026-10-21 08:11",
+    "price": 3380,
+    "point": 1
+   }
+  ],
+  "product_name": "スマートウォッチ 1.85インチ 大画面",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "健康管理が手軽に",
+  "deal_reason": "・大画面で情報が見やすい\n・血中酸素測定で健康チェック\n・長時間バッテリーで毎日使える",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ezone/cabinet/w/101076/101076a.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/ezone/100911b/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "ezone:10001611",
+  "review_count": 3312,
+  "review_average": 4.33,
+  "last_seen": "2026-10-21 08:11",
+  "last_checked": "2026-10-21 08:11"
+ },
+ "426eedbf23": {
+  "records": [
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1280,
+    "point": 1
+   }
+  ],
+  "product_name": "パナソニック アルカリ乾電池 4本×5",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "長持ちで安心",
+  "deal_reason": "・10年保存で備蓄に最適\n・安定した電圧で機器保護\n・信頼のパナソニック品質",
+  "score": 87,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bp-shop/cabinet/06119332/whiteimg0218/10017803-ko3.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/bp-shop/10017803-ko3/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "bp-shop:10017928",
+  "review_count": 1242,
+  "review_average": 4.65,
+  "last_seen": "2026-10-21 08:11",
+  "last_checked": "2026-10-21 08:11"
+ },
+ "019107c144": {
+  "records": [
+   {
+    "t": "2026-10-21 08:11",
+    "price": 1440,
+    "point": 1
+   }
+  ],
+  "product_name": "6口 独立スイッチ 電源タップ",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "使いやすさ抜群",
+  "deal_reason": "・各コンセント独立スイッチで安全\n・180°回転プラグで設置自由\n・コード整理でデスクがすっきり",
+  "score": 84,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/fumitake/cabinet/product_img/10604106/11796515/ps6ad-fm-05.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/fumitake/kzm-ps6ad-410/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "fumitake:10000944",
+  "review_count": 621,
+  "review_average": 4.61,
+  "last_seen": "2026-10-21 08:11",
+  "last_checked": "2026-10-21 08:11"
  }
 }
