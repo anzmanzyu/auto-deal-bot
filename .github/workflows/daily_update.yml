@@ -84,3 +84,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Notify IndexNow
+        continue-on-error: true
+        env:
+          SITE_URL: https://deals.namiki-log.com/
+        run: python main.py --indexnow
