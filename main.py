@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import time
 import json
 import html
@@ -73,6 +74,9 @@ DROP_SHOW = 6  # トップの「値下がりを見つけた商品」に出す件
 DROP_PAGE_DAYS = 3  # 値下がり一覧ページ drops.html に載せる期間（日）と件数
 DROP_PAGE_SHOW = 30
 DROP_PAGE_MIN = 3  # この件数に満たない日は、値下がり一覧ページを検索に載せない
+FEED_SHOW = 30  # RSSフィード feed.xml に載せる商品の件数
+# IndexNow（Bingなどへ更新ページを通知する仕組み）の確認キー。公開しても問題ない値で、public/<キー>.txt として配信する
+INDEXNOW_KEY = "6f3b9d2e8a1c4f7b9e0d5a2c8b7f1e4d"
 EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
 THREADS_STATE_PATH = "data/threads_state.json"  # 1コメ（自己返信）でURLを付けられるかの記録
@@ -1565,7 +1569,8 @@ def head_html(title, description, page_url, root, og_type, ld_json, noindex=Fals
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{html.escape(title)}</title>
     <meta name="description" content="{html.escape(description)}">
-    <link rel="canonical" href="{html.escape(page_url)}">{'<meta name="robots" content="noindex, follow">' if noindex else ''}
+    <link rel="canonical" href="{html.escape(page_url)}">
+    <link rel="alternate" type="application/rss+xml" title="{html.escape(SITE_NAME)}" href="{SITE_URL}feed.xml">{'<meta name="robots" content="noindex, follow">' if noindex else ''}
     <meta name="theme-color" content="#fff5ea">
     <link rel="icon" type="image/svg+xml" href="{root}img/logo.svg">
     <link rel="apple-touch-icon" href="{root}apple-touch-icon.png">
@@ -2321,6 +2326,64 @@ def render_category_page(cat, items, groups, top_deals):
 {footer_html(root)}"""
 
 
+def render_feed(products):
+    """RSSフィード public/feed.xml（最近サイトで紹介した商品を新しい順に。価格チェックだけの更新は載せない）"""
+    def stamp(info):
+        return str(info.get("last_seen", ""))
+    items = sorted(products.items(), key=lambda kv: stamp(kv[1]), reverse=True)[:FEED_SHOW]
+    entries = []
+    for pid, info in items:
+        points = price_points(info)
+        price = f"楽天参考価格 ¥{points[-1][1]:,}" if points else ""
+        try:
+            pub = datetime.strptime(stamp(info)[:16], "%Y-%m-%d %H:%M").replace(tzinfo=JST)
+        except ValueError:
+            pub = NOW
+        desc = "。".join(x for x in (info.get("catch_copy") or "", price) if x)
+        url = f"{SITE_URL}item/{pid}.html"
+        entries.append(f"""    <item>
+      <title>{html.escape(display_name(info))}</title>
+      <link>{url}</link>
+      <guid isPermaLink="false">{pid}-{html.escape(stamp(info)[:10])}</guid>
+      <pubDate>{pub.strftime("%a, %d %b %Y %H:%M:%S %z")}</pubDate>
+      <description>{html.escape(desc)}</description>
+    </item>""")
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{html.escape(SITE_NAME)}</title>
+    <link>{SITE_URL}</link>
+    <atom:link href="{SITE_URL}feed.xml" rel="self" type="application/rss+xml"/>
+    <description>{html.escape(SITE_TAGLINE)}。毎日 朝・夕方に更新。</description>
+    <language>ja</language>
+    <lastBuildDate>{NOW.strftime("%a, %d %b %Y %H:%M:%S %z")}</lastBuildDate>
+{chr(10).join(entries)}
+  </channel>
+</rss>
+"""
+
+
+def ping_indexnow():
+    """デプロイ後に、サイトマップのうち今日更新したURLを IndexNow（Bing・Yandexなど）へ通知する"""
+    try:
+        with open("public/sitemap.xml", encoding="utf-8") as f:
+            sitemap = f.read()
+    except FileNotFoundError:
+        print("IndexNow: sitemap.xml が無いため通知しません。")
+        return
+    urls = [loc for loc, lastmod in re.findall(r"<loc>([^<]+)</loc><lastmod>([^<]+)</lastmod>", sitemap) if lastmod[:10] == TODAY_DATE]
+    if not urls or not SITE_URL.startswith("https://"):
+        print("IndexNow: 通知するURLがありません。")
+        return
+    host = urllib.parse.urlparse(SITE_URL).netloc
+    try:
+        res = requests.post("https://api.indexnow.org/indexnow", timeout=20, json={
+            "host": host, "key": INDEXNOW_KEY, "keyLocation": f"{SITE_URL}{INDEXNOW_KEY}.txt", "urlList": urls[:10000]})
+        print(f"IndexNow: {len(urls)}件を通知しました（HTTP {res.status_code}）")
+    except Exception as e:
+        print(f"IndexNow notice: {safe_status(e)}")
+
+
 def render_drops_page(drops, groups):
     """値下がり一覧 public/drops.html（直近数日の値下がりを下げ幅の大きい順に）"""
     root = ""
@@ -2537,6 +2600,10 @@ def generate_site(deals):
         f.write(render_drops_page(page_drops, groups))
     with open("public/404.html", "w", encoding="utf-8") as f:
         f.write(render_404_page(groups))
+    with open("public/feed.xml", "w", encoding="utf-8") as f:
+        f.write(render_feed(products))
+    with open(f"public/{INDEXNOW_KEY}.txt", "w", encoding="utf-8") as f:
+        f.write(INDEXNOW_KEY)
     os.makedirs("public/sale", exist_ok=True)
     for guide in SALE_GUIDES:
         with open(f"public/sale/{guide['slug']}.html", "w", encoding="utf-8") as f:
@@ -2799,7 +2866,9 @@ def post_to_sns(deals):
             print(f"{name} 投稿エラー（{safe_status(e)}）")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and "--indexnow" in sys.argv:
+    ping_indexnow()
+elif __name__ == "__main__":
     print("1. 候補データを取得中...")
     raw_candidates = fetch_candidates()
     print(f"   取得件数: {len(raw_candidates)}件")
