@@ -72,6 +72,8 @@ TRACK_MAX_MISSES = 4  # 続けてこの日数見つからなかった商品は�
 DROP_SHOW = 6  # トップの「値下がりを見つけた商品」に出す件数
 EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
+THREADS_STATE_PATH = "data/threads_state.json"  # 1コメ（自己返信）でURLを付けられるかの記録
+THREADS_TOPIC = "ガジェット"  # Threadsは1投稿に1トピック。サイトの主題に合わせて固定
 
 BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番", "popular": "⭐ 高評価の人気品", "drop": "📉 前回より値下がり"}
 
@@ -2535,8 +2537,38 @@ def threads_error(e):
         return str(safe_status(e))
 
 
+def is_permission_error(e):
+    """Metaの権限エラー（code 10 / 200〜299）かどうか"""
+    try:
+        code = e.response.json().get("error", {}).get("code")
+    except Exception:
+        return False
+    return code == 10 or (isinstance(code, int) and 200 <= code <= 299)
+
+
+def threads_reply_link():
+    """1コメにURLを付ける形で投稿するか。返信の権限が無いと分かった後は False（本文にURLを入れる形に戻す）"""
+    try:
+        with open(THREADS_STATE_PATH, encoding="utf-8") as f:
+            return json.load(f).get("reply_link", True) is not False
+    except (OSError, ValueError, AttributeError):
+        return True
+
+
+def threads_publish(base, fields):
+    """コンテナを作って公開し、公開した投稿のIDを返す"""
+    res = requests.post(f"{base}/threads", data={**fields, "access_token": THREADS_ACCESS_TOKEN}, timeout=30)
+    res.raise_for_status()
+    creation_id = res.json()["id"]
+    time.sleep(10)  # コンテナの生成完了を待つ
+    res = requests.post(f"{base}/threads_publish", data={"creation_id": creation_id, "access_token": THREADS_ACCESS_TOKEN}, timeout=30)
+    res.raise_for_status()
+    return res.json()["id"]
+
+
 def post_to_threads(deal):
-    """画像付き（無ければテキスト）で1投稿にまとめて公開する。画像で失敗したらテキストで再試行"""
+    """本文（画像付き・リンクなし・トピック1つ）を出し、最初の自己返信（1コメ）でサイトURLへ誘導する。
+    本文にリンクがあるとおすすめに載りにくいため。返信の権限が無いと分かったら、次回から本文にURLを入れる形へ自動で戻す"""
     user_id = THREADS_USER_ID
     if not user_id:  # ユーザーID未登録ならトークンから自分のIDを調べる
         res = requests.get("https://graph.threads.net/v1.0/me", params={"fields": "id", "access_token": THREADS_ACCESS_TOKEN}, timeout=15)
@@ -2544,24 +2576,40 @@ def post_to_threads(deal):
             raise RuntimeError("ユーザーID取得失敗 " + threads_error(requests.HTTPError(response=res)))
         user_id = res.json()["id"]
     base = f"https://graph.threads.net/v1.0/{user_id}"
-    text = f"{sns_body(deal, 400)}\n\n▼詳細・現在の価格はこちら\n{SITE_URL}"
+    reply_link = threads_reply_link()
+    # ハッシュタグは外す（本文中のタグもトピック扱いになり、1投稿1トピックの指定とぶつかるため）
+    text = re.sub(r"(?:\s*[#＃][^\s#＃]+)+\s*$", "", sns_body(deal, 400))  # 末尾のタグはまとめて削除
+    text = re.sub(r"[#＃](?=\S)", "", text).strip()  # 文中のタグは # だけ外して言葉は残す
+    if not reply_link:
+        text += f"\n\n▼詳細・現在の価格はこちら\n{SITE_URL}"
     attempts = []
     if deal.get("image_url"):
-        attempts.append({"media_type": "IMAGE", "image_url": deal["image_url"]})
-    attempts.append({"media_type": "TEXT"})
+        attempts.append({"media_type": "IMAGE", "image_url": deal["image_url"], "topic_tag": THREADS_TOPIC})
+    attempts += [{"media_type": "TEXT", "topic_tag": THREADS_TOPIC}, {"media_type": "TEXT"}]  # 最後はトピックも外して再試行
+    post_id = ""
     for extra in attempts:
+        label = extra["media_type"] + ("" if "topic_tag" in extra else "・トピックなし")
         try:
-            res = requests.post(f"{base}/threads", data={"text": text, "access_token": THREADS_ACCESS_TOKEN, **extra}, timeout=30)
-            res.raise_for_status()
-            creation_id = res.json()["id"]
-            time.sleep(10)  # コンテナの生成完了を待つ
-            res = requests.post(f"{base}/threads_publish", data={"creation_id": creation_id, "access_token": THREADS_ACCESS_TOKEN}, timeout=30)
-            res.raise_for_status()
-            print(f"Threadsに投稿しました（{extra['media_type']}）。")
-            return
+            post_id = threads_publish(base, {"text": text, **extra})
+            print(f"Threadsに投稿しました（{label}）。")
+            break
         except requests.HTTPError as e:
-            print(f"Threads {extra['media_type']} 投稿エラー（{threads_error(e)}）")
-    raise RuntimeError("Threads投稿に失敗しました")
+            print(f"Threads {label} 投稿エラー（{threads_error(e)}）")
+    if not post_id:
+        raise RuntimeError("Threads投稿に失敗しました")
+    if not reply_link:
+        return
+    time.sleep(5)  # 公開した投稿に返信できるようになるのを待つ
+    reply = f"👇 詳細・現在の価格チェックはこちら（毎日 朝・夕方にAI自動更新）\n{SITE_URL}"
+    try:
+        threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": post_id})
+        print("Threadsの1コメにURLを付けました。")
+    except requests.HTTPError as e:
+        print(f"Threads 1コメ投稿エラー（{threads_error(e)}）")
+        if is_permission_error(e):
+            with open(THREADS_STATE_PATH, "w", encoding="utf-8") as f:
+                json.dump({"reply_link": False, "since": TODAY_STR, "reason": threads_error(e)}, f, ensure_ascii=False, indent=1)
+            print(f"返信の権限が無いため、次回からURLを本文に入れる形に戻します（{THREADS_STATE_PATH}）。")
 
 
 def post_to_sns(deals):
