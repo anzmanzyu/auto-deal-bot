@@ -70,6 +70,9 @@ INDEX_MIN_POINTS = 5
 TRACK_MAX_CALLS = 110  # 1回の更新で価格チェックに使う楽天APIの回数の上限（1回あたり約1.5秒）
 TRACK_MAX_MISSES = 4  # 続けてこの日数見つからなかった商品は、販売終了とみなしてチェックをやめる
 DROP_SHOW = 6  # トップの「値下がりを見つけた商品」に出す件数
+DROP_PAGE_DAYS = 3  # 値下がり一覧ページ drops.html に載せる期間（日）と件数
+DROP_PAGE_SHOW = 30
+DROP_PAGE_MIN = 3  # この件数に満たない日は、値下がり一覧ページを検索に載せない
 EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
 THREADS_STATE_PATH = "data/threads_state.json"  # 1コメ（自己返信）でURLを付けられるかの記録
@@ -369,7 +372,7 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
 - 目玉ガジェット・家電枠（slot: "main"）を必ず4件：値引き率や注目度が高い製品
 - ついで買い・即決定番枠（slot: "impulse"）を必ず2件：モバイルバッテリー、充電ケーブル、乾電池、炭酸水、日用品など
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
-- image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにする
+- image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにし、候補の商品名にブランド名や型番があれば必ず残す
 - reviews（楽天レビューの平均評価と件数）が多く高評価な候補を重視すること
 - deal_reason には価格・ポイント倍率や、レビュー・評価に関する言葉を一切書かないこと（サイトの別欄に表示するため）。「こんな人・こんな場面にうれしい」が伝わる、話し言葉寄りの自然な短文にし、「〜搭載」「〜可能」で終わる硬い言い回しは避けること
 - 「最安」「最安値」「底値」「激安」「業界最安」など、価格を断定・誇張する表現は一切使わないこと
@@ -494,6 +497,36 @@ def clean_product_name(name):
     return re.sub(r"\s+", " ", name).strip()
 
 
+# ブランド名・型番とはみなさない英数字（規格・単位・汎用語）
+SPEC_WORD = re.compile(r"(?i)^(bluetooth|usb|type-?c|pd|qc|wi-?fi|gps|ai|led|lcd|oled|ips|va|tn|ssd|hdd|hdmi|anc|enc|fhd|uhd|hd|qhd|wqhd|"
+                       r"[248]k|qi|gan|pc|usb-?[ac]|ipx?\d*|micro|microsd|sd|sdxc|sdhc|android|ios|windows|mac|ipad|iphone|switch|ps\d|"
+                       r"cpu|gpu|ram|rom|rgb|dc|ac|mfi|pse|jis|nfc|esim|sim|lte|5g|4g|max|pro|mini|plus|new|set)$")
+UNIT_WORD = re.compile(r"(?i)^[\d.,]+(gb|tb|mb|hz|khz|mah|wh|w|v|a|ml|l|mm|cm|m|g|kg|インチ|型|本|個|枚|台|in1)?$|^(bluetooth|usb|wi-?fi)[\d.]+$|^(pd|qc)[\d.]+w?$")
+# カタカナ表記の主なメーカー名
+JP_BRANDS = ("エレコム", "バッファロー", "サンワサプライ", "アイリスオーヤマ", "パナソニック", "ソニー", "シャープ", "サントリー", "キリン",
+             "アサヒ", "伊藤園", "コカ・コーラ", "ウィルキンソン", "富士通", "東芝", "日立", "象印", "タイガー", "ドウシシャ", "山善", "アンカー", "シリコンパワー", "オシャモバ")
+
+
+def model_words(name):
+    """商品名に含まれるブランド名・型番らしき英数字（「Anker」「P40i」「WAVE」など）"""
+    name = re.sub(r"\d+-in-\d+", " ", str(name))
+    words = [b for b in JP_BRANDS if b in name]
+    for w in re.findall(r"[A-Za-z][A-Za-z0-9+\-]*[A-Za-z0-9+]|[A-Za-z]{2,}|\d+[A-Za-z][A-Za-z0-9\-]*", name):
+        w = w.strip("-+")
+        if len(w) >= 2 and not SPEC_WORD.match(w) and not UNIT_WORD.match(w):
+            words.append(w)
+    return words
+
+
+def display_name(info):
+    """ページに出す商品名。短い商品名にブランド・型番が無ければ、楽天の正式な商品名から2語まで補う"""
+    name = clean_product_name(info.get("product_name", "")) or str(info.get("product_name", ""))
+    if model_words(name) or not info.get("item_name"):
+        return name
+    extra = [w for w in model_words(clean_product_name(info["item_name"])[:60]) if w.lower() not in name.lower()][:2]
+    return f"{' '.join(extra)} {name}".strip() if extra else name
+
+
 def normalize_deals(deals, candidates=()):
     """AI出力の欠損を補い、ついで買い枠2件を必ず含む5〜6件に整える"""
     # 価格はAIに書かせず、楽天APIで取得した候補と画像URLが一致したときだけ載せる
@@ -536,6 +569,7 @@ def normalize_deals(deals, candidates=()):
             "point_rate": price.get("point_rate"),
             "item_url": rakuten_item_url(src.get("source_url")),
             "item_code": src.get("item_code") or "",
+            "item_name": str(src.get("title") or "")[:200],
             "review_count": src.get("review_count") or 0,
             "review_average": src.get("review_average") or 0,
             "candidate_no": src.get("no"),
@@ -557,7 +591,7 @@ def normalize_deals(deals, candidates=()):
             "score": max(0, (main[-1]["score"] if main else 85) - 1),
             "image_url": c["image_url"], "price_yen": c.get("price_yen"), "point_rate": c.get("point_rate"),
             "item_url": rakuten_item_url(c.get("source_url")),
-            "item_code": c.get("item_code") or "",
+            "item_code": c.get("item_code") or "", "item_name": str(c.get("title") or "")[:200],
             "review_count": c.get("review_count") or 0, "review_average": c.get("review_average") or 0,
             "candidate_no": c.get("no"),
         })
@@ -1433,6 +1467,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
             {section_head("chart", "値下がりを見つけた商品", "これまでに紹介した商品の楽天参考価格を毎日チェックし、前回の記録から下がったものを並べています。", root)}
             <div class="grid gap-5 md:grid-cols-2">{drop_cards}
             </div>
+            <a href="{root}drops.html" class="block card card-hover p-4 mt-5 text-center font-extrabold text-ink">値下がりした商品をすべて見る →</a>
         </section>"""
 
     nav_cls = "px-3 py-2 rounded-full hover:bg-orange-50 hover:text-orange-600 transition"
@@ -1566,7 +1601,7 @@ def footer_html(root):
         <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
             <p class="flex items-center gap-2.5 text-ink font-extrabold text-base"><img src="{root}img/logo.svg" alt="" class="w-8 h-8">{html.escape(SITE_NAME)}</p>
             <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日 朝・夕方の2回自動更新しています。</p>
-            <p class="flex flex-wrap gap-x-4 gap-y-1 font-bold"><a href="{root}index.html#category" class="hover:text-orange-600 hover:underline">カテゴリから探す</a>{"".join(f'<a href="{root}sale/{g["slug"]}.html" class="hover:text-orange-600 hover:underline">{html.escape(g["name"])}{g["year"]}</a>' for g in SALE_GUIDES)}<a href="{root}index.html#archive" class="hover:text-orange-600 hover:underline">アーカイブ</a><a href="{root}about.html" class="hover:text-orange-600 hover:underline">運営者情報・お問い合わせ</a></p>
+            <p class="flex flex-wrap gap-x-4 gap-y-1 font-bold"><a href="{root}index.html#category" class="hover:text-orange-600 hover:underline">カテゴリから探す</a>{"".join(f'<a href="{root}sale/{g["slug"]}.html" class="hover:text-orange-600 hover:underline">{html.escape(guide_label(g))}</a>' for g in SALE_GUIDES)}<a href="{root}drops.html" class="hover:text-orange-600 hover:underline">値下がり一覧</a><a href="{root}index.html#archive" class="hover:text-orange-600 hover:underline">アーカイブ</a><a href="{root}about.html" class="hover:text-orange-600 hover:underline">運営者情報・お問い合わせ</a></p>
             <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。また、{AD_PARTNERS}を利用しています。</p>
             <p>掲載内容はAIが公開情報をもとに自動生成したものです。価格・在庫・ポイント倍率は変動するため、購入前に必ず各販売ページでご確認ください。</p>
             <p class="text-xs">最終更新: {TODAY_STR}（日本時間） © {NOW.year} {html.escape(SITE_NAME)}</p>
@@ -1634,7 +1669,7 @@ def update_products(products, deals):
         deal["item_page"] = f"item/{pid}.html"
         info = products.get(pid, {"records": []})
         for key in ("product_name", "category", "slot", "badge", "catch_copy", "deal_reason", "score", "image_url", "item_url",
-                    "item_code", "review_count", "review_average"):
+                    "item_code", "item_name", "review_count", "review_average"):
             if deal.get(key) or key not in info:
                 info[key] = deal.get(key)
         records = [r for r in info["records"] if r.get("t") != TODAY_STR]
@@ -1735,6 +1770,8 @@ def track_prices(skip_pids=()):
         info["last_checked"] = TODAY_STR
         info.pop("track_miss", None)
         info["item_code"] = item.get("itemCode") or info.get("item_code")
+        if item.get("itemName"):
+            info["item_name"] = str(item["itemName"])[:200]
         try:
             price = int(item.get("itemPrice") or 0)
         except (TypeError, ValueError):
@@ -1759,9 +1796,9 @@ def track_prices(skip_pids=()):
     print(f"   価格チェック: 対象{len(targets)}件中 記録{len(found)}件・見つからず{len(missed)}件（API {calls}回）")
 
 
-def price_drops(products, skip_pids=()):
-    """前回の記録から値下がりした紹介済みの商品（直近1日以内に記録したもの・下げ幅の大きい順）"""
-    since = (NOW - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+def price_drops(products, skip_pids=(), days=1, limit=DROP_SHOW):
+    """前回の記録から値下がりした紹介済みの商品（直近 days 日以内に記録したもの・下げ幅の大きい順）"""
+    since = (NOW - timedelta(days=days)).strftime("%Y-%m-%d %H:%M")
     drops = []
     for pid, info in products.items():
         points = price_points(info)
@@ -1771,11 +1808,13 @@ def price_drops(products, skip_pids=()):
         if prev - latest >= max(50, prev * 0.02):
             drops.append(((prev - latest) / prev, pid, info))
     drops.sort(key=lambda x: x[0], reverse=True)
-    return [(pid, info) for _, pid, info in drops[:DROP_SHOW]]
+    return [(pid, info) for _, pid, info in drops[:limit]]
 
 
 def item_indexable(info):
-    """商品ページを検索に載せるか：3回以上紹介した商品か、価格の記録が1週間分以上たまった商品"""
+    """商品ページを検索に載せるか：ブランド名・型番が分かり、3回以上紹介したか価格の記録が1週間分以上たまった商品"""
+    if not model_words(display_name(info)):
+        return False  # 「ワイヤレスイヤホン Bluetooth5.4」のような名前は検索されにくく、同名の商品とも区別できない
     if featured_count(info) >= INDEX_MIN_RECORDS:
         return True
     points = price_points(info)
@@ -1888,7 +1927,7 @@ def render_item_page(pid, info):
     deal = dict(info, slot=info.get("slot") or "main", badge=info.get("badge") or BADGES["main"],
                 category=info.get("category") or "ガジェット", catch_copy=info.get("catch_copy") or "",
                 deal_reason=info.get("deal_reason") or "", image_url=info.get("image_url") or "")
-    name = deal["product_name"] = clean_product_name(deal["product_name"]) or deal["product_name"]
+    name = deal["product_name"] = display_name(info)
     points = price_points(info)
     latest = points[-1] if points else None
     if latest:
@@ -1908,12 +1947,27 @@ def render_item_page(pid, info):
     if cat:
         crumbs.append((cat["name"], f"{SITE_URL}category/{cat['slug']}.html", f"{root}category/{cat['slug']}.html"))
     crumbs.append((name, page_url, ""))
-    ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
-        {"@type": "ListItem", "position": n, "name": label, "item": url} for n, (label, url, _) in enumerate(crumbs, 1)]}
+    noindex = not item_indexable(info)
+    graph = [{"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": n, "name": label, "item": url} for n, (label, url, _) in enumerate(crumbs, 1)]}]
+    if latest and not noindex:
+        # 検索結果に価格が出るよう、最新の楽天参考価格を Offer として載せる（他サイトのレビュー評価は載せない）
+        product = {"@type": "Product", "name": name, "url": page_url,
+                   "offers": {"@type": "Offer", "price": latest[1], "priceCurrency": "JPY",
+                              "url": rakuten_item_url(info.get("item_url")) or page_url,
+                              "availability": "https://schema.org/InStock"}}
+        if deal["image_url"]:
+            product["image"] = deal["image_url"]
+        if deal["catch_copy"]:
+            product["description"] = deal["catch_copy"]
+        brand = model_words(name)
+        if brand and re.fullmatch(r"[A-Za-z][A-Za-z\-]+|[^\x00-\x7f]+", brand[0]):
+            product["brand"] = {"@type": "Brand", "name": brand[0]}
+        graph.append(product)
+    ld = {"@context": "https://schema.org", "@graph": graph}
     crumb_html = " › ".join(f'<a href="{href}" class="hover:text-orange-600 underline-offset-2 hover:underline">{html.escape(label)}</a>' if href
                             else f'<span class="text-ink font-bold">{html.escape(label)}</span>' for label, _, href in crumbs)
     ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
-    noindex = not item_indexable(info)
     return f"""{head_html(title, description, page_url, root, "article", ld_json, noindex)}
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-orange-100">
         <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
@@ -2024,7 +2078,7 @@ CATEGORIES = [
               "4Kテレビで使うなら、4K対応モデル（4K Maxなど）を選びましょう。"]},
 ]
 
-# 大型セールの特集ページ public/sale/<slug>.html（日程が発表されたら year_dates を更新する）
+# 大型セールの特集ページ public/sale/<slug>.html（日程が発表されたら dates を更新する。label が無ければ「名前+年」で表示）
 SALE_GUIDES = [
     {
         "slug": "black-friday", "name": "Amazonブラックフライデー", "year": 2026,
@@ -2044,7 +2098,47 @@ SALE_GUIDES = [
         ],
         "source": ("マイナビニュース（2025年11月14日）", "https://news.mynavi.jp/article/20251114-3666546/"),
     },
+    {
+        "slug": "rakuten-super-sale", "name": "楽天スーパーSALE", "year": 2026, "label": "楽天スーパーSALE 2026年12月",
+        "dates": [],  # 例: [("本セール", "12月4日(木)20:00〜12月11日(木)1:59")]
+        "past": [("2025年12月", "12月4日(木)20:00〜12月11日(木)1:59")],
+        "lead": "楽天スーパーSALEは、3月・6月・9月・12月の年4回開かれる楽天市場の大型セールです。半額以下の商品が並ぶうえ、複数のショップで買うほどポイント倍率が上がる「ショップ買いまわり」があるので、ガジェットとついで買いをまとめて買う絶好のタイミングです。",
+        "prep": [
+            ("キャンペーンにエントリー", "ショップ買いまわりなどのポイントアップは、事前のエントリーが必要です。エントリーはセール開始前から受付が始まります。"),
+            ("買うものを10ショップ分リストにしておく", "ショップ買いまわりは、1,000円以上の買い物をしたショップの数に応じてポイント倍率が上がります（上限あり）。本命のガジェットに、充電ケーブルや乾電池など1,000円台の日用品を組み合わせると達成しやすくなります。"),
+            ("普段の価格を確認しておく", "セール価格が本当に安いかは、普段の価格と比べないと分かりません。当サイトの各商品ページの「価格の記録」も参考にしてください。"),
+            ("開始直後と最終日のタイムセールに注意", "開始直後や終了間際は、数量限定の半額・タイムセールが集中します。狙いの商品は事前にお気に入り登録しておきましょう。"),
+        ],
+        "faq": [
+            ("次の楽天スーパーSALEはいつ？", "2026年12月の日程は、まだ楽天市場から発表されていません（このページの最終更新時点）。2025年12月は、12月4日(木)20:00〜12月11日(木)1:59でした。発表され次第、このページを更新します。"),
+            ("ショップ買いまわりとは？", "期間中に1,000円以上（税込）の買い物をしたショップの数に応じて、ポイント倍率が上がるキャンペーンです。上限や対象条件は回によって異なるので、公式のキャンペーンページで確認しましょう。"),
+            ("どんなガジェットが安くなりやすいですか？", "モバイルバッテリーや充電器、ワイヤレスイヤホン、モバイルモニターなど、楽天のショップが多く扱うジャンルは半額・クーポン対象になりやすい定番です。"),
+        ],
+        "source": ("ライフハッカー・ジャパン（2025年12月）", "https://www.lifehacker.jp/article/rakuten-supersale-2025-1205-2/"),
+    },
+    {
+        "slug": "amazon-hatsuuri", "name": "Amazon初売り", "year": 2027,
+        "dates": [],  # 例: [("初売り", "1月3日(日)9:00〜1月7日(木)23:59")]
+        "past": [("2026年", "1月3日(土)9:00〜1月7日(水)23:59"), ("2025年", "1月3日(金)9:00〜1月7日(火)23:59")],
+        "lead": "Amazon初売りは、毎年1月3日から開かれるAmazonの年始セールです。プライム会員以外も参加でき、年末年始の買い替えや新生活の準備に使いやすいタイミングです。",
+        "prep": [
+            ("ポイントアップ・スタンプラリーにエントリー", "初売りでは、エントリーが必要なポイントキャンペーンが行われることが多く、2026年は12月27日から受付が始まりました。"),
+            ("事前公開ページで目玉商品をチェック", "2026年は12月27日に、お買い得商品の一部が事前公開されました。ほしい物リストに入れておくと、当日の値下がりに気づきやすくなります。"),
+            ("普段の価格を確認しておく", "セール価格が本当に安いかは、普段の価格と比べないと分かりません。当サイトの各商品ページの「価格の記録」も参考にしてください。"),
+            ("楽天の新春セールとも比べる", "同じ時期に楽天市場でも新春のセールやお買い物マラソンが開かれることがあります。ポイント込みの実質価格で比べましょう。"),
+        ],
+        "faq": [
+            ("2027年のAmazon初売りはいつから？", "2027年の日程は、まだAmazonから発表されていません（このページの最終更新時点）。2026年は1月3日(土)9:00〜1月7日(水)23:59の5日間で、例年1月3日から始まっています。発表され次第、このページを更新します。"),
+            ("プライム会員でなくても参加できますか？", "はい。初売りは会員以外も参加できます。ただし、配送の特典などは会員と異なります。"),
+            ("どんなガジェットが安くなりやすいですか？", "Amazonデバイス（Fire TV Stick・Echo・Kindleなど）、Ankerなどの充電器・モバイルバッテリー、ワイヤレスイヤホンなどが値下がりしやすい定番です。"),
+        ],
+        "source": ("ECのミカタ（2025年12月）", "https://ecnomikata.com/ecnews/ecmall/49140/"),
+    },
 ]
+
+
+def guide_label(guide):
+    return guide.get("label") or f"{guide['name']}{guide['year']}"
 
 
 def product_category(name):
@@ -2085,7 +2179,7 @@ def simple_header_html(root, max_w="max-w-3xl"):
 
 def item_list_card(pid, info, root):
     """カテゴリページ用の商品カード（価格の記録の要約つき）"""
-    name = clean_product_name(info.get("product_name", "")) or info.get("product_name", "")
+    name = display_name(info)
     deal = {"product_name": name, "image_url": info.get("image_url") or "", "slot": info.get("slot") or "main"}
     points = price_points(info)
     seen = featured_count(info)
@@ -2119,8 +2213,8 @@ def item_list_card(pid, info, root):
 
 
 def drop_card(pid, info, root):
-    """トップの「値下がりを見つけた商品」用のカード（前回の記録→最新の価格）"""
-    name = clean_product_name(info.get("product_name", "")) or info.get("product_name", "")
+    """「値下がりを見つけた商品」用のカード（前回の記録→最新の価格）"""
+    name = display_name(info)
     deal = {"product_name": name, "image_url": info.get("image_url") or "", "slot": info.get("slot") or "main"}
     prices = [p for _, p, _ in price_points(info)]
     prev, latest = prices[-2], prices[-1]
@@ -2168,7 +2262,7 @@ def category_section_html(groups, root):
     links = category_links_html(groups, root)
     sale_links = "".join(
         f'<a href="{root}sale/{g["slug"]}.html" class="block card card-hover p-5 font-extrabold text-ink">'
-        f'{html.escape(g["name"])} {g["year"]} の狙い目と準備 <span aria-hidden="true">›</span></a>'
+        f'{html.escape(guide_label(g))} の狙い目と準備 <span aria-hidden="true">›</span></a>'
         for g in SALE_GUIDES)
     return f"""
         <section id="category" class="scroll-mt-24">
@@ -2183,7 +2277,7 @@ def render_category_page(cat, items, groups, top_deals):
     page_url = f"{SITE_URL}category/{cat['slug']}.html"
     name = cat["name"]
     title = f"{name}のセール・値下げ情報と価格推移｜{SITE_NAME}"
-    names = "、".join(clean_product_name(i.get("product_name", "")) for _, i in items[:2])
+    names = "、".join(display_name(i) for _, i in items[:2])
     description = (f"{name}のセール・値下げ情報を、楽天参考価格の記録と一緒にまとめています。"
                    + (f"{names}など{len(items)}件掲載。" if items else "") + "毎日 朝・夕方に自動更新。")
     ld = {"@context": "https://schema.org", "@graph": [
@@ -2191,7 +2285,7 @@ def render_category_page(cat, items, groups, top_deals):
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
             {"@type": "ListItem", "position": 2, "name": name, "item": page_url}]},
         {"@type": "ItemList", "name": f"{name}のセール・値下げ情報", "itemListElement": [
-            {"@type": "ListItem", "position": n, "name": clean_product_name(i.get("product_name", "")), "url": f"{SITE_URL}item/{pid}.html"}
+            {"@type": "ListItem", "position": n, "name": display_name(i), "url": f"{SITE_URL}item/{pid}.html"}
             for n, (pid, i) in enumerate(items[:30], 1)]},
     ]}
     ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
@@ -2227,17 +2321,76 @@ def render_category_page(cat, items, groups, top_deals):
 {footer_html(root)}"""
 
 
-def render_sale_page(guide, groups, top_deals):
-    root = "../"
-    page_url = f"{SITE_URL}sale/{guide['slug']}.html"
-    year, name = guide["year"], guide["name"]
-    title = f"{name}{year}はいつから？ガジェットの狙い目と準備｜{SITE_NAME}"
-    when = "・".join(f"{k} {v}" for k, v in guide["dates"]) if guide["dates"] else "日程は未発表"
-    description = (f"{name}{year}の開催日程（{when}）と、ガジェット・家電の狙い目カテゴリ、ポイントアップのエントリーなど事前準備をまとめました。")
+def render_drops_page(drops, groups):
+    """値下がり一覧 public/drops.html（直近数日の値下がりを下げ幅の大きい順に）"""
+    root = ""
+    page_url = f"{SITE_URL}drops.html"
+    title = f"【{md_date(NOW)}更新】値下がりしたガジェット・家電一覧｜{SITE_NAME}"
+    names = "、".join(display_name(i) for _, i in drops[:2])
+    description = (f"これまでに紹介したガジェット・家電の楽天参考価格を毎日チェックし、直近{DROP_PAGE_DAYS}日で値下がりした商品を下げ幅の大きい順にまとめています。"
+                   + (f"{names}など{len(drops)}件。" if drops else ""))
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
-            {"@type": "ListItem", "position": 2, "name": f"{name}{year}", "item": page_url}]},
+            {"@type": "ListItem", "position": 2, "name": "値下がり一覧", "item": page_url}]},
+        {"@type": "ItemList", "name": "値下がりしたガジェット・家電", "itemListElement": [
+            {"@type": "ListItem", "position": n, "name": display_name(i), "url": f"{SITE_URL}item/{pid}.html"}
+            for n, (pid, i) in enumerate(drops, 1)]},
+    ]}
+    ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
+    cards = "".join(drop_card(pid, info, root) for pid, info in drops)
+    if not cards:
+        cards = '<p class="card p-5 text-ink-soft md:col-span-2">直近で値下がりした商品は見つかりませんでした。毎日 朝・夕方の価格チェックで見つかり次第ここに追加されます。</p>'
+    return f"""{head_html(title, description, page_url, root, "website", ld_json, len(drops) < DROP_PAGE_MIN)}
+    {simple_header_html(root, "max-w-5xl")}
+    <main class="max-w-5xl mx-auto px-4 pt-6 pb-16 space-y-6">
+        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">値下がり一覧</span></nav>
+        <section class="card p-5 md:p-7">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">値下がりしたガジェット・家電一覧</h1>
+            <p class="mt-3 text-ink-soft leading-relaxed">当サイトでこれまでに紹介した商品の楽天参考価格を毎日 朝・夕方にチェックし、直近{DROP_PAGE_DAYS}日で前回の記録より下がった商品を、下げ幅の大きい順に並べています。「記録中の最安」は、当サイトが記録した価格の中で最も安いことを表します。</p>
+            <p class="mt-2 text-xs text-ink-soft">{len(drops)}件・最終更新 {TODAY_STR}</p>
+        </section>
+        <section class="grid gap-5 md:grid-cols-2">{cards}
+        </section>
+        <section class="card p-5 md:p-7">
+            <h2 class="text-lg md:text-xl font-extrabold text-ink">カテゴリから探す</h2>
+            <div class="mt-4">{category_links_html(groups, root)}</div>
+        </section>
+    </main>
+{footer_html(root)}"""
+
+
+def render_404_page(groups):
+    """GitHub Pages が存在しないURLで返す public/404.html（販売終了で削除した商品ページなど）"""
+    root = "/"
+    return f"""{head_html(f"ページが見つかりません｜{SITE_NAME}", "お探しのページは見つかりませんでした。", SITE_URL, root, "website", "{}", True)}
+    {simple_header_html(root)}
+    <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
+        <section class="card p-5 md:p-7">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">ページが見つかりませんでした</h1>
+            <p class="mt-3 text-ink-soft leading-relaxed">お探しの商品ページは、販売終了や掲載期間の終了により削除された可能性があります。今日のお買い得や、カテゴリ別のセール情報からお探しください。</p>
+            <a href="{root}index.html" class="btn btn-main inline-block mt-5 font-bold px-5 py-3 rounded-full">今日のお買い得を見る →</a>
+        </section>
+        <section class="card p-5 md:p-7">
+            <h2 class="text-lg md:text-xl font-extrabold text-ink">カテゴリから探す</h2>
+            <div class="mt-4">{category_links_html(groups, root)}</div>
+            <p class="mt-5 font-bold"><a href="{root}drops.html" class="text-orange-600 hover:underline underline-offset-2">値下がりした商品の一覧 ›</a></p>
+        </section>
+    </main>
+{footer_html(root)}"""
+
+
+def render_sale_page(guide, groups, top_deals):
+    root = "../"
+    page_url = f"{SITE_URL}sale/{guide['slug']}.html"
+    year, name, label = guide["year"], guide["name"], guide_label(guide)
+    title = f"{label}はいつから？ガジェットの狙い目と準備｜{SITE_NAME}"
+    when = "・".join(f"{k} {v}" for k, v in guide["dates"]) if guide["dates"] else "日程は未発表"
+    description = (f"{label}の開催日程（{when}）と、ガジェット・家電の狙い目カテゴリ、ポイントアップのエントリーなど事前準備をまとめました。")
+    ld = {"@context": "https://schema.org", "@graph": [
+        {"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
+            {"@type": "ListItem", "position": 2, "name": label, "item": page_url}]},
         {"@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in guide["faq"]]},
     ]}
@@ -2259,9 +2412,9 @@ def render_sale_page(guide, groups, top_deals):
     return f"""{head_html(title, description, page_url, root, "article", ld_json)}
     {simple_header_html(root)}
     <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
-        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">{html.escape(name)}{year}</span></nav>
+        <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">{html.escape(label)}</span></nav>
         <section class="card p-5 md:p-7">
-            <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">{html.escape(name)}{year}はいつから？ガジェットの狙い目と準備</h1>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">{html.escape(label)}はいつから？ガジェットの狙い目と準備</h1>
             <p class="mt-3 text-ink-soft leading-relaxed">{html.escape(guide["lead"])}</p>
             <p class="mt-2 text-xs text-ink-soft">最終更新 {TODAY_STR}</p>
         </section>
@@ -2379,6 +2532,11 @@ def generate_site(deals):
     for cat in CATEGORIES:
         with open(f"public/category/{cat['slug']}.html", "w", encoding="utf-8") as f:
             f.write(render_category_page(cat, groups[cat["slug"]], groups, top_deals))
+    page_drops = price_drops(products, days=DROP_PAGE_DAYS, limit=DROP_PAGE_SHOW)
+    with open("public/drops.html", "w", encoding="utf-8") as f:
+        f.write(render_drops_page(page_drops, groups))
+    with open("public/404.html", "w", encoding="utf-8") as f:
+        f.write(render_404_page(groups))
     os.makedirs("public/sale", exist_ok=True)
     for guide in SALE_GUIDES:
         with open(f"public/sale/{guide['slug']}.html", "w", encoding="utf-8") as f:
@@ -2387,6 +2545,8 @@ def generate_site(deals):
     # 日別アーカイブはトップとほぼ同じ内容なので、サイトマップに載せない（ページ側も noindex）
     urls = [f"  <url><loc>{SITE_URL}</loc><lastmod>{TODAY_DATE}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>"]
     urls.append(f"  <url><loc>{SITE_URL}about.html</loc><lastmod>{TODAY_DATE}</lastmod><priority>0.3</priority></url>")
+    if len(page_drops) >= DROP_PAGE_MIN:
+        urls.append(f"  <url><loc>{SITE_URL}drops.html</loc><lastmod>{TODAY_DATE}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>")
     for guide in SALE_GUIDES:
         urls.append(f"  <url><loc>{SITE_URL}sale/{guide['slug']}.html</loc><lastmod>{TODAY_DATE}</lastmod><priority>0.8</priority></url>")
     for cat in CATEGORIES:
