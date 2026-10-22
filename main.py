@@ -2657,6 +2657,26 @@ def notify_discord(deals):
             print(f"Discord通知エラー: {e}")
 
 
+def alert_discord(message):
+    """運営者に気づいてほしい異常をDiscordに知らせる（通知先が未設定なら何もしない）"""
+    print(f"警告: {message}")
+    if not DISCORD_WEBHOOK_URL:
+        return
+    try:
+        requests.post(DISCORD_WEBHOOK_URL, json={"content": f"⚠️ **【{TODAY_STR} 自動更新の警告】**\n{message}"}, timeout=10)
+    except Exception as e:
+        print(f"Discord通知エラー: {e}")
+
+
+def check_health(deals):
+    """サンプルデータでの公開や、商品写真が1枚も取れない回を知らせる"""
+    if any(d.get("is_sample") for d in deals):
+        alert_discord("AI（Gemini・Groq）がどちらも使えず、サンプルデータでサイトを更新しました。"
+                      "GitHub Actions のログで「APIエラー」の行を確認してください。")
+    elif not any(d.get("image_url") for d in deals):
+        alert_discord("商品写真が1枚も取得できませんでした。楽天APIの仕様変更やキーの期限切れの可能性があります。")
+
+
 MATSURI_TEMPLATES = (
     "インサイト祭り参加させてください🙌\nガジェット・家電のお買い得情報を毎日朝と夕方にまとめて発信してます。\n今日の注目は「{name}」{price}\n一覧はプロフのリンクから見られます👀 フォロー返しします！",
     "祭り参加します✨\nAIで選んだガジェット特価を毎日2回お届けしているアカウントです。\n今日イチ推しは「{name}」{price}\nまとめはプロフのリンクにあります。仲良くしてください🙏 フォロバします！",
@@ -2882,6 +2902,7 @@ elif __name__ == "__main__":
     track_prices({product_id(d) for d in selected_deals if not d.get("is_sample")})
     generate_site(selected_deals)
     notify_discord(selected_deals)
+    check_health(selected_deals)
 
     print("4. SNS自動投稿中...")
     post_to_sns(selected_deals)
