@@ -514,21 +514,28 @@
     "price": 1090,
     "point": 9,
     "via": "track"
+   },
+   {
+    "t": "2026-10-22 21:56",
+    "price": 1090,
+    "point": 9
    }
   ],
-  "product_name": "GaN搭載 急速充電器 Type-Cケーブル付き",
-  "category": "ガジェット",
+  "product_name": "P9倍 急速充電器＋ケーブルセット",
+  "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "急速充電器とケーブルのセット",
-  "deal_reason": "・充電器とケーブルが揃って1,000円台前半の超破格\n・次世代GaN採用でコンパクトなのに素早くスマホを充電\n・ポイントアップ中でカート追加のついで買いに最適",
-  "score": 88,
+  "catch_copy": "すぐフル充電",
+  "deal_reason": "・9倍高速で短時間充電\n・USB‑C対応で幅広い機種に\n・コンパクトで持ち運び楽々",
+  "score": 86,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/case-by-case/cabinet/08655288/10418282/12211884/imgrc0094269156.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/case-by-case/1000-2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-17 22:42",
-  "last_checked": "2026-10-22 08:21",
+  "last_seen": "2026-10-22 21:56",
+  "last_checked": "2026-10-22 21:56",
   "item_code": "case-by-case:10002069",
-  "item_name": "P9倍 楽天1位【30分で65%まで充電 GaN搭載】急速充電器 ケーブル セット PSE認証 充電器 急速 タイプc acアダプター タイプcケーブル ライトニングケーブル 充電ケーブル android 充電器 iphone 急速充電 充電器 cタイプ PD acアダプタ usb-c USB iphoneケーブル 充電コード"
+  "item_name": "P9倍 楽天1位【30分で65%まで充電 GaN搭載】急速充電器 ケーブル セット PSE認証 充電器 急速 タイプc acアダプター タイプcケーブル ライトニングケーブル 充電ケーブル android 充電器 iphone 急速充電 充電器 cタイプ PD acアダプタ usb-c USB iphoneケーブル 充電コード",
+  "review_count": 9045,
+  "review_average": 4.6
  },
  "d5befca5a1": {
   "records": [
@@ -2553,21 +2560,26 @@
     "price": 1490,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-22 21:56",
+    "price": 1490,
+    "point": 1
    }
   ],
   "product_name": "東芝 アルカリ乾電池 40本セット",
   "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "長持ちで安心",
-  "deal_reason": "・高容量で長時間使用\n・単3・単4対応で汎用性\n・防災にも最適な保存性",
-  "score": 84,
+  "catch_copy": "長持ち電池",
+  "deal_reason": "・防災・非常時に便利\n・まとめ買いでコスパ良好",
+  "score": 87,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ho-metec/cabinet/09371542/09995647/t34-40p_n0.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ho-metec/denti40p-t34/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "review_count": 234,
   "review_average": 4.8,
-  "last_seen": "2026-10-19 21:08",
-  "last_checked": "2026-10-22 08:21",
+  "last_seen": "2026-10-22 21:56",
+  "last_checked": "2026-10-22 21:56",
   "item_code": "ho-metec:10008022",
   "item_name": "《選べる 計40本》アルカリ乾電池 単3 単4 [ 東芝 TOSHIBA まとめ買い アルカリ電池 単3形 単三形 単4形 単四形 防災用品 非常用 ]【メール便送料無料】"
  },
@@ -3985,5 +3997,101 @@
   "review_average": 4.59,
   "last_seen": "2026-10-22 08:21",
   "last_checked": "2026-10-22 08:21"
+ },
+ "82f8fd9609": {
+  "records": [
+   {
+    "t": "2026-10-22 21:56",
+    "price": 6900,
+    "point": 1
+   }
+  ],
+  "product_name": "バッファロー Wi‑Fi7 ルーター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "高速安定Wi‑Fi",
+  "deal_reason": "・家中どこでも快適接続\n・3年保証で安心\n・設定が簡単で初心者向き",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/justrich/cabinet/09412118/top.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/justrich/1246-001780/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "justrich:10000527",
+  "item_name": "【ルーターレビュー数No.1★3年保証】 バッファロー ルーター wifi7 wifi6 無線LAN WiFiルーター WiFi ワイファイ 無線ルーター BUFFALO Wi-Fi ルーター スタンダード バッファロー 中継機 WEX-300HPTX LANケーブル WSR-3000AX4P",
+  "review_count": 3674,
+  "review_average": 4.62,
+  "last_seen": "2026-10-22 21:56",
+  "last_checked": "2026-10-22 21:56"
+ },
+ "86e1a6b25d": {
+  "records": [
+   {
+    "t": "2026-10-22 21:56",
+    "price": 7480,
+    "point": 1
+   }
+  ],
+  "product_name": "バッファロー Wi‑Fi6 ルーター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "信頼の高速通信",
+  "deal_reason": "・高速通信で動画もサクサク\n・IPv6対応で将来も安心\n・3年保証が付いて長く使える",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/pcshop-best/cabinet/compass1731286828.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/pcshop-best/002-0001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "pcshop-best:10000139",
+  "item_name": "【最短即日発送】＼3年保証＆ランキング1位／ バッファロー ルーター wifi6 IPv6 無線LAN WiFi 無線LANルーター 無線親機 無線ルーター 楽天ひかり ソフトバンク光 二階建て BUFFALO Wi-Fi WiFiルーター WSR-3000AX4L WSR3600BE4P-BK wifi6対応 Wi-Fi7",
+  "review_count": 1862,
+  "review_average": 4.66,
+  "last_seen": "2026-10-22 21:56",
+  "last_checked": "2026-10-22 21:56"
+ },
+ "0ffab5232f": {
+  "records": [
+   {
+    "t": "2026-10-22 21:56",
+    "price": 9900,
+    "point": 20
+   }
+  ],
+  "product_name": "TP-Link AX3000 Wi‑Fi6 ルーター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "コスパ抜群Wi‑Fi",
+  "deal_reason": "・コスパ最強で高速度\n・20倍ポイントでお得感UP\n・設定アプリで簡単導入",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/tplinkdirect/cabinet/06321509/archer-ax3000.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/tplinkdirect/4895252502688/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "tplinkdirect:10001261",
+  "item_name": "【迷ったらこれ！】TP-Link WiFi6 無線LAN ルーター AX3000規格 2402 + 574 Mbps ワイファイルーター IPv6対応 デュアルバンド おすすめ EasyMesh/OneMesh 対応 縦型 高速 安定 二階建 家庭用 簡単操作 テレワーク メーカー保証3年 Archer AX3000/A",
+  "review_count": 1905,
+  "review_average": 4.59,
+  "last_seen": "2026-10-22 21:56",
+  "last_checked": "2026-10-22 21:56"
+ },
+ "038803ec85": {
+  "records": [
+   {
+    "t": "2026-10-22 21:56",
+    "price": 6980,
+    "point": 1
+   }
+  ],
+  "product_name": "ドライブレコーダー 前後2カメラ",
+  "category": "日用品・家電",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "安全運転の必需品",
+  "deal_reason": "・前後カメラで死角ゼロ\n・フルHD映像で鮮明記録\n・半年保証で安心サポート",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/aideall/cabinet/10896179/11069502/1-4.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/aideall/s-xc8-bk/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "aideall:10000083",
+  "item_name": "★限定P10倍で6346円★ドライブレコーダー 前後2カメラ 前後 ドラレコ 半年 保証 ノイズ対策 フルHD高画質 常時 衝撃録画 安全運転 超広角 駐車監視 3.0インチ液晶 暗視 WDR 170°広角 ループ 衝撃 上書き録画 動体検知 32G SDカード カー用品 配線コード 高速起動",
+  "review_count": 500,
+  "review_average": 4.51,
+  "last_seen": "2026-10-22 21:56",
+  "last_checked": "2026-10-22 21:56"
  }
 }
