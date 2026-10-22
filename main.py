@@ -82,7 +82,8 @@ EVENT_LOOKAHEAD_DAYS = 14
 THREADS_STATE_PATH = "data/threads_state.json"  # 1コメ（自己返信）でURLを付けられるかの記録
 THREADS_TOPIC = "ガジェット"  # Threadsは1投稿に1トピック。サイトの主題に合わせて固定
 
-BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番", "popular": "⭐ 高評価の人気品", "drop": "📉 前回より値下がり"}
+BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番", "popular": "⭐ 高評価の人気品", "drop": "📉 前回より値下がり",
+          "staple": "📊 定番・毎日価格チェック"}
 
 # AIが「ついで買い枠」を返さなかった場合に補う定番品
 IMPULSE_STAPLES = [
@@ -257,6 +258,36 @@ IMPULSE_QUERIES = [
     ("スマホスタンド", 800, 2999),
     ("ミネラルウォーター 2L 9本", 800, 2999),
 ]
+# 定番商品：値下がりの有無に関わらず毎日価格を記録する（「〇〇 最安値」「〇〇 安い時期」で検索されやすい型番のある商品）
+# (表示名, 楽天の検索語, 商品名に必ず含む語のグループ（各グループのどれか1つ）, 最低価格, 最高価格)
+STAPLE_PRODUCTS = [
+    ("ソニー ワイヤレスヘッドホン WH-1000XM5", "WH-1000XM5", (("wh-1000xm5",),), 30000, 70000),
+    ("ソニー 完全ワイヤレスイヤホン WF-1000XM5", "WF-1000XM5", (("wf-1000xm5",),), 20000, 50000),
+    ("Apple AirPods 4 ワイヤレスイヤホン", "AirPods 4", (("airpods 4",),), 15000, 35000),
+    ("Anker Soundcore P40i ワイヤレスイヤホン", "Soundcore P40i", (("p40i",),), 4000, 12000),
+    ("Anker Soundcore Liberty 4 NC ワイヤレスイヤホン", "Soundcore Liberty 4 NC", (("liberty 4 nc",),), 7000, 18000),
+    ("ロジクール ワイヤレスマウス MX Master 3S", "MX Master 3S", (("mx master 3s",),), 9000, 22000),
+    ("ロジクール トラックボール M575S", "ロジクール M575S", (("m575",),), 3000, 10000),
+    ("ロジクール ワイヤレスキーボード MX Keys S", "MX Keys S", (("mx keys s",),), 10000, 25000),
+    ("サンディスク エクストリーム ポータブルSSD 1TB", "サンディスク エクストリーム ポータブルSSD 1TB",
+     (("sandisk", "サンディスク"), ("extreme", "エクストリーム"), ("1tb",), ("ssd",)), 8000, 30000),
+    ("Samsung T7 Shield ポータブルSSD 1TB", "T7 Shield 1TB", (("t7 shield",), ("1tb",)), 8000, 30000),
+    ("Xiaomi Smart Band 9 スマートバンド", "Xiaomi Smart Band 9", (("smart band 9",),), 3000, 9000),
+    ("Fitbit Charge 6 スマートウォッチ", "Fitbit Charge 6", (("fitbit",), ("charge 6",)), 12000, 30000),
+    ("Anker Nano Power Bank モバイルバッテリー", "Anker Nano Power Bank", (("anker", "アンカー"), ("nano power bank",)), 2500, 8000),
+    ("Anker Nano Charger 充電器 30W", "Anker Nano Charger 30W", (("anker", "アンカー"), ("nano",), ("30w",)), 1500, 5000),
+    ("Anker Prime Charger 充電器 100W", "Anker Prime Charger 100W", (("anker prime",), ("100w",)), 6000, 20000),
+    ("パナソニック エネループ 単3形 充電池 8本", "エネループ 単3 8本", (("エネループ", "eneloop"), ("単3",), ("8本",)), 2500, 9000),
+    ("JBL FLIP 6 Bluetoothスピーカー", "JBL FLIP 6", (("jbl",), ("flip 6", "flip6")), 9000, 22000),
+    ("EcoFlow RIVER 3 ポータブル電源", "EcoFlow RIVER 3", (("ecoflow",), ("river 3",)), 15000, 50000),
+    ("Amazon Fire TV Stick 4K Max", "Fire TV Stick 4K Max", (("fire tv stick",), ("4k max",)), 6000, 15000),
+    ("バッファロー Wi-Fiルーター WSR-3000AX4P", "WSR-3000AX4P", (("wsr-3000ax4p",),), 5000, 15000),
+    ("Nintendo Switch Proコントローラー", "Switch Proコントローラー", (("proコントローラー", "pro コントローラー"),), 5000, 12000),
+    ("DJI Osmo Pocket 3", "Osmo Pocket 3", (("osmo pocket 3",),), 45000, 110000),
+]
+STAPLES_PATH = "data/staples.json"  # 定番商品ごとの、見つけた商品ページ（pid）と見つからなかった回数
+STAPLE_MAX_SEARCH = 12  # 1回の更新で新しく探す定番商品の上限（楽天APIの回数を抑える）
+STAPLE_MAX_MISSES = 3  # この回数見つからなかった定番商品は探すのをやめる
 RECENT_DAYS = 3  # この日数以内に掲載した商品は候補から外す
 
 
@@ -684,12 +715,20 @@ def attach_yahoo_items(deals):
 
 
 def build_tweet_url(deal, page_url):
-    """X投稿画面を開くURL。リンクはアフィリエイトではなくサイトのトップにする"""
+    """X投稿画面を開くURL。リンクはアフィリエイトではなくサイトの商品ページ（無ければトップ）にする"""
     points = reason_lines(deal.get("deal_reason", ""))[:2] or [deal.get("catch_copy", "")]
     lines = [f"【本日の注目特価】{deal['product_name']}"]
+    if sns_price_line(deal):
+        lines.append(sns_price_line(deal))
     lines += [f"・{p}" for p in points if p]
-    lines += ["詳細・現在の価格はこちら👇", SITE_URL, "#ガジェット #セール"]
+    lines += ["価格の推移・現在の価格はこちら👇", deal_page_url(deal), "#ガジェット #セール"]
     return "https://twitter.com/intent/tweet?" + urllib.parse.urlencode({"text": "\n".join(lines)})
+
+
+def build_line_url(deal, page_url):
+    """LINEで友だちやグループに送る画面を開くURL（商品ページがあればそのページを送る）"""
+    url = deal_page_url(deal) if deal.get("item_page") else page_url
+    return "https://social-plugins.line.me/lineit/share?" + urllib.parse.urlencode({"url": url})
 
 
 def load_events():
@@ -990,10 +1029,16 @@ def cta_html(deal, page_url, root="", detail_link=True, place=None):
                 <p class="text-[11px] text-ink-soft text-center mt-2">※価格・ポイントはリンク先でご確認ください</p>
                 <div class="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-dashed border-orange-100">
                     {detail}
-                    <a href="{html.escape(build_tweet_url(deal, page_url))}" target="_blank" rel="noopener"
-                       class="shrink-0 bg-white hover:bg-slate-50 ring-1 ring-slate-200 text-ink font-bold py-1.5 px-3 rounded-full text-xs transition">
+                    <span class="shrink-0 flex items-center gap-1.5">
+                    <a href="{html.escape(build_line_url(deal, page_url))}" target="_blank" rel="noopener" data-goatcounter-click="share-line"
+                       class="bg-[#06C755] hover:bg-[#05b34c] text-white font-bold py-1.5 px-3 rounded-full text-xs transition">
+                       LINEで送る
+                    </a>
+                    <a href="{html.escape(build_tweet_url(deal, page_url))}" target="_blank" rel="noopener" data-goatcounter-click="share-x"
+                       class="bg-white hover:bg-slate-50 ring-1 ring-slate-200 text-ink font-bold py-1.5 px-3 rounded-full text-xs transition">
                        𝕏 ポスト
                     </a>
+                    </span>
                 </div>"""
 
 
@@ -1699,7 +1744,7 @@ def update_products(products, deals):
         products[pid] = info
     # 長く掲載されていない商品は削除してデータを肥大化させない
     cutoff = (NOW - timedelta(days=PRODUCT_KEEP_DAYS)).strftime("%Y-%m-%d")
-    products = {k: v for k, v in products.items() if v.get("last_seen", "") >= cutoff}
+    products = {k: v for k, v in products.items() if v.get("staple") or v.get("last_seen", "") >= cutoff}
     save_products(products)
     return products
 
@@ -1729,6 +1774,75 @@ def tracking_queries(info):
     words = [w for w in clean_product_name(info.get("product_name", "")).split() if len(w) >= 2][:3]
     queries = [{"shopCode": shop, "keyword": " ".join(words), "field": 0}] if words else []
     return queries + [{"shopCode": shop, "sort": "-reviewCount"}]
+
+
+def staple_match(name, groups):
+    low = unicodedata.normalize("NFKC", str(name)).lower()
+    return all(any(w in low for w in group) for group in groups)
+
+
+def seed_staples():
+    """定番商品を楽天で探して商品データに加える。以後は track_prices が毎日価格を記録する"""
+    if not RAKUTEN_APP_ID:
+        return
+    try:
+        with open(STAPLES_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    products = load_products()
+    searched = added = 0
+    for label, keyword, groups, lo, hi in STAPLE_PRODUCTS:
+        entry = state.get(label, {})
+        if entry.get("pid") in products or int(entry.get("miss") or 0) >= STAPLE_MAX_MISSES:
+            continue
+        if searched >= STAPLE_MAX_SEARCH:
+            break
+        time.sleep(1.2)  # 楽天APIのレート制限(1秒1回)対策
+        searched += 1
+        try:
+            hits = rakuten_request({"keyword": keyword, "sort": "-reviewCount", "hits": 30, "availability": 1,
+                                    "minPrice": lo, "maxPrice": hi, "imageFlag": 1})
+        except Exception as e:
+            print(f"定番商品の検索 notice（{label}: {safe_status(e)}{rakuten_error_detail(e)}）")
+            continue
+        item = next((h for h in hits if staple_match(h.get("itemName"), groups) and h.get("itemUrl")), None)
+        if not item:
+            state[label] = {"miss": int(entry.get("miss") or 0) + 1}
+            continue
+        pid = product_id({"item_url": item["itemUrl"], "product_name": label})
+        images = item.get("mediumImageUrls") or []
+        image = images[0].get("imageUrl", "") if images and isinstance(images[0], dict) else (str(images[0]) if images else "")
+        info = products.get(pid, {"records": []})
+        info.update({"staple": True, "item_url": item["itemUrl"], "item_code": item.get("itemCode"),
+                     "item_name": str(item.get("itemName", ""))[:200], "review_count": item.get("reviewCount") or 0,
+                     "review_average": item.get("reviewAverage") or 0})
+        info.setdefault("product_name", label)
+        info.setdefault("badge", BADGES["staple"])
+        info.setdefault("catch_copy", "定番モデルの価格を毎日記録中")
+        info.setdefault("deal_reason", "・値下がりの有無に関わらず、楽天の参考価格を毎日記録しています\n"
+                                       "・グラフで今の価格が高いか安いかを確認できます\n"
+                                       "・値下がりしたらトップの「値下がりを見つけた商品」に載ります")
+        info.setdefault("score", 0)
+        if not info.get("image_url"):
+            info["image_url"] = image.replace("_ex=128x128", "_ex=400x400")
+        info.setdefault("last_seen", TODAY_STR)
+        try:
+            price = int(item.get("itemPrice") or 0)
+        except (TypeError, ValueError):
+            price = 0
+        if price > 0:
+            info["records"] = (info.get("records") or []) + [{"t": TODAY_STR, "price": price, "point": item.get("pointRate", 1), "via": "track"}]
+            info["last_checked"] = TODAY_STR
+        products[pid] = info
+        state[label] = {"pid": pid}
+        added += 1
+    if searched:
+        save_products(products)
+        os.makedirs(os.path.dirname(STAPLES_PATH), exist_ok=True)
+        with open(STAPLES_PATH, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=1)
+        print(f"   定番商品: {searched}件を検索し{added}件を追加しました。")
 
 
 def track_prices(skip_pids=()):
@@ -1943,8 +2057,14 @@ def render_item_page(pid, info):
     seen = [r for r in info.get("records", []) if r.get("via") != "track"] or info.get("records", [])
     first_seen = seen[0]["t"][:10].replace("-", "/") if seen else ""
     checked = f"・価格チェック {latest[0][:10].replace('-', '/')}" if latest else ""
+    if info.get("staple") and not featured_count(info):
+        seen_text = f"記録開始 {first_seen}"
+        checked = checked.lstrip("・")
+        seen_text += "・" if checked else ""
+    else:
+        seen_text = f"初掲載 {first_seen}・最終掲載 {html.escape(str(info.get('last_seen', ''))[:10].replace('-', '/'))}"
     title = f"{name}の価格推移・セール情報｜{SITE_NAME}"
-    description = (f"{name}の楽天参考価格の記録と、AIが選んだおすすめポイント。"
+    description = (f"{name}の楽天参考価格の記録" + ("を毎日更新中。" if info.get("staple") else "と、AIが選んだおすすめポイント。")
                    + (f"記録中の最安 ¥{min(p for _, p, _ in points):,}・価格の記録{len(points)}回。" if points else "")
                    + "Amazon・楽天の販売ページもすぐ確認できます。")
     cat = product_category(name)
@@ -1996,7 +2116,7 @@ def render_item_page(pid, info):
                     {badges_html(deal)}
                     <h1 class="text-xl md:text-2xl font-extrabold text-ink leading-snug mt-3">{html.escape(name)}</h1>
                     <p class="mt-1.5 text-orange-600 font-bold">{html.escape(deal['catch_copy'])}</p>
-                    <p class="mt-2 text-xs text-ink-soft">初掲載 {first_seen}・最終掲載 {html.escape(str(info.get('last_seen', ''))[:10].replace('-', '/'))}{checked}</p>
+                    <p class="mt-2 text-xs text-ink-soft">{seen_text}{checked}</p>
                     {price_html(deal)}
                     {reasons_html(deal, "text-[15px]")}
                     {grounds_html(deal, False, True)}
@@ -2423,6 +2543,30 @@ def render_drops_page(drops, groups):
 {footer_html(root)}"""
 
 
+def render_x_share_page(deals):
+    """運営者用：今日の紹介商品をワンタップでXに投稿するページ（リンクなし・noindex・サイトマップ対象外）"""
+    root = "../"
+    cards = []
+    for deal in [d for d in deals if not d.get("is_sample")][:4]:
+        text = urllib.parse.parse_qs(urllib.parse.urlparse(build_tweet_url(deal, SITE_URL)).query)["text"][0]
+        cards.append(f"""
+        <div class="card p-5">
+            <p class="font-extrabold text-ink">{html.escape(deal['product_name'])}</p>
+            <pre class="mt-3 whitespace-pre-wrap text-sm text-ink leading-relaxed font-sans">{html.escape(text)}</pre>
+            <a href="{html.escape(build_tweet_url(deal, SITE_URL))}" target="_blank" rel="noopener"
+               class="mt-4 block text-center bg-black text-white font-bold py-3 rounded-full">𝕏 この内容で投稿する</a>
+        </div>""")
+    body = "".join(cards) or '<p class="card p-5">今日の紹介商品はまだありません。</p>'
+    return f"""{head_html(f"X投稿用（{TODAY_STR}更新）｜{SITE_NAME}", "運営者用のX投稿ページです。", f"{SITE_URL}share/x.html", root, "website", "{}", True)}
+    <main class="max-w-xl mx-auto px-4 py-8 space-y-4">
+        <h1 class="text-xl font-extrabold text-ink">X投稿用（{TODAY_STR} 更新）</h1>
+        <p class="text-sm text-ink-soft">ボタンを押すと、文面とリンクが入った状態でXの投稿画面が開きます。1日1〜2件が目安です。</p>
+        {body}
+    </main>
+</body>
+</html>"""
+
+
 def render_404_page(groups):
     """GitHub Pages が存在しないURLで返す public/404.html（販売終了で削除した商品ページなど）"""
     root = "/"
@@ -2598,6 +2742,9 @@ def generate_site(deals):
     page_drops = price_drops(products, days=DROP_PAGE_DAYS, limit=DROP_PAGE_SHOW)
     with open("public/drops.html", "w", encoding="utf-8") as f:
         f.write(render_drops_page(page_drops, groups))
+    os.makedirs("public/share", exist_ok=True)
+    with open("public/share/x.html", "w", encoding="utf-8") as f:
+        f.write(render_x_share_page(deals))
     with open("public/404.html", "w", encoding="utf-8") as f:
         f.write(render_404_page(groups))
     with open("public/feed.xml", "w", encoding="utf-8") as f:
@@ -2645,7 +2792,8 @@ def notify_discord(deals):
         lines.append(f"**■ {deal['product_name']}** (Score: {deal['score']})")
         lines.append(f"```\n{deal['sns_text']}\n👉 {amz_url}\n```")
 
-    messages = ["\n".join(lines)[:1950]]
+    lines.append(f"\n👉 Xにワンタップで投稿: {SITE_URL}share/x.html")
+    messages = ["\n".join(lines)[-1950:]]
     if NOW.hour >= 12:  # 夕方の更新時だけ、インサイト祭りの参加コメント案を別メッセージで届ける
         comment = matsuri_comment(deals)
         if comment:
@@ -2722,11 +2870,33 @@ def pick_sns_deal(deals):
     return max(main, key=lambda d: (bool(d.get("price_drop") or d.get("record_low")), d["score"])) if main else None
 
 
+def sns_price_line(deal):
+    """「楽天参考価格 ¥12,800（前回より¥1,200値下がり・当サイト記録で最安）」の1行。価格が無ければ空文字"""
+    try:
+        price = int(deal.get("price_yen") or 0)
+    except (TypeError, ValueError):
+        price = 0
+    if not price:
+        return ""
+    notes = []
+    if deal.get("price_drop"):
+        notes.append(f"前回より¥{int(deal['price_drop']):,}値下がり")
+    if deal.get("record_low"):
+        notes.append("当サイト記録で最安")
+    return f"💰 楽天参考価格 ¥{price:,}" + (f"（{'・'.join(notes)}）" if notes else "")
+
+
+def deal_page_url(deal):
+    """SNSから案内するページ。商品ページ（価格の記録つき）があればそこへ、無ければトップへ"""
+    return SITE_URL + deal["item_page"] if deal.get("item_page") else SITE_URL
+
+
 def sns_body(deal, limit):
-    """【PR】を先頭に付けた紹介文。AIの文が無ければ商品名とキャッチコピーで作る"""
+    """【PR】と価格の1行を先頭に付けた紹介文。AIの文が無ければ商品名とキャッチコピーで作る"""
     text = deal.get("sns_text") or f"{deal['product_name']}\n{deal.get('catch_copy', '')}\n#ガジェット #セール"
     text = text.replace("【PR】", "").strip()
-    return ("【PR】" + text)[:limit]
+    line = sns_price_line(deal)
+    return ("【PR】" + (line + "\n" if line else "") + text)[:limit]
 
 
 def upload_x_media(auth, image_url):
@@ -2766,7 +2936,7 @@ def post_to_x(deal):
     res.raise_for_status()
     tweet_id = res.json()["data"]["id"]
     reply = {
-        "text": f"▼詳細・現在の価格チェックはこちら（毎日 朝・夕方にAI自動更新）\n{SITE_URL}",
+        "text": f"▼価格の推移・現在の価格はこちら（毎日 朝・夕方に自動更新）\n{deal_page_url(deal)}",
         "reply": {"in_reply_to_tweet_id": tweet_id},
     }
     res = requests.post("https://api.x.com/2/tweets", auth=auth, json=reply, timeout=30)
@@ -2828,7 +2998,7 @@ def post_to_threads(deal):
     text = re.sub(r"(?:\s*[#＃][^\s#＃]+)+\s*$", "", sns_body(deal, 400))  # 末尾のタグはまとめて削除
     text = re.sub(r"[#＃](?=\S)", "", text).strip()  # 文中のタグは # だけ外して言葉は残す
     if not reply_link:
-        text += f"\n\n▼詳細・現在の価格はこちら\n{SITE_URL}"
+        text += f"\n\n▼価格の推移・現在の価格はこちら\n{deal_page_url(deal)}"
     attempts = []
     if deal.get("image_url"):
         attempts.append({"media_type": "IMAGE", "image_url": deal["image_url"], "topic_tag": THREADS_TOPIC})
@@ -2847,7 +3017,7 @@ def post_to_threads(deal):
     if not reply_link:
         return
     time.sleep(5)  # 公開した投稿に返信できるようになるのを待つ
-    reply = f"👇 詳細・現在の価格チェックはこちら（毎日 朝・夕方にAI自動更新）\n{SITE_URL}"
+    reply = f"👇 価格の推移・現在の価格はこちら（毎日 朝・夕方に自動更新）\n{deal_page_url(deal)}"
     try:
         threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": post_id})
         print("Threadsの1コメにURLを付けました。")
@@ -2899,6 +3069,7 @@ elif __name__ == "__main__":
 
     print("3. Webサイト更新＆通知送信中...")
     attach_yahoo_items(selected_deals)
+    seed_staples()
     track_prices({product_id(d) for d in selected_deals if not d.get("is_sample")})
     generate_site(selected_deals)
     notify_discord(selected_deals)
