@@ -15,9 +15,21 @@
   "pid": "d777a38600"
  },
  "サンディスク エクストリーム ポータブルSSD 1TB": {
-  "miss": 1
+  "pid": "2fd68725da"
  },
  "Samsung T7 Shield ポータブルSSD 1TB": {
-  "miss": 1
+  "miss": 2
+ },
+ "Anker Nano Power Bank モバイルバッテリー": {
+  "pid": "7fe51fa2f0"
+ },
+ "Anker Nano Charger 充電器 30W": {
+  "pid": "7552ef4f5e"
+ },
+ "Anker Prime Charger 充電器 100W": {
+  "pid": "9a9f3e721c"
+ },
+ "パナソニック エネループ 単3形 充電池 8本": {
+  "pid": "4a02cad59e"
  }
 }
