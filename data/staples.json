@@ -18,7 +18,7 @@
   "pid": "2fd68725da"
  },
  "Samsung T7 Shield ポータブルSSD 1TB": {
-  "miss": 2
+  "miss": 3
  },
  "Anker Nano Power Bank モバイルバッテリー": {
   "pid": "7fe51fa2f0"
@@ -31,5 +31,14 @@
  },
  "パナソニック エネループ 単3形 充電池 8本": {
   "pid": "4a02cad59e"
+ },
+ "Amazon Fire TV Stick 4K Max": {
+  "pid": "e8c1040e88"
+ },
+ "バッファロー Wi-Fiルーター WSR-3000AX4P": {
+  "pid": "82f8fd9609"
+ },
+ "Nintendo Switch Proコントローラー": {
+  "pid": "30ae0da1ac"
  }
 }
