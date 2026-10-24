@@ -2040,6 +2040,56 @@ def price_history_html(info):
             </section>"""
 
 
+def next_sale_guide():
+    """商品ページの「いつ安い？」で案内する、次の大型セール（特集ページのあるもの）"""
+    for guide in SALE_GUIDES:
+        if guide.get("until", "") > TODAY_DATE:
+            return guide
+    return None
+
+
+def when_cheap_html(info, root):
+    """「いつ安い？」：記録中の最安値とその日、今の価格の位置づけ、次の大型セール（記録が3回以上ある商品だけ）"""
+    points = price_points(info)
+    if len(points) < 3:
+        return ""
+    name = display_name(info)
+    prices = sorted(p for _, p, _ in points)
+    low = prices[0]
+    low_day = next(t for t, p, _ in points if p == low)[:10]
+    usual = prices[len(prices) // 2]
+    latest = points[-1][1]
+    if latest <= low:
+        now_text = f"今の楽天参考価格 ¥{latest:,} も、記録上の最安値と同じです。"
+    elif abs(latest - usual) <= usual * 0.03:
+        now_text = f"今の楽天参考価格 ¥{latest:,} は、いつもとほぼ同じ価格です（記録の中央値 ¥{usual:,}）。急ぎでなければ、セールまで待つ選択肢もあります。"
+    elif latest < usual:
+        now_text = f"今の楽天参考価格 ¥{latest:,} は、いつもより ¥{usual - latest:,} 安めです（記録の中央値 ¥{usual:,}）。"
+    else:
+        now_text = f"今の楽天参考価格 ¥{latest:,} は、いつもより ¥{latest - usual:,} 高めです（記録の中央値 ¥{usual:,}）。"
+    md = lambda t: f"{t[5:7].lstrip('0')}月{t[8:10].lstrip('0')}日"
+    if low == prices[-1]:
+        record_text = f"当サイトの記録（{md(points[0][0])}から{len(points)}回）では、ずっと <b class=\"text-ink\">¥{low:,}</b> のまま変わっていません。"
+        now_text = "値下がりしたらトップページの「値下がりを見つけた商品」でお知らせします。"
+    else:
+        record_text = f"当サイトの記録（{len(points)}回）で最も安かったのは、<b class=\"text-ink\">{md(low_day)}の ¥{low:,}</b> です。"
+    guide = next_sale_guide()
+    sale = ""
+    if guide:
+        when = "・".join(f"{k} {v}" for k, v in guide["dates"]) or "日程は未発表です（" + "・".join(f"{k} {v}" for k, v in guide["past"][:2]) + "）"
+        sale = (f'<p class="mt-3">次の大型セールは<a href="{root}sale/{guide["slug"]}.html" class="font-bold text-orange-600 underline underline-offset-2">{html.escape(guide_label(guide))}</a>です。'
+                f'{html.escape(when)}。セール中の価格も毎日記録するので、このページで普段の価格と比べられます。</p>')
+    return f"""
+            <section class="card p-5 md:p-7">
+                <h2 class="text-lg md:text-xl font-extrabold text-ink">{html.escape(name)}はいつ安い？</h2>
+                <div class="text-[15px] text-ink-soft leading-relaxed mt-3">
+                    <p>{record_text}{html.escape(now_text)}</p>
+                    {sale}
+                </div>
+                <p class="text-xs text-ink-soft mt-3 leading-relaxed">楽天市場の商品検索で取得した参考価格をもとにしています。Amazonの価格やクーポン・ポイントは含みません。</p>
+            </section>"""
+
+
 def render_item_page(pid, info):
     """商品ごとの詳細・価格記録ページ"""
     root = "../"
@@ -2064,7 +2114,7 @@ def render_item_page(pid, info):
         seen_text += "・" if checked else ""
     else:
         seen_text = f"初掲載 {first_seen}・最終掲載 {html.escape(str(info.get('last_seen', ''))[:10].replace('-', '/'))}"
-    title = f"{name}の価格推移・セール情報｜{SITE_NAME}"
+    title = f"{name}の価格推移・" + ("安い時期" if len(points) >= 3 else "セール情報") + f"｜{SITE_NAME}"
     description = (f"{name}の楽天参考価格の記録" + ("を毎日更新中。" if info.get("staple") else "と、AIが選んだおすすめポイント。")
                    + (f"記録中の最安 ¥{min(p for _, p, _ in points):,}・価格の記録{len(points)}回。" if points else "")
                    + "Amazon・楽天の販売ページもすぐ確認できます。")
@@ -2125,6 +2175,7 @@ def render_item_page(pid, info):
                 </div>
             </div>
         </article>
+        {when_cheap_html(info, root)}
         {price_history_html(info)}
         {f'<a href="{root}category/{cat["slug"]}.html" class="block card card-hover p-5 text-center font-extrabold text-ink">{html.escape(cat["name"])}のセール情報をもっと見る →</a>' if cat else ""}
         <a href="{root}index.html" class="block card card-hover p-5 text-center font-extrabold text-ink">今日のお買い得ランキングを見る →</a>
@@ -2207,7 +2258,7 @@ CATEGORIES = [
 # 大型セールの特集ページ public/sale/<slug>.html（日程が発表されたら dates を更新する。label が無ければ「名前+年」で表示）
 SALE_GUIDES = [
     {
-        "slug": "black-friday", "name": "Amazonブラックフライデー", "year": 2026,
+        "slug": "black-friday", "name": "Amazonブラックフライデー", "year": 2026, "until": "2026-12-02",  # until: 商品ページの「次の大型セール」に出す期限（終わる目安の翌日）
         "dates": [],  # 例: [("先行セール", "11月20日(金)〜11月22日(日)"), ("本セール", "11月23日(月)〜11月30日(月)")]
         "past": [("2025年 先行セール", "11月21日(金)〜11月23日(日)"), ("2025年 本セール", "11月24日(月)〜12月1日(月)")],
         "lead": "Amazonブラックフライデーは、プライム会員以外も参加できる年末の大型セールです。ガジェット・家電は1年の中でも値下がりしやすいタイミングなので、狙いのジャンルと事前準備をまとめました。",
@@ -2225,7 +2276,7 @@ SALE_GUIDES = [
         "source": ("マイナビニュース（2025年11月14日）", "https://news.mynavi.jp/article/20251114-3666546/"),
     },
     {
-        "slug": "rakuten-super-sale", "name": "楽天スーパーSALE", "year": 2026, "label": "楽天スーパーSALE 2026年12月",
+        "slug": "rakuten-super-sale", "name": "楽天スーパーSALE", "year": 2026, "label": "楽天スーパーSALE 2026年12月", "until": "2026-12-12",
         "dates": [],  # 例: [("本セール", "12月4日(木)20:00〜12月11日(木)1:59")]
         "past": [("2025年12月", "12月4日(木)20:00〜12月11日(木)1:59")],
         "lead": "楽天スーパーSALEは、3月・6月・9月・12月の年4回開かれる楽天市場の大型セールです。半額以下の商品が並ぶうえ、複数のショップで買うほどポイント倍率が上がる「ショップ買いまわり」があるので、ガジェットとついで買いをまとめて買う絶好のタイミングです。",
@@ -2243,7 +2294,7 @@ SALE_GUIDES = [
         "source": ("ライフハッカー・ジャパン（2025年12月）", "https://www.lifehacker.jp/article/rakuten-supersale-2025-1205-2/"),
     },
     {
-        "slug": "amazon-hatsuuri", "name": "Amazon初売り", "year": 2027,
+        "slug": "amazon-hatsuuri", "name": "Amazon初売り", "year": 2027, "until": "2027-01-08",
         "dates": [],  # 例: [("初売り", "1月3日(日)9:00〜1月7日(木)23:59")]
         "past": [("2026年", "1月3日(土)9:00〜1月7日(水)23:59"), ("2025年", "1月3日(金)9:00〜1月7日(火)23:59")],
         "lead": "Amazon初売りは、毎年1月3日から開かれるAmazonの年始セールです。プライム会員以外も参加でき、年末年始の買い替えや新生活の準備に使いやすいタイミングです。",
