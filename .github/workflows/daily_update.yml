@@ -3,6 +3,7 @@ name: Daily Deal Auto Update
 on:
   schedule:
     - cron: '13 20 * * *'  # 日本時間5:13（混雑で遅れても朝7〜8時台に届くよう早めに設定）
+    - cron: '13 1 * * *'   # 日本時間10:13（昼12〜14時台に届くよう早めに設定）
     - cron: '13 7 * * *'   # 日本時間16:13（夕方17〜19時台に届くよう早めに設定）
   workflow_dispatch:
     inputs:
