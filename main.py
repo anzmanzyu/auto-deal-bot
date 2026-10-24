@@ -1614,6 +1614,7 @@ def head_html(title, description, page_url, root, og_type, ld_json, noindex=Fals
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{html.escape(title)}</title>
     <meta name="description" content="{html.escape(description)}">
+    <meta name="msvalidate.01" content="5B773A1BB4BCC01CAD0CA396B7247115">
     <link rel="canonical" href="{html.escape(page_url)}">
     <link rel="alternate" type="application/rss+xml" title="{html.escape(SITE_NAME)}" href="{SITE_URL}feed.xml">{'<meta name="robots" content="noindex, follow">' if noindex else ''}
     <meta name="theme-color" content="#fff5ea">
