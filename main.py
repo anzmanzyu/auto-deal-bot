@@ -49,7 +49,7 @@ RAKUTEN_ORIGIN = os.getenv("RAKUTEN_ORIGIN", "https://anzmanzyu.github.io")
 SITE_NAME = "AI厳選 ガジェット特価速報"
 OPERATOR_NAME = "Namiki"
 OPERATOR_EMAIL = "takumi.tsuta.pr@gmail.com"
-SITE_TAGLINE = "Amazon・楽天のお買い得ガジェットを、AIが毎日2回厳選"
+SITE_TAGLINE = "Amazon・楽天のお買い得ガジェットを、AIが毎日3回厳選"
 OG_IMAGE = "og.png"  # public/og.png（1200x630）
 
 JST = timezone(timedelta(hours=9))
@@ -57,7 +57,8 @@ NOW = datetime.now(JST)
 TODAY_STR = NOW.strftime("%Y-%m-%d %H:%M")
 TODAY_DATE = NOW.strftime("%Y-%m-%d")
 WEEKDAYS = "月火水木金土日"
-UPDATE_HOURS = (7, 18)  # workflow の cron（UTC 22:00 / 9:00）を日本時間にしたもの
+UPDATE_HOURS = (7, 12, 18)  # workflow の cron（日本時間 5:13 / 10:13 / 16:13）に、Actionsの混雑による遅れを見込んだ表示用の時刻
+RUN_SLOT = 0 if NOW.hour < 10 else 1 if NOW.hour < 15 else 2  # 朝・昼・夕方のどの回か
 
 HISTORY_PATH = "data/history.json"
 HISTORY_DAYS = 30
@@ -303,7 +304,7 @@ def fetch_candidates():
 
     if RAKUTEN_APP_ID:
         # 毎回同じ商品にならないよう、ジャンルを更新ごとに入れ替える
-        turn = NOW.toordinal() * 2 + (NOW.hour >= 12)
+        turn = NOW.toordinal() * 3 + RUN_SLOT
         main_q = [MAIN_QUERIES[(turn * 4 + i) % len(MAIN_QUERIES)] for i in range(4)]
         impulse_q = [IMPULSE_QUERIES[(turn * 3 + i) % len(IMPULSE_QUERIES)] for i in range(3)]
         recent = recent_item_urls()
@@ -312,7 +313,7 @@ def fetch_candidates():
                 time.sleep(1.2)  # 楽天APIのレート制限(1秒1回)対策
             slot_hint = "main" if i < len(main_q) else "impulse"
             # レビュー数上位の中から、ページもずらして取得する
-            page = 1 + (turn // 2 + i) % 3
+            page = 1 + (turn // 3 + i) % 3
             items = fetch_rakuten(keyword, slot_hint, 6, min_price, max_price, page)
             # 直近に掲載した商品は除外して入れ替わりを作る
             fresh = [c for c in items if rakuten_item_url(c["source_url"]) not in recent]
@@ -1235,14 +1236,14 @@ def archive_html(history, root, page_date):
 
 
 HOW_TO_STEPS = [
-    ("clock", "bg-sky-50", "AIが毎日2回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
+    ("clock", "bg-sky-50", "AIが毎日3回チェック", "家電・ガジェット系ニュースや楽天市場の人気商品など、公開情報から候補を自動で集めます。"),
     ("chart", "bg-amber-50", "注目度をスコア化", "楽天のレビュー評価・件数や価格の記録をもとにAIが判定。紹介した商品はその後も毎日価格をチェックし、値下がりした商品はトップにまとめます。"),
     ("cart", "bg-emerald-50", "各ストアをワンタップ比較", "ボタンからAmazon・楽天などの販売ページへ。価格やポイント還元はストアごとに違うので、見比べてから選べます。"),
 ]
 
 FAQ = [
     ("掲載商品はどうやって選んでいますか？",
-     "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが楽天のレビュー評価・件数、当サイトの価格記録、ポイント倍率などを見て毎日2回自動で選んでいます。各商品の「AIのチェックポイント」で、判断に使ったデータを確認できます。"),
+     "家電・ガジェット系ニュースや楽天市場の人気商品などの公開情報をもとに、AIが楽天のレビュー評価・件数、当サイトの価格記録、ポイント倍率などを見て毎日3回自動で選んでいます。各商品の「AIのチェックポイント」で、判断に使ったデータを確認できます。"),
     ("「実質価格」とは何ですか？",
      "販売価格からポイント還元やクーポンを差し引いた、実際の負担額のことです。還元率は会員ランクやキャンペーンのエントリー状況で変わるため、最終的な価格は各ストアでご確認ください。"),
     ("「値下がりを見つけた商品」とは何ですか？",
@@ -1484,7 +1485,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
     else:
         title = f"【{md_date(page_dt)}更新】今日のお買い得ガジェット{len(deals)}選・セール情報｜{SITE_NAME}"
         h1 = 'AIが選ぶ、今日の<br><span class="marker">お買い得ガジェット</span>'
-        lead = "楽天市場の売れ筋やガジェット系ニュースから、AIがお買い得な商品を毎日2回ピックアップ。紹介した商品はその後も毎日価格をチェックし、値下がりや最安記録をひと目で確認できます。"
+        lead = "楽天市場の売れ筋やガジェット系ニュースから、AIがお買い得な商品を毎日3回ピックアップ。紹介した商品はその後も毎日価格をチェックし、値下がりや最安記録をひと目で確認できます。"
         third_stat = ("calendar", "次回更新", *next_update_text().split(" ", 1))
         crumbs = ""
         archive_notice = ""
@@ -1550,7 +1551,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
                 {crumbs}
                 <div class="inline-flex items-center gap-2 bg-white ring-1 ring-orange-100 shadow-sm rounded-full px-3.5 py-1.5 text-sm font-bold text-ink">
                     <span class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span></span>
-                    毎日 朝・夕方にAIが自動更新
+                    毎日 朝・昼・夕方にAIが自動更新
                 </div>
                 <h1 class="mt-5 text-[1.85rem] md:text-5xl font-extrabold text-ink leading-[1.35] md:leading-[1.3]">{h1}</h1>
                 <p class="mt-4 text-ink-soft text-[15px] md:text-lg leading-relaxed">{lead}</p>
@@ -1591,7 +1592,7 @@ def render_page(deals, history, page_date, root, page_url, events=(), groups=Non
                 <span class="shrink-0 w-16 h-16 rounded-[1.25rem] bg-white shadow-soft flex items-center justify-center"><img src="{root}img/icons/share.svg" alt="" class="w-11 h-11"></span>
                 <div>
                     <p class="text-lg md:text-xl font-extrabold text-ink">お得情報を友だちにも教えよう</p>
-                    <p class="text-sm text-ink-soft mt-1 leading-relaxed">このページは毎日 朝・夕方の2回、自動で更新されます。ブックマークもおすすめです。</p>
+                    <p class="text-sm text-ink-soft mt-1 leading-relaxed">このページは毎日 朝・昼・夕方の3回、自動で更新されます。ブックマークもおすすめです。</p>
                 </div>
             </div>
             <a href="{html.escape(tweet_page_url)}" target="_blank" rel="noopener" class="relative shrink-0 bg-ink hover:bg-ink-soft text-white font-bold px-6 py-3.5 rounded-full text-center shadow-md transition">𝕏 このページをポスト</a>
@@ -1651,7 +1652,7 @@ def footer_html(root):
     <footer class="bg-white border-t border-orange-100 text-[13px] text-ink-soft">
         <div class="max-w-5xl mx-auto px-4 py-10 space-y-3 leading-relaxed">
             <p class="flex items-center gap-2.5 text-ink font-extrabold text-base"><img src="{root}img/logo.svg" alt="" class="w-8 h-8">{html.escape(SITE_NAME)}</p>
-            <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日 朝・夕方の2回自動更新しています。</p>
+            <p>{html.escape(SITE_TAGLINE)}。セール・値下げ情報を毎日 朝・昼・夕方の3回自動更新しています。</p>
             <p class="flex flex-wrap gap-x-4 gap-y-1 font-bold"><a href="{root}index.html#category" class="hover:text-orange-600 hover:underline">カテゴリから探す</a>{"".join(f'<a href="{root}sale/{g["slug"]}.html" class="hover:text-orange-600 hover:underline">{html.escape(guide_label(g))}</a>' for g in SALE_GUIDES)}<a href="{root}drops.html" class="hover:text-orange-600 hover:underline">値下がり一覧</a><a href="{root}index.html#archive" class="hover:text-orange-600 hover:underline">アーカイブ</a><a href="{root}about.html" class="hover:text-orange-600 hover:underline">運営者情報・お問い合わせ</a></p>
             <p>Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。また、{AD_PARTNERS}を利用しています。</p>
             <p>掲載内容はAIが公開情報をもとに自動生成したものです。価格・在庫・ポイント倍率は変動するため、購入前に必ず各販売ページでご確認ください。</p>
@@ -2456,7 +2457,7 @@ def render_category_page(cat, items, groups, top_deals):
     title = f"{name}のセール・値下げ情報と価格推移｜{SITE_NAME}"
     names = "、".join(display_name(i) for _, i in items[:2])
     description = (f"{name}のセール・値下げ情報を、楽天参考価格の記録と一緒にまとめています。"
-                   + (f"{names}など{len(items)}件掲載。" if items else "") + "毎日 朝・夕方に自動更新。")
+                   + (f"{names}など{len(items)}件掲載。" if items else "") + "毎日 朝・昼・夕方に自動更新。")
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL},
@@ -2480,7 +2481,7 @@ def render_category_page(cat, items, groups, top_deals):
         <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="{root}index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">{html.escape(name)}</span></nav>
         <section class="card p-5 md:p-7">
             <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">{html.escape(name)}のセール・値下げ情報</h1>
-            <p class="mt-3 text-ink-soft leading-relaxed">{html.escape(cat["lead"])}当サイトが毎日 朝・夕方に紹介した商品と、楽天参考価格の記録を新しい順に並べています。</p>
+            <p class="mt-3 text-ink-soft leading-relaxed">{html.escape(cat["lead"])}当サイトが毎日 朝・昼・夕方に紹介した商品と、楽天参考価格の記録を新しい順に並べています。</p>
             <p class="mt-2 text-xs text-ink-soft">掲載 {len(items)}件・最終更新 {TODAY_STR}</p>
         </section>
         <section class="space-y-4">{cards}
@@ -2526,7 +2527,7 @@ def render_feed(products):
     <title>{html.escape(SITE_NAME)}</title>
     <link>{SITE_URL}</link>
     <atom:link href="{SITE_URL}feed.xml" rel="self" type="application/rss+xml"/>
-    <description>{html.escape(SITE_TAGLINE)}。毎日 朝・夕方に更新。</description>
+    <description>{html.escape(SITE_TAGLINE)}。毎日 朝・昼・夕方に更新。</description>
     <language>ja</language>
     <lastBuildDate>{NOW.strftime("%a, %d %b %Y %H:%M:%S %z")}</lastBuildDate>
 {chr(10).join(entries)}
@@ -2575,14 +2576,14 @@ def render_drops_page(drops, groups):
     ld_json = json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")
     cards = "".join(drop_card(pid, info, root) for pid, info in drops)
     if not cards:
-        cards = '<p class="card p-5 text-ink-soft md:col-span-2">直近で値下がりした商品は見つかりませんでした。毎日 朝・夕方の価格チェックで見つかり次第ここに追加されます。</p>'
+        cards = '<p class="card p-5 text-ink-soft md:col-span-2">直近で値下がりした商品は見つかりませんでした。毎日 朝・昼・夕方の価格チェックで見つかり次第ここに追加されます。</p>'
     return f"""{head_html(title, description, page_url, root, "website", ld_json, len(drops) < DROP_PAGE_MIN)}
     {simple_header_html(root, "max-w-5xl")}
     <main class="max-w-5xl mx-auto px-4 pt-6 pb-16 space-y-6">
         <nav class="text-sm text-ink-soft" aria-label="パンくずリスト"><a href="index.html" class="hover:text-orange-600 underline-offset-2 hover:underline">ホーム</a> › <span class="text-ink font-bold">値下がり一覧</span></nav>
         <section class="card p-5 md:p-7">
             <h1 class="text-2xl md:text-3xl font-extrabold text-ink leading-snug">値下がりしたガジェット・家電一覧</h1>
-            <p class="mt-3 text-ink-soft leading-relaxed">当サイトでこれまでに紹介した商品の楽天参考価格を毎日 朝・夕方にチェックし、直近{DROP_PAGE_DAYS}日で前回の記録より下がった商品を、下げ幅の大きい順に並べています。「記録中の最安」は、当サイトが記録した価格の中で最も安いことを表します。</p>
+            <p class="mt-3 text-ink-soft leading-relaxed">当サイトでこれまでに紹介した商品の楽天参考価格を毎日 朝・昼・夕方にチェックし、直近{DROP_PAGE_DAYS}日で前回の記録より下がった商品を、下げ幅の大きい順に並べています。「記録中の最安」は、当サイトが記録した価格の中で最も安いことを表します。</p>
             <p class="mt-2 text-xs text-ink-soft">{len(drops)}件・最終更新 {TODAY_STR}</p>
         </section>
         <section class="grid gap-5 md:grid-cols-2">{cards}
@@ -2744,7 +2745,7 @@ def render_about_page():
             <p class="text-sm text-ink-soft mt-4 leading-relaxed">掲載内容の誤り、商品情報の修正・削除のご依頼などは、上記のメールアドレスまでご連絡ください。</p>
         </section>
         {section("このサイトについて",
-                 "<p>ガジェット好きの個人が運営している、セール・値下げ情報のまとめサイトです。Amazon・楽天市場などのセール情報や人気商品の公開情報をもとに、AIが毎日 朝・夕方の2回、注目の商品を選んで紹介しています。</p>"
+                 "<p>ガジェット好きの個人が運営している、セール・値下げ情報のまとめサイトです。Amazon・楽天市場などのセール情報や人気商品の公開情報をもとに、AIが毎日 朝・昼・夕方の3回、注目の商品を選んで紹介しています。</p>"
                  "<p>紹介文と「AIのチェックポイント」はAIが自動で作成しています。楽天参考価格は、楽天市場の商品検索で取得した価格を記録したものです。一度紹介した商品は、その後も1日1回価格をチェックして記録しています。価格・在庫・ポイント倍率は変わるため、購入前に必ず各販売ページでご確認ください。</p>")}
         {section("広告について",
                  f"<p>当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。また、{html.escape(AD_PARTNERS)}を利用しています。</p>"
@@ -2846,7 +2847,7 @@ def notify_discord(deals):
 
     lines.append(f"\n👉 Xにワンタップで投稿: {SITE_URL}share/x.html")
     messages = ["\n".join(lines)[-1950:]]
-    if NOW.hour >= 12:  # 夕方の更新時だけ、インサイト祭りの参加コメント案を別メッセージで届ける
+    if RUN_SLOT == 2:  # 夕方の更新時だけ、インサイト祭りの参加コメント案を別メッセージで届ける
         comment = matsuri_comment(deals)
         if comment:
             messages += ["🎪 **今日のインサイト祭り用コメント案**（下のメッセージを長押しでコピー→祭り投稿に返信）", comment]
@@ -2878,10 +2879,10 @@ def check_health(deals):
 
 
 MATSURI_TEMPLATES = (
-    "インサイト祭り参加させてください🙌\nガジェット・家電のお買い得情報を毎日朝と夕方にまとめて発信してます。\n今日の注目は「{name}」{price}\n一覧はプロフのリンクから見られます👀 フォロー返しします！",
-    "祭り参加します✨\nAIで選んだガジェット特価を毎日2回お届けしているアカウントです。\n今日イチ推しは「{name}」{price}\nまとめはプロフのリンクにあります。仲良くしてください🙏 フォロバします！",
+    "インサイト祭り参加させてください🙌\nガジェット・家電のお買い得情報を毎日朝・昼・夕方にまとめて発信してます。\n今日の注目は「{name}」{price}\n一覧はプロフのリンクから見られます👀 フォロー返しします！",
+    "祭り参加します✨\nAIで選んだガジェット特価を毎日3回お届けしているアカウントです。\n今日イチ推しは「{name}」{price}\nまとめはプロフのリンクにあります。仲良くしてください🙏 フォロバします！",
     "インサイト祭り失礼します📱\n買って損しないガジェット・家電の特価を毎日チェックしてます。\n今日のおすすめ→「{name}」{price}\n他の特価はプロフのリンクからどうぞ。フォローいただけたら必ずお返しします！",
-    "参加させてください🙋\nセール中のガジェットを朝夕2回、AIと一緒に厳選して紹介してます。\n本日の目玉は「{name}」{price}\n全部プロフのリンクにまとめてます。フォロバ100%です、よろしくお願いします！",
+    "参加させてください🙋\nセール中のガジェットを朝昼夕の3回、AIと一緒に厳選して紹介してます。\n本日の目玉は「{name}」{price}\n全部プロフのリンクにまとめてます。フォロバ100%です、よろしくお願いします！",
 )
 
 
@@ -2988,7 +2989,7 @@ def post_to_x(deal):
     res.raise_for_status()
     tweet_id = res.json()["data"]["id"]
     reply = {
-        "text": f"▼価格の推移・現在の価格はこちら（毎日 朝・夕方に自動更新）\n{deal_page_url(deal)}",
+        "text": f"▼価格の推移・現在の価格はこちら（毎日 朝・昼・夕方に自動更新）\n{deal_page_url(deal)}",
         "reply": {"in_reply_to_tweet_id": tweet_id},
     }
     res = requests.post("https://api.x.com/2/tweets", auth=auth, json=reply, timeout=30)
@@ -3069,7 +3070,7 @@ def post_to_threads(deal):
     if not reply_link:
         return
     time.sleep(5)  # 公開した投稿に返信できるようになるのを待つ
-    reply = f"👇 価格の推移・現在の価格はこちら（毎日 朝・夕方に自動更新）\n{deal_page_url(deal)}"
+    reply = f"👇 価格の推移・現在の価格はこちら（毎日 朝・昼・夕方に自動更新）\n{deal_page_url(deal)}"
     try:
         threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": post_id})
         print("Threadsの1コメにURLを付けました。")
