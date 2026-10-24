@@ -625,6 +625,12 @@
     "t": "2026-10-23 21:35",
     "price": 8030,
     "point": 1
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 8030,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "JBL ワイヤレスイヤホン WAVE BEAM 2",
@@ -637,7 +643,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jblstore/cabinet/event/2610m3_thumb/th_wavebeam2_2610m3.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/jblstore/wave-beam2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "jblstore:10000198",
   "item_name": "★先着クーポン＆ポイントUP27日9：59まで＼楽天1位／【公式限定】JBL ワイヤレスイヤホン WAVE BEAM 2 | イヤホン Bluetooth 5.3 カナル型 スティック型 ノイズキャンセリング ノイキャン マルチポイント接続 防水性能 WEB会議 マイク付き 外音取り込み 急速充電",
   "review_count": 588,
@@ -672,6 +678,12 @@
     "price": 1090,
     "point": 9,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 1090,
+    "point": 9,
+    "via": "track"
    }
   ],
   "product_name": "P9倍 急速充電器＋ケーブルセット",
@@ -684,7 +696,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/case-by-case/cabinet/08655288/10418282/12211884/imgrc0094269156.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/case-by-case/1000-2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-22 21:56",
-  "last_checked": "2026-10-23 21:35",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "case-by-case:10002069",
   "item_name": "P9倍 楽天1位【30分で65%まで充電 GaN搭載】急速充電器 ケーブル セット PSE認証 充電器 急速 タイプc acアダプター タイプcケーブル ライトニングケーブル 充電ケーブル android 充電器 iphone 急速充電 充電器 cタイプ PD acアダプタ usb-c USB iphoneケーブル 充電コード",
   "review_count": 9045,
@@ -938,6 +950,12 @@
     "price": 1952,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 2297,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "USB付き 延長コード 電源タップ",
@@ -950,9 +968,9 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/sybr17/cabinet/09936826/2c2u-0.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/sybr17/2c2u/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 08:55",
-  "last_checked": "2026-10-23 08:23",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "sybr17:10000136",
-  "item_name": "【15%OFF】1m限定！10/23(金)10:00まで! 延長コード 電源タップ USB 1m 2m 3m 5m コンセント AC2個口 2USB 雷ガード 電源コード アダプタ 充電器 雷サージ マルチタップ テーブルタップ 海外 240V 急速充電 木目 白 黒 USB付 タップ SAYBOUR"
+  "item_name": "延長コード 電源タップ USB 1m 2m 3m 5m コンセント AC2個口 2USB 雷ガード 電源コード アダプタ 充電器 雷サージ マルチタップ テーブルタップ 海外 240V 急速充電 木目 白 黒 USB付 タップ SAYBOUR"
  },
  "c64279ea5a": {
   "records": [
@@ -1168,21 +1186,28 @@
     "price": 1900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 1900,
+    "point": 1
    }
   ],
-  "product_name": "32GB microSDカード",
+  "product_name": "32GB microSDカード (ノーブランド)",
   "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "容量と速度のバランス",
-  "deal_reason": "・32GBでスマホやカメラの容量拡張\n・Class10で高速データ転送\n・価格が手頃で即決しやすい",
-  "score": 88,
+  "catch_copy": "手軽に容量増",
+  "deal_reason": "・スマホやタブレットで容量拡張\n・クラス10で高速データ転送\n・手頃な価格でコスパ抜群",
+  "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bonz/cabinet/03957598/micro32_main02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/bonz/377-00038-micro/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 21:54",
-  "last_checked": "2026-10-24 08:10",
+  "last_seen": "2026-10-24 20:58",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "bonz:10033080",
-  "item_name": "マイクロSDカード 32GB アダプター付き ノーブランド microSDHC class10"
+  "item_name": "マイクロSDカード 32GB アダプター付き ノーブランド microSDHC class10",
+  "review_count": 8321,
+  "review_average": 4.55
  },
  "dd566b2af5": {
   "records": [
@@ -1398,21 +1423,28 @@
     "price": 2280,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 2280,
+    "point": 1
    }
   ],
-  "product_name": "microSDカード 64GB アダプター付き",
-  "category": "ガジェット",
+  "product_name": "64GB microSDカード (ノーブランド)",
+  "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "容量と速度のバランス抜群",
-  "deal_reason": "・64GBで写真・動画をたっぷり保存\n・UHS-I対応で高速転送\n・アダプター付きで多機種対応",
-  "score": 84,
+  "catch_copy": "さらに広がる容量",
+  "deal_reason": "・動画や写真もたっぷり保存\n・UHS-I対応でスムーズ撮影",
+  "score": 87,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bonz/cabinet/03957598/micro64_main02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/bonz/10033097/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 23:49",
-  "last_checked": "2026-10-24 08:10",
+  "last_seen": "2026-10-24 20:58",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "bonz:10033097",
-  "item_name": "マイクロSDカード 64GB アダプター付き ノーブランド microSDXC class10 UHS-I"
+  "item_name": "マイクロSDカード 64GB アダプター付き ノーブランド microSDXC class10 UHS-I",
+  "review_count": 3086,
+  "review_average": 4.49
  },
  "87057f2e7f": {
   "records": [
@@ -1836,6 +1868,12 @@
     "price": 1299,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 1299,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "RoiCiel マグネット充電ケーブル",
@@ -1848,7 +1886,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/roiciel/cabinet/08816048/10418553/10452724/imgrc0195106473.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/roiciel/rc-22-gp03/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-19 00:04",
-  "last_checked": "2026-10-23 08:23",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "roiciel:10000246",
   "item_name": "RoiCiel マグネット 充電ケーブル 磁気リング マグネット ケーブル 絡まない 磁気収納 形状記憶 USB ケーブル マグネット 充電ケーブル 巻き取り 持ち運び USB-A to Lightning USB-A to USB-C Type-C USB-A to Micro Micro-B選べる 急速充電 データ転送 スマホ 磁気 収納"
  },
@@ -2224,6 +2262,12 @@
     "price": 69800,
     "point": 10,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 69800,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "DEEBOT N20 PRO PLUS ロボット掃除機",
@@ -2236,7 +2280,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/store-ecovacs-japan/cabinet/campaign/261014/dkx55-12ee.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/store-ecovacs-japan/dkx55-12ee/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-19 09:05",
-  "last_checked": "2026-10-23 08:23",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "store-ecovacs-japan:10000405",
   "item_name": "【クーポン利用で32,800円&P10倍！10/23〜10/27】ロボット掃除機 DEEBOT N20 PRO PLUS エコバックス ECOVACS 吸引 水拭き メーカー保証最大24ヶ月 ecovacs 掃除機 自動掃除機 掃除ロボット ディーボット ロボット掃除機 2025 高性能 お掃除ロボット エコバッグス 母の日"
  },
@@ -2771,6 +2815,12 @@
     "price": 99706,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 49800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Plus 405 Combo",
@@ -2785,9 +2835,9 @@
   "review_count": 1428,
   "review_average": 4.45,
   "last_seen": "2026-10-19 10:54",
-  "last_checked": "2026-10-23 08:23",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "irobotstore:10000557",
-  "item_name": "【公式】 Roomba Plus 405 Combo + AutoWash ルンバ オンライン限定 アイロボット ロボット掃除機 2025 お掃除ロボット 水拭き 床拭き 拭き掃除 自動ゴミ収集 マッピング 高性能 モップ自動洗浄 全自動 iRobot 日本 国内 正規品 メーカー保証 延長保証 送料無料"
+  "item_name": "【 期間限定 49%OFF 】 公式 Roomba Plus 405 Combo + AutoWash ルンバ オンライン限定 アイロボット ロボット掃除機 お掃除ロボット 水拭き 床拭き 自動ゴミ収集 マッピング 高性能 モップ自動洗浄 iRobot 日本 国内 正規品 メーカー保証 延長保証 送料無料"
  },
  "27810de552": {
   "records": [
@@ -3079,6 +3129,12 @@
     "t": "2026-10-23 21:35",
     "price": 1528,
     "point": 1
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 1528,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "LDC 国産 500ml 炭酸水 24本セット",
@@ -3093,9 +3149,9 @@
   "review_count": 4173,
   "review_average": 4.76,
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "jyonetsubatake:10000152",
-  "item_name": "炭酸水 500ml 24本/48本 ペットボトル プレーン 24本入 1箱/2箱 LDC 国産 山形産 やさしい水の炭酸水 ケース まとめ買い ソーダ ハイボール 割材"
+  "item_name": "【ポイント2倍】 炭酸水 500ml 24本/48本 ペットボトル プレーン 24本入 1箱/2箱 LDC 国産 山形産 やさしい水の炭酸水 ケース まとめ買い ソーダ ハイボール 割材"
  },
  "b721d24712": {
   "records": [
@@ -3365,6 +3421,12 @@
     "price": 1490,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 1490,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "東芝 アルカリ乾電池 40本セット",
@@ -3379,7 +3441,7 @@
   "review_count": 234,
   "review_average": 4.8,
   "last_seen": "2026-10-22 21:56",
-  "last_checked": "2026-10-23 21:35",
+  "last_checked": "2026-10-24 20:58",
   "item_code": "ho-metec:10008022",
   "item_name": "《選べる 計40本》アルカリ乾電池 単3 単4 [ 東芝 TOSHIBA まとめ買い アルカリ電池 単3形 単三形 単4形 単四形 防災用品 非常用 ]【メール便送料無料】"
  },
@@ -5165,6 +5227,12 @@
     "price": 2249,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 2249,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN 6ボタン ワイヤレスマウス",
@@ -5177,11 +5245,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ugreen-gear/cabinet/11871349/90545-1.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ugreen-gear/90545/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "ugreen-gear:10000327",
-  "item_name": "＼0の付く日★25%OFFクーポン♪／UGREEN 人間工学 ワイヤレスマウス 6ボタン コスパ最高マウス 無線2.4GHz 静音マウス5段階DPI切替 4000DPI ノートPC MacBook Chromebook パソコンなど対応 Mac Windows PC Laptop Macbook多機種対応 ピンク ブラック 出張 マウス",
+  "item_name": "【お買い物マラソン30％OFFクーポン】UGREEN 人間工学 ワイヤレスマウス 6ボタン コスパ最高マウス 無線2.4GHz 静音マウス5段階DPI切替 4000DPI ノートPC MacBook Chromebook パソコンなど対応 Mac Windows PC Laptop Macbook多機種対応 ピンク ブラック 出張 マウス",
   "review_count": 1698,
   "review_average": 4.55,
   "last_seen": "2026-10-22 08:21",
-  "last_checked": "2026-10-23 08:23"
+  "last_checked": "2026-10-24 20:58"
  },
  "77be563202": {
   "records": [
@@ -5340,6 +5408,12 @@
     "price": 7480,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 7480,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "バッファロー Wi‑Fi6 ルーター",
@@ -5356,7 +5430,7 @@
   "review_count": 1862,
   "review_average": 4.66,
   "last_seen": "2026-10-22 21:56",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "0ffab5232f": {
   "records": [
@@ -5556,6 +5630,12 @@
     "t": "2026-10-23 08:23",
     "price": 4380,
     "point": 1
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 4380,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Bluetooth6.1 ワイヤレスイヤホン ANC",
@@ -5568,11 +5648,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/beneru/cabinet/t26/t26p_main.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/beneru/t26/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "beneru:10000026",
-  "item_name": "セール限定！2,080円【業界初Bluetooth6.1＆大画面操作】 ワイヤレスイヤホン ANC対応 ENC通話 タッチ操作 ワイヤレス イヤホン bluetooth ブルートゥースイヤホン 残量表示 多機能 イヤホン 自動ペアリング HiFi LEDディスプレイ 落下防止ストラップ付 会議 運動",
+  "item_name": "セール限定！2,059円【業界初Bluetooth6.1＆大画面操作】 ワイヤレスイヤホン ANC対応 ENC通話 タッチ操作 ワイヤレス イヤホン bluetooth ブルートゥースイヤホン 残量表示 多機能 イヤホン 自動ペアリング HiFi LEDディスプレイ 落下防止ストラップ付 会議 運動",
   "review_count": 2071,
   "review_average": 4.57,
   "last_seen": "2026-10-23 08:23",
-  "last_checked": "2026-10-23 08:23"
+  "last_checked": "2026-10-24 20:58"
  },
  "cbb70a9a5d": {
   "records": [
@@ -5626,12 +5706,18 @@
   "score": 0,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/archisite/cabinet/shouhin/07253599/imgrc0084038147.jpg?_ex=400x400",
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "7fe51fa2f0": {
   "records": [
    {
     "t": "2026-10-23 21:35",
+    "price": 2890,
+    "point": 1,
+    "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
     "price": 2890,
     "point": 1,
     "via": "track"
@@ -5650,12 +5736,18 @@
   "score": 0,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/deal/202610m3/a1645_sale.jpg?_ex=400x400",
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "7552ef4f5e": {
   "records": [
    {
     "t": "2026-10-23 21:35",
+    "price": 1890,
+    "point": 1,
+    "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
     "price": 1890,
     "point": 1,
     "via": "track"
@@ -5674,12 +5766,18 @@
   "score": 0,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a2/a2147_normal.jpg?_ex=400x400",
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "9a9f3e721c": {
   "records": [
    {
     "t": "2026-10-23 21:35",
+    "price": 8990,
+    "point": 1,
+    "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
     "price": 8990,
     "point": 1,
     "via": "track"
@@ -5698,12 +5796,18 @@
   "score": 0,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a2/a2688_normal.jpg?_ex=400x400",
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "4a02cad59e": {
   "records": [
    {
     "t": "2026-10-23 21:35",
+    "price": 3150,
+    "point": 1,
+    "via": "track"
+   },
+   {
+    "t": "2026-10-24 20:58",
     "price": 3150,
     "point": 1,
     "via": "track"
@@ -5722,7 +5826,7 @@
   "score": 0,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ecojiji/cabinet/05630783/ni-mh/pool_enelongl3-8.jpg?_ex=400x400",
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "38956b0dec": {
   "records": [
@@ -5730,6 +5834,12 @@
     "t": "2026-10-23 21:35",
     "price": 7980,
     "point": 1
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 7980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "AirBass Bluetooth5.3 ワイヤレスイヤホン",
@@ -5746,7 +5856,7 @@
   "review_count": 542,
   "review_average": 4.49,
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "46c8838e42": {
   "records": [
@@ -5754,6 +5864,12 @@
     "t": "2026-10-23 21:35",
     "price": 5326,
     "point": 1
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 5326,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "HUAWEI FreeBuds SE 4 ANC ワイヤレスイヤホン",
@@ -5770,7 +5886,7 @@
   "review_count": 515,
   "review_average": 4.58,
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "adb0d23ed0": {
   "records": [
@@ -5778,6 +5894,12 @@
     "t": "2026-10-23 21:35",
     "price": 5980,
     "point": 1
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 5980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Mi T5 OWS ワイヤレスイヤホン",
@@ -5794,7 +5916,7 @@
   "review_count": 433,
   "review_average": 4.26,
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "eb1ecba85b": {
   "records": [
@@ -5802,6 +5924,12 @@
     "t": "2026-10-23 21:35",
     "price": 2980,
     "point": 1
+   },
+   {
+    "t": "2026-10-24 20:58",
+    "price": 3080,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "23600mAh PD22.5W 大容量モバイルバッテリー",
@@ -5814,11 +5942,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/furumiyashop/cabinet/zt/p60-2380.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/furumiyashop/cdb00p60/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "furumiyashop:10000146",
-  "item_name": "【クーポン利用で最安2380円】楽天1位26冠！モバイルバッテリー 大容量 23600mAh PD22.5W 急速充電 Type-C出入力 4本ケーブル内蔵 軽量 iphone スマホ充電器 携帯充電器 タイプc対応 残量表示 LEDライト 防災グッズ PSE認証済 Lightning iPhone/Android全機種対応",
+  "item_name": "【クーポン利用で最安2235円】楽天1位26冠！モバイルバッテリー 大容量 23600mAh PD22.5W 急速充電 Type-C出入力 4本ケーブル内蔵 軽量 iphone スマホ充電器 携帯充電器 タイプc対応 残量表示 LEDライト 防災グッズ PSE認証済 Lightning iPhone/Android全機種対応",
   "review_count": 6730,
   "review_average": 4.51,
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-10-23 21:35"
+  "last_checked": "2026-10-24 20:58"
  },
  "e8c1040e88": {
   "records": [
@@ -5939,5 +6067,101 @@
   "review_average": 4.78,
   "last_seen": "2026-10-24 08:10",
   "last_checked": "2026-10-24 08:10"
+ },
+ "a2694668a8": {
+  "records": [
+   {
+    "t": "2026-10-24 20:58",
+    "price": 5990,
+    "point": 1
+   }
+  ],
+  "product_name": "Anker Soundcore P30i 完全ワイヤレスイヤホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "ノイズキャンセルで静寂",
+  "deal_reason": "・アクティブノイズキャンセルで外音遮断\n・Bluetooth5.4で安定接続\n・コンパクトで持ち運び楽々",
+  "score": 94,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3959_normal.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/anker/a3959/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "anker:10001961",
+  "item_name": "Anker Soundcore P30i (Bluetooth 5.4) 【完全ワイヤレスイヤホン / アクティブノイズキャンセリング / マルチポイント接続 / 最大45時間再生 / 小型軽量 / スマホスタンド付き充電ケース】",
+  "review_count": 294,
+  "review_average": 4.64,
+  "last_seen": "2026-10-24 20:58",
+  "last_checked": "2026-10-24 20:58"
+ },
+ "641a2fa69d": {
+  "records": [
+   {
+    "t": "2026-10-24 20:58",
+    "price": 10980,
+    "point": 1
+   }
+  ],
+  "product_name": "OneOdio A10 ワイヤレスヘッドホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "長時間快適サウンド",
+  "deal_reason": "・62時間の連続再生で長旅も安心\n・ノイズキャンセルで集中できる\n・Bluetoothと有線の二重接続",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/oneodio/cabinet/07938804/08826340/imgrc0095065921.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/oneodio/a10/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "oneodio:10000005",
+  "item_name": "【有線無線両用】OneOdio A10 ワイヤレス ヘッドホン 62時間再生 Bluetooth ヘッドフォン 無線 ハイブリッド ANCノイズキャンセリング 外音取り込み 有線ヘッドフォン マイク付き 密閉型 オーバーイヤーヘッドフォン軽量 音楽鑑賞 映画鑑賞 テレビ iPhone Andoroid PC PS4用",
+  "review_count": 296,
+  "review_average": 4.53,
+  "last_seen": "2026-10-24 20:58",
+  "last_checked": "2026-10-24 20:58"
+ },
+ "fe5a2cf300": {
+  "records": [
+   {
+    "t": "2026-10-24 20:58",
+    "price": 8480,
+    "point": 1
+   }
+  ],
+  "product_name": "SOUNDPEATS Air4 Pro ワイヤレスイヤホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "コスパ最強の音質",
+  "deal_reason": "・マルチポイント対応でデバイス切替簡単\n・Bluetooth5.3で低遅延",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/sonic-store/cabinet/soundpeats/air4pro/0-6.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/sonic-store/air4pro/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "sonic-store:10000193",
+  "item_name": "「VGP2024金賞、コスパ大賞」ワイヤレスイヤホン Bluetooth 5.3 マルチポイント SOUNDPEATS Air4 Pro 完全ワイヤレスイヤホン イヤホン Snapdragon Sound/aptX adaptive LossLess/ aptX voice 13mmダイナミックドライバー ANCノイズキャンセリング 外音取り込み機能 最大26H",
+  "review_count": 287,
+  "review_average": 4.45,
+  "last_seen": "2026-10-24 20:58",
+  "last_checked": "2026-10-24 20:58"
+ },
+ "4fada1b3c8": {
+  "records": [
+   {
+    "t": "2026-10-24 20:58",
+    "price": 20800,
+    "point": 1
+   }
+  ],
+  "product_name": "Transcend 256GB スティックSSD ESD310C",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "高速ポータブル保存",
+  "deal_reason": "・USB3.2 Gen2で高速転送\n・コンパクトサイズで持ち運び便利\n・耐衝撃設計で安心使用",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/esupply/cabinet/bnr/toppa/r1_ts256gesd310c_1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/esupply/ts256gesd310c/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "esupply:10098990",
+  "item_name": "【最大1500円OFFクーポン配布中】スティックSSD 256GB Transcend ESD310C ポータブルSSD 外付けSSD デュアルコネクタ TS256GESD310C",
+  "review_count": 76,
+  "review_average": 4.86,
+  "last_seen": "2026-10-24 20:58",
+  "last_checked": "2026-10-24 20:58"
  }
 }
