@@ -1775,21 +1775,28 @@
     "price": 3680,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-25 21:32",
+    "price": 3680,
+    "point": 1
    }
   ],
-  "product_name": "QS16 Pro スマートウォッチ",
+  "product_name": "QS16 Pro 10周年特別版 スマートウォッチ",
   "category": "ガジェット",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "24時間健康管理が手元に",
-  "deal_reason": "・通話機能でスマホ不要\n・大画面1.9インチで見やすい\n・女性向けデザインでスタイリッシュ",
+  "catch_copy": "健康管理が手元で完結",
+  "deal_reason": "・24時間心拍数と睡眠をチェック\n・通話や通知でスマホ不要\n・軽量デザインで女性にもフィット",
   "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/smahoservice/cabinet/w/w301984/w301984-02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/smahoservice/w301984-1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:02",
-  "last_checked": "2026-10-25 07:29",
+  "last_seen": "2026-10-25 21:32",
+  "last_checked": "2026-10-25 21:32",
   "item_code": "smahoservice:10003769",
-  "item_name": "【楽天1位】10周年特別版 スマートウォッチ QS16 Pro Bluetooth通話 24時間健康管理 レディース腕時計 1.9/1.85インチ大画面 3ATM/IP68防水 300mah 運動モード 消費カロリー 心拍数 歩数計 着信通知 睡眠モード 天気予報 音楽コントロール"
+  "item_name": "【楽天1位】10周年特別版 スマートウォッチ QS16 Pro Bluetooth通話 24時間健康管理 レディース腕時計 1.9/1.85インチ大画面 3ATM/IP68防水 300mah 運動モード 消費カロリー 心拍数 歩数計 着信通知 睡眠モード 天気予報 音楽コントロール",
+  "review_count": 2116,
+  "review_average": 4.35
  },
  "5cb2f7ae60": {
   "records": [
@@ -1827,21 +1834,28 @@
     "price": 15999,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-25 21:32",
+    "price": 15999,
+    "point": 1
    }
   ],
-  "product_name": "VisionOwl 14インチ モバイルモニター",
+  "product_name": "VisionOwl 14インチ 超薄型モバイルモニター",
   "category": "ガジェット",
   "slot": "main",
-  "badge": "⚡ 実質最安級",
-  "catch_copy": "軽量・高輝度で持ち運び楽々",
-  "deal_reason": "・540gと超軽量\n・400nit高輝度で屋外でも見やすい\n・100% sRGBで色再現が正確",
-  "score": 88,
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "軽さと鮮やかさが魅力",
+  "deal_reason": "・540gの超軽量で持ち運び楽々\n・400nit高輝度で屋外でも見やすい\n・自立スタンドでデスク作業が快適",
+  "score": 89,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/09820502/11638583/imgrc0111583018.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/xl-14/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 00:02",
-  "last_checked": "2026-10-25 07:29",
+  "last_seen": "2026-10-25 21:32",
+  "last_checked": "2026-10-25 21:32",
   "item_code": "qifeng:10000004",
-  "item_name": "VisionOwl モバイルモニター 14インチ 超薄型 超軽量540g 高輝度400nit 100％sRGB広色域 自立型 収納ケース付 画像比率調整可 ポータブルモニター 非光沢IPSパネル WUXGA 1920x1200 PS4/XBOX/Switch/PC/Macなど対応 MD-14G"
+  "item_name": "VisionOwl モバイルモニター 14インチ 超薄型 超軽量540g 高輝度400nit 100％sRGB広色域 自立型 収納ケース付 画像比率調整可 ポータブルモニター 非光沢IPSパネル WUXGA 1920x1200 PS4/XBOX/Switch/PC/Macなど対応 MD-14G",
+  "review_count": 465,
+  "review_average": 4.68
  },
  "6c7725a6e8": {
   "records": [
@@ -2512,23 +2526,28 @@
     "price": 7990,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-25 21:32",
+    "price": 7990,
+    "point": 1
    }
   ],
-  "product_name": "Anker Soundcore P40i 完全ワイヤレス",
+  "product_name": "Anker Soundcore P40i 完全ワイヤレスイヤホン",
   "category": "ガジェット",
   "slot": "main",
-  "badge": "⚡ 実質最安級",
-  "catch_copy": "ノイズキャンセルで集中",
-  "deal_reason": "・ウルトラノイズキャンセル2.0搭載\n・Bluetooth5.3で低遅延\n・長時間バッテリーで快適使用",
-  "score": 90,
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "ノイズキャンセルでクリアな音",
+  "deal_reason": "・長時間装着でも疲れにくい軽量設計\n・外出先でも安定接続のBluetooth5.3\n・通話もクリアにできるマイク搭載",
+  "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3955_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a3955/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05",
-  "last_checked": "2026-10-25 07:29",
+  "last_seen": "2026-10-25 21:32",
+  "last_checked": "2026-10-25 21:32",
   "item_code": "anker:10001894",
   "item_name": "Anker Soundcore P40i (Bluetooth 5.3) 【完全ワイヤレスイヤホン/ウルトラノイズキャンセリング 2.0 / マルチポイント接続 / 最大60時間再生 / PSE技術基準適合】",
   "staple": true,
-  "review_count": 2217,
+  "review_count": 2219,
   "review_average": 4.61
  },
  "fbeabdaa4b": {
@@ -2567,21 +2586,28 @@
     "price": 69800,
     "point": 10,
     "via": "track"
+   },
+   {
+    "t": "2026-10-25 21:32",
+    "price": 69800,
+    "point": 10
    }
   ],
   "product_name": "DEEBOT N20 PRO PLUS ロボット掃除機",
   "category": "日用品・家電",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "自動掃除で手間ゼロ",
-  "deal_reason": "・自動マッピングで部屋全体を把握\n・強力吸引で細かなゴミも逃さず\n・スマホ連携で遠隔操作可能",
-  "score": 88,
-  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/store-ecovacs-japan/cabinet/campaign/261014/dkx55-12ee.jpg?_ex=400x400",
+  "catch_copy": "自動でピカピカお掃除",
+  "deal_reason": "・床の汚れを見逃さないスマート検知\n・自動充電で手間いらず\n・ペットの毛もすっきり吸い取る",
+  "score": 91,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/store-ecovacs-japan/cabinet/campaign/261023/dkx55-12ee.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/store-ecovacs-japan/dkx55-12ee/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-19 09:05",
-  "last_checked": "2026-10-25 15:09",
+  "last_seen": "2026-10-25 21:32",
+  "last_checked": "2026-10-25 21:32",
   "item_code": "store-ecovacs-japan:10000405",
-  "item_name": "【クーポン利用で32,800円&P10倍！10/23〜10/27】ロボット掃除機 DEEBOT N20 PRO PLUS エコバックス ECOVACS 吸引 水拭き メーカー保証最大24ヶ月 ecovacs 掃除機 自動掃除機 掃除ロボット ディーボット ロボット掃除機 2025 高性能 お掃除ロボット エコバッグス 母の日"
+  "item_name": "【クーポン利用で32,800円&P10倍！10/23〜10/27】ロボット掃除機 DEEBOT N20 PRO PLUS エコバックス ECOVACS 吸引 水拭き メーカー保証最大24ヶ月 ecovacs 掃除機 自動掃除機 掃除ロボット ディーボット ロボット掃除機 2025 高性能 お掃除ロボット エコバッグス 母の日",
+  "review_count": 2299,
+  "review_average": 4.48
  },
  "2444d26beb": {
   "records": [
@@ -7108,5 +7134,53 @@
   "review_count": null,
   "review_average": null,
   "last_seen": "2026-10-25 15:09"
+ },
+ "d59b6ae38f": {
+  "records": [
+   {
+    "t": "2026-10-25 21:32",
+    "price": 1480,
+    "point": 1
+   }
+  ],
+  "product_name": "水 想い ナチュラルミネラルウォーター 2L×9本",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "毎日飲みやすいやさしい水",
+  "deal_reason": "・ミネラルバランスが整った自然水\n・2リットルで家族みんなでシェア\n・ラベルレスで収納もスッキリ",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/mizuomoi/cabinet/06216210/2l_renewal2024/12972467/imgrc0123212875.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/mizuomoi/4571461292779/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "mizuomoi:10000004",
+  "item_name": "【365日最短当日出荷！】水想い ナチュラルミネラルウォーター 2L×9本 ラベルレス 水 2リットル 天然水 軟水 ローリングストック 防災 備蓄 水 国産 日本製 送料無料",
+  "review_count": 8533,
+  "review_average": 4.78,
+  "last_seen": "2026-10-25 21:32",
+  "last_checked": "2026-10-25 21:32"
+ },
+ "fb1194ec64": {
+  "records": [
+   {
+    "t": "2026-10-25 21:32",
+    "price": 2070,
+    "point": 1
+   }
+  ],
+  "product_name": "スマホホルダー 自転車 バイク オートホールド",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "走りながら安全に固定",
+  "deal_reason": "・振動吸収でスマホが割れにくい\n・簡単装着で即使える便利さ\n・自転車・バイクどちらも対応",
+  "score": 87,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/mystic-r/cabinet/item/jh002/holder-r10.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/mystic-r/jh002/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "mystic-r:10000066",
+  "item_name": "【選ばれて15冠★高評価★レビュー2000件超！】 スマホホルダー 自転車 バイク オートホールド 落下防止 振動吸収 着脱簡単 スマホスタンド 携帯ホルダー スマホ ホルダー スタンド スマートフォン ナビ 自動 ロック ワンタッチ 固定 【X66-OBL】",
+  "review_count": 2067,
+  "review_average": 4.55,
+  "last_seen": "2026-10-25 21:32",
+  "last_checked": "2026-10-25 21:32"
  }
 }
