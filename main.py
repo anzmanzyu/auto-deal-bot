@@ -2852,23 +2852,31 @@ def generate_site(deals):
     print(f"public/index.html・public/archive/{TODAY_DATE}.html・sitemap.xml・robots.txt を生成しました。")
 
 
+SLOT_LABELS = ("朝", "昼", "夕方")
+
+
 def notify_discord(deals):
-    """SNS投稿用のテキストとリンクをDiscordに自動通知する"""
+    """SNS投稿用のテキストとリンクをDiscordに自動通知する（灰色の枠ごとにそのままコピーして使える形）"""
     if not DISCORD_WEBHOOK_URL:
         return
 
-    lines = [f"📢 **【{TODAY_STR} 注目商品・SNS投稿ドラフト】**\n"]
-    for deal in deals[:3]:
-        amz_url, _ = build_affiliate_urls(deal["product_name"])
-        lines.append(f"**■ {deal['product_name']}** (Score: {deal['score']})")
-        lines.append(f"```\n{deal['sns_text']}\n👉 {amz_url}\n```")
-
-    lines.append(f"\n👉 Xにワンタップで投稿: {SITE_URL}share/x.html")
-    messages = ["\n".join(lines)[-1950:]]
+    picks = [d for d in deals if not d.get("is_sample")][:3]
+    auto = pick_sns_deal(deals) if THREADS_ACCESS_TOKEN or X_API_KEY else None
+    lines = [f"📢 **{NOW.month}/{NOW.day} {SLOT_LABELS[RUN_SLOT]}の更新｜Xに投稿する文（{len(picks)}件）**",
+             "使いたい1件の灰色の枠を長押し →「コピー」→ Xに貼るだけです。"]
+    for no, deal in zip("①②③", picks):
+        note = "（このあと自動投稿されるので、手動なら別の商品がおすすめ）" if deal is auto else ""
+        lines.append(f"\n**{no} {display_name(deal)}**　おすすめ度 {deal['score']}{note}")
+        lines.append(f"```\n{x_copy_text(deal)}\n{deal_page_url(deal)}\n```")
+    if not picks:
+        lines.append("\n今回はAIで選んだ商品が無いため、投稿文はありません。")
+    lines.append(f"\n📱 文面入りのX投稿画面をボタンで開く場合はこちら → {SITE_URL}share/x.html")
+    messages = ["\n".join(lines)[:1990]]
     if RUN_SLOT == 2:  # 夕方の更新時だけ、インサイト祭りの参加コメント案を別メッセージで届ける
         comment = matsuri_comment(deals)
         if comment:
-            messages += ["🎪 **今日のインサイト祭り用コメント案**（下のメッセージを長押しでコピー→祭り投稿に返信）", comment]
+            messages += ["🎪 **インサイト祭り用の返信文**（夕方だけ届きます）\n"
+                         "すぐ下のメッセージを長押し →「テキストをコピー」→ 祭りの投稿に返信して貼るだけです。", comment]
     for content in messages:
         try:
             requests.post(DISCORD_WEBHOOK_URL, json={"content": content}, timeout=10)
@@ -2909,7 +2917,7 @@ def matsuri_comment(deals):
     deal = pick_sns_deal(deals)
     if not deal:
         return ""
-    name = re.sub(r"【[^】]*】", "", deal["product_name"]).strip()
+    name = re.sub(r"【[^】]*】|[（(][^）)]*[）)]", "", deal["product_name"]).strip()
     if len(name) > 24:  # 単語の途中で切れないよう、24文字以内の最後の区切りで止める
         name = name[:24].rsplit(" ", 1)[0]
     price = f"（{deal['price_yen']:,}円）" if isinstance(deal.get("price_yen"), int) and deal["price_yen"] > 0 else ""
@@ -2968,6 +2976,15 @@ def sns_body(deal, limit):
     text = text.replace("【PR】", "").strip()
     line = sns_price_line(deal)
     return ("【PR】" + (line + "\n" if line else "") + text)[:limit]
+
+
+def x_copy_text(deal, limit=115):
+    """Discordからコピーして手でXに貼る文。URLを足しても140文字に収まるよう、文の切れ目で短くする"""
+    text = sns_body(deal, 400)
+    if len(text) <= limit:
+        return text
+    cut = max(text.rfind(c, 0, limit) for c in "。！!")
+    return text[:cut + 1] if cut > limit // 2 else text[:limit - 1] + "…"
 
 
 def upload_x_media(auth, image_url):
