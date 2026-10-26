@@ -3,6 +3,7 @@ import re
 import sys
 import time
 import json
+import random
 import html
 import hashlib
 import unicodedata
@@ -82,6 +83,12 @@ EVENTS_PATH = "data/events.json"
 EVENT_LOOKAHEAD_DAYS = 14
 THREADS_STATE_PATH = "data/threads_state.json"  # 1コメ（自己返信）でURLを付けられるかの記録
 THREADS_TOPIC = "ガジェット"  # Threadsは1投稿に1トピック。サイトの主題に合わせて固定
+BLOG_URL = "https://namiki-log.com/"  # 運営者のブログ（WordPress）。スマホ記事を1日1回Threadsで紹介する
+BLOG_SNS_CATEGORY = 3  # ブログのカテゴリ「スマホ節約」
+BLOG_SNS_TOPIC = "スマホ"
+BLOG_SNS_STATE_PATH = "data/blog_sns_state.json"  # 最後に紹介した日と、直近に紹介した記事ID
+BLOG_SNS_RECENT = 10  # 直近この本数に紹介した記事は選ばない
+BLOG_SNS_EXCLUDE = ("deadline", "2025")  # スラッグにこの語を含む記事（締め切りが過ぎたキャンペーン・昨年の情報）は紹介しない
 
 BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番", "popular": "⭐ 高評価の人気品", "drop": "📉 前回より値下がり",
           "staple": "📊 定番・毎日価格チェック"}
@@ -3074,13 +3081,7 @@ def threads_publish(base, fields):
 def post_to_threads(deal):
     """本文（画像付き・リンクなし・トピック1つ）を出し、最初の自己返信（1コメ）でサイトURLへ誘導する。
     本文にリンクがあるとおすすめに載りにくいため。返信の権限が無いと分かったら、次回から本文にURLを入れる形へ自動で戻す"""
-    user_id = THREADS_USER_ID
-    if not user_id:  # ユーザーID未登録ならトークンから自分のIDを調べる
-        res = requests.get("https://graph.threads.net/v1.0/me", params={"fields": "id", "access_token": THREADS_ACCESS_TOKEN}, timeout=15)
-        if not res.ok:
-            raise RuntimeError("ユーザーID取得失敗 " + threads_error(requests.HTTPError(response=res)))
-        user_id = res.json()["id"]
-    base = f"https://graph.threads.net/v1.0/{user_id}"
+    base = threads_base()
     reply_link = threads_reply_link()
     # ハッシュタグは外す（本文中のタグもトピック扱いになり、1投稿1トピックの指定とぶつかるため）
     text = re.sub(r"(?:\s*[#＃][^\s#＃]+)+\s*$", "", sns_body(deal, 400))  # 末尾のタグはまとめて削除
@@ -3117,6 +3118,79 @@ def post_to_threads(deal):
             print(f"返信の権限が無いため、次回からURLを本文に入れる形に戻します（{THREADS_STATE_PATH}）。")
 
 
+def threads_base():
+    user_id = THREADS_USER_ID
+    if not user_id:  # ユーザーID未登録ならトークンから自分のIDを調べる
+        res = requests.get("https://graph.threads.net/v1.0/me", params={"fields": "id", "access_token": THREADS_ACCESS_TOKEN}, timeout=15)
+        if not res.ok:
+            raise RuntimeError("ユーザーID取得失敗 " + threads_error(requests.HTTPError(response=res)))
+        user_id = res.json()["id"]
+    return f"https://graph.threads.net/v1.0/{user_id}"
+
+
+def pick_blog_post():
+    """ブログのスマホ記事から、直近に紹介していないものをランダムに1本選ぶ。今日すでに紹介済みなら None"""
+    try:
+        with open(BLOG_SNS_STATE_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    if state.get("last_date") == TODAY_DATE:
+        return None, state
+    res = requests.get(f"{BLOG_URL}wp-json/wp/v2/posts", timeout=20, headers={"User-Agent": "gadget-tokka-bot"},
+                       params={"categories": BLOG_SNS_CATEGORY, "per_page": 100, "_embed": "wp:featuredmedia",
+                               "_fields": "id,link,slug,title,excerpt,_links,_embedded"})
+    res.raise_for_status()
+    recent = state.get("recent", [])
+    posts = [p for p in res.json() if not any(w in p.get("slug", "") for w in BLOG_SNS_EXCLUDE)]
+    fresh = [p for p in posts if p["id"] not in recent] or posts
+    return (random.choice(fresh) if fresh else None), state
+
+
+def post_blog_to_threads():
+    """1日1回（昼か夕方の更新で）、ブログのスマホ記事を本文＋1コメのリンクで紹介する"""
+    post, state = pick_blog_post()
+    if not post:
+        print("ブログ記事の紹介: 今日は紹介済み、または記事が見つからないためスキップします。")
+        return
+    title = html.unescape(re.sub(r"<[^>]+>", "", post["title"]["rendered"])).strip()
+    excerpt = html.unescape(re.sub(r"<[^>]+>", "", post["excerpt"]["rendered"])).strip()
+    excerpt = re.sub(r"\s+", " ", excerpt).replace("[&hellip;]", "").replace("[…]", "").strip()
+    excerpt = re.sub(r"^(?:※[^。]*。\s*)+", "", excerpt)  # 冒頭の「※広告を含みます」などの注記は外す
+    if len(excerpt) > 140:
+        excerpt = excerpt[:140].rstrip("、。 ") + "…"
+    text = f"📱 携帯ショップ店長のブログから\n\n「{title}」\n\n{excerpt}"
+    reply_link = threads_reply_link()
+    text += "\n\n続きは1コメのリンクから👇" if reply_link else f"\n\n▼記事はこちら\n{post['link']}"
+    image = ""
+    try:
+        image = post["_embedded"]["wp:featuredmedia"][0]["source_url"]
+    except (KeyError, IndexError, TypeError):
+        pass
+    base = threads_base()
+    attempts = ([{"media_type": "IMAGE", "image_url": image, "topic_tag": BLOG_SNS_TOPIC}] if image else []) + [
+        {"media_type": "TEXT", "topic_tag": BLOG_SNS_TOPIC}, {"media_type": "TEXT"}]
+    post_id = ""
+    for extra in attempts:
+        try:
+            post_id = threads_publish(base, {"text": text, **extra})
+            break
+        except requests.HTTPError as e:
+            print(f"ブログ記事の紹介 {extra['media_type']} 投稿エラー（{threads_error(e)}）")
+    if not post_id:
+        raise RuntimeError("ブログ記事の紹介に失敗しました")
+    print(f"Threadsでブログ記事を紹介しました（{post['id']}）。")
+    state = {"last_date": TODAY_DATE, "recent": ([post["id"]] + [i for i in state.get("recent", []) if i != post["id"]])[:BLOG_SNS_RECENT]}
+    with open(BLOG_SNS_STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=1)
+    if reply_link:
+        time.sleep(5)
+        try:
+            threads_publish(base, {"media_type": "TEXT", "text": f"👇 記事はこちら\n{post['link']}", "reply_to_id": post_id})
+        except requests.HTTPError as e:
+            print(f"ブログ記事の紹介 1コメ投稿エラー（{threads_error(e)}）")
+
+
 def post_to_sns(deals):
     """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
     if os.getenv("SKIP_SNS") == "true":
@@ -3142,6 +3216,11 @@ def post_to_sns(deals):
             func(deal)
         except Exception as e:
             print(f"{name} 投稿エラー（{safe_status(e)}）")
+    if THREADS_ACCESS_TOKEN and RUN_SLOT >= 1:  # 昼の回で紹介し、昼の回が飛んだ日は夕方に回す
+        try:
+            post_blog_to_threads()
+        except Exception as e:
+            print(f"ブログ記事の紹介 エラー（{safe_status(e)}）")
 
 
 if __name__ == "__main__" and "--indexnow" in sys.argv:
