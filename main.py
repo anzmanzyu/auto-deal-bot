@@ -88,6 +88,7 @@ BLOG_SNS_CATEGORY = 3  # ブログのカテゴリ「スマホ節約」
 BLOG_SNS_TOPIC = "スマホ"
 BLOG_SNS_STATE_PATH = "data/blog_sns_state.json"  # 最後に紹介した日と、直近に紹介した記事ID
 BLOG_SNS_RECENT = 10  # 直近この本数に紹介した記事は選ばない
+BLOG_SNS_BOOST = ("henkyaku", "iphone", "norikae", "shitadori", "jimu-tesuryo", "mobile-shop")  # 伸びやすい話題（返却プログラム・iPhone・乗り換え）。スラッグにこの語を含む記事は3倍選ばれやすくする
 BLOG_SNS_EXCLUDE = ("deadline", "2025")  # スラッグにこの語を含む記事（締め切りが過ぎたキャンペーン・昨年の情報）は紹介しない
 
 BADGES = {"main": "🔥 本日の目玉", "impulse": "🛒 ついで買い定番", "popular": "⭐ 高評価の人気品", "drop": "📉 前回より値下がり",
@@ -3144,7 +3145,10 @@ def pick_blog_post():
     recent = state.get("recent", [])
     posts = [p for p in res.json() if not any(w in p.get("slug", "") for w in BLOG_SNS_EXCLUDE)]
     fresh = [p for p in posts if p["id"] not in recent] or posts
-    return (random.choice(fresh) if fresh else None), state
+    if not fresh:
+        return None, state
+    weights = [3 if any(w in p.get("slug", "") for w in BLOG_SNS_BOOST) else 1 for p in fresh]
+    return random.choices(fresh, weights=weights)[0], state
 
 
 def post_blog_to_threads():
