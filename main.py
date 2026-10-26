@@ -50,7 +50,7 @@ SITE_NAME = "AI厳選 ガジェット特価速報"
 OPERATOR_NAME = "Namiki"
 OPERATOR_EMAIL = "takumi.tsuta.pr@gmail.com"
 SITE_TAGLINE = "Amazon・楽天のお買い得ガジェットを、AIが毎日3回厳選"
-OG_IMAGE = "og.png"  # public/og.png（1200x630）
+OG_IMAGE = "og.png?v=20261026"  # public/og.png（1200x630）。差し替えたら v を変えて、Xなどのキャッシュを更新させる
 
 JST = timezone(timedelta(hours=9))
 NOW = datetime.now(JST)
