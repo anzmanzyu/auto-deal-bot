@@ -1168,21 +1168,26 @@
     "price": 4510,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-27 22:09",
+    "price": 4510,
+    "point": 1
    }
   ],
   "product_name": "JBL GO ESSENTIAL 2 Bluetoothスピーカー",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "手のひらサイズで高音質",
-  "deal_reason": "・コンパクトなのに迫力ある音\n・防水仕様でアウトドアに最適\n・ユーザー好評のバランス音",
-  "score": 90,
+  "catch_copy": "軽量でパワフルサウンド",
+  "deal_reason": "・軽くて持ちやすいデザイン\n・防水機能でアウトドアも安心\n・短時間充電ですぐ使用可能",
+  "score": 91,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jblstore/cabinet/07940778/go-essential2/goes2vgp.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/jblstore/go-essential/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-24 08:10",
-  "last_checked": "2026-10-27 08:54",
+  "last_seen": "2026-10-27 22:09",
+  "last_checked": "2026-10-27 22:09",
   "item_code": "jblstore:10000105",
-  "item_name": "★先着クーポン＆ポイントUP27日9：59まで＼楽天1位／【公式限定】 JBL Bluetoothスピーカー GO ESSENTIAL 2 | ジェービーエル Bluetooth ブルートゥース ポータブルスピーカー ワイヤレス 高音質 防水 軽量 薄型 小型 おしゃれ かわいい スピーカー 置くだけ 置き型",
+  "item_name": "＼楽天1位／【公式限定】 JBL Bluetoothスピーカー GO ESSENTIAL 2 | ジェービーエル Bluetooth ブルートゥース ポータブルスピーカー ワイヤレス 高音質 防水 軽量 薄型 小型 おしゃれ かわいい スピーカー 置くだけ 置き型",
   "review_count": 772,
   "review_average": 4.65
  },
@@ -7802,22 +7807,29 @@
     "price": 7310,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-27 22:09",
+    "price": 7310,
+    "point": 1
    }
   ],
   "staple": true,
   "item_url": "https://item.rakuten.co.jp/logicool/m575spd/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "logicool:10000682",
   "item_name": "【SALE】 ロジクール ワイヤレスマウス トラックボール ERGO M575SP 無線 静音 Bluetooth & Logi Bolt トラックボールマウス ワイヤレス マウス windows mac iPad M575SPda 国内正規品 1年間無償保証",
-  "review_count": 326,
-  "review_average": 4.51,
-  "product_name": "ロジクール トラックボール M575S",
-  "badge": "📊 定番・毎日価格チェック",
-  "catch_copy": "定番モデルの価格を毎日記録中",
-  "deal_reason": "・値下がりの有無に関わらず、楽天の参考価格を毎日記録しています\n・グラフで今の価格が高いか安いかを確認できます\n・値下がりしたらトップの「値下がりを見つけた商品」に載ります",
-  "score": 0,
+  "review_count": 329,
+  "review_average": 4.5,
+  "product_name": "Logitech M575SP ワイヤレストラックボールマウス",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "手首に優しい操作感",
+  "deal_reason": "・トラックボールで疲れにくい\n・静音設計で作業が快適\n・長時間バッテリーで交換不要",
+  "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/logicool/cabinet/prd/mice/m575spd/m575spd_s_r.jpg?_ex=400x400",
-  "last_seen": "2026-10-23 08:23",
-  "last_checked": "2026-10-27 08:54"
+  "last_seen": "2026-10-27 22:09",
+  "last_checked": "2026-10-27 22:09",
+  "category": "ガジェット",
+  "slot": "main"
  },
  "fa27612455": {
   "records": [
@@ -9429,5 +9441,101 @@
   "review_average": 4.7,
   "last_seen": "2026-10-27 15:17",
   "last_checked": "2026-10-27 15:17"
+ },
+ "60876c1f29": {
+  "records": [
+   {
+    "t": "2026-10-27 22:09",
+    "price": 6990,
+    "point": 1
+   }
+  ],
+  "product_name": "Anker Soundcore 3 Bluetoothスピーカー",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "コンパクトで迫力サウンド",
+  "deal_reason": "・持ち運びに便利なサイズ\n・バッテリー長持ちで連続再生\n・低価格でも高音質",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3117_normal.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/anker/a3117/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "anker:10000858",
+  "item_name": "Anker Soundcore 3 (Bluetooth スピーカー)【イコライザー設定 チタニウムドライバー BassUpテクノロジー PartyCast機能 IPX7 防水規格 24時間連続再生 USB-C接続】",
+  "review_count": 1252,
+  "review_average": 4.63,
+  "last_seen": "2026-10-27 22:09",
+  "last_checked": "2026-10-27 22:09"
+ },
+ "8197dcb434": {
+  "records": [
+   {
+    "t": "2026-10-27 22:09",
+    "price": 32900,
+    "point": 1
+   }
+  ],
+  "product_name": "Dangbei N2 mini モバイルプロジェクター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "手のひらサイズで大画面",
+  "deal_reason": "・コンパクトで持ち運び簡単\n・1080pフルHDで鮮明映像\n・内蔵スピーカーで音もOK",
+  "score": 89,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/dangbei/cabinet/imgrc0101117452.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/dangbei/n2mini/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "dangbei:10000043",
+  "item_name": "【VGP2025コスパ大賞】Dangbei N2 mini モバイルプロジェクター 小型 1080PフルHD Netflix公認 200 ISOルーメン 120インチ画面 自動台形補正 オートフォーカス Dolby Audio対応 家庭 天井投影対応 ポータブルプロジェクター",
+  "review_count": 46,
+  "review_average": 4.8,
+  "last_seen": "2026-10-27 22:09",
+  "last_checked": "2026-10-27 22:09"
+ },
+ "b9360a6231": {
+  "records": [
+   {
+    "t": "2026-10-27 22:09",
+    "price": 3373,
+    "point": 1
+   }
+  ],
+  "product_name": "SanDisk 128GB microSDXCカード",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "高速保存で安心",
+  "deal_reason": "・大容量で写真も動画も余裕\n・高速転送で作業がスムーズ\n・信頼のサンディスクブランド",
+  "score": 93,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/spd-shop/cabinet/04904589/imgrc0089769961.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/spd-shop/satf128g-quns/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "spd-shop:10002132",
+  "item_name": "＼連続ランキング1位獲得／microSDXC 128GB マイクロsdカード サンディスク SanDisk UHS-I R:100MB/s U1 Class10 Nintendo Switch動作確認済 海外パッケージ SDSQUNR-128G-GN6MN 送料無料",
+  "review_count": 3505,
+  "review_average": 4.6,
+  "last_seen": "2026-10-27 22:09",
+  "last_checked": "2026-10-27 22:09"
+ },
+ "a4438de622": {
+  "records": [
+   {
+    "t": "2026-10-27 22:09",
+    "price": 1360,
+    "point": 1
+   }
+  ],
+  "product_name": "富士山天然水 2L×9本",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "毎日飲みやすい自然の味",
+  "deal_reason": "・ミネラル豊富で体に優しい\n・大容量でまとめ買いに便利\n・長期保存できる安心品質",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/eleking/cabinet/wh3/311615.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/eleking/311615/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "eleking:10049561",
+  "item_name": "水 2リットル 9本 ミネラルウォーター ラベルレス 天然水 バナジウム 非常食 防災食 保存 ストック まとめ買い 新生活 富士山の天然水 2L アイリスオーヤマ *",
+  "review_count": 18,
+  "review_average": 4.89,
+  "last_seen": "2026-10-27 22:09",
+  "last_checked": "2026-10-27 22:09"
  }
 }
