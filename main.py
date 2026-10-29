@@ -3129,6 +3129,48 @@ def threads_base():
     return f"https://graph.threads.net/v1.0/{user_id}"
 
 
+def fetch_blog_posts_rest():
+    res = requests.get(f"{BLOG_URL}wp-json/wp/v2/posts", timeout=20, headers={"User-Agent": "gadget-tokka-bot"},
+                       params={"categories": BLOG_SNS_CATEGORY, "per_page": 100, "_embed": "wp:featuredmedia",
+                               "_fields": "id,link,slug,title,excerpt,_links,_embedded"})
+    res.raise_for_status()
+    return res.json()
+
+
+def fetch_blog_posts_feed():
+    """カテゴリのRSSフィードから記事を集め、REST APIと同じ形に揃える（アイキャッチ画像は紹介時に記事ページから取る）"""
+    posts = []
+    for page in range(1, 6):
+        res = requests.get(BLOG_URL, timeout=20, headers={"User-Agent": "gadget-tokka-bot"},
+                           params={"feed": "rss2", "cat": BLOG_SNS_CATEGORY, "paged": page})
+        if res.status_code == 404 and posts:
+            break
+        res.raise_for_status()
+        items = ET.fromstring(res.content).findall("./channel/item")
+        for item in items:
+            link = (item.findtext("link") or "").strip()
+            m = re.search(r"[?&]p=(\d+)", item.findtext("guid") or "")
+            if not link or not m:
+                continue
+            posts.append({"id": int(m.group(1)), "link": link,
+                          "slug": urllib.parse.unquote(urllib.parse.urlparse(link).path.strip("/").split("/")[-1]),
+                          "title": {"rendered": item.findtext("title") or ""},
+                          "excerpt": {"rendered": item.findtext("description") or ""}})
+        if len(items) < 10:
+            break
+    return posts
+
+
+def blog_og_image(url):
+    try:
+        res = requests.get(url, timeout=20, headers={"User-Agent": "gadget-tokka-bot"})
+        res.raise_for_status()
+    except requests.RequestException:
+        return ""
+    m = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)', res.text)
+    return html.unescape(m.group(1)) if m else ""
+
+
 def pick_blog_post():
     """ブログのスマホ記事から、直近に紹介していないものをランダムに1本選ぶ。今日すでに紹介済みなら None"""
     try:
@@ -3138,12 +3180,14 @@ def pick_blog_post():
         state = {}
     if state.get("last_date") == TODAY_DATE:
         return None, state
-    res = requests.get(f"{BLOG_URL}wp-json/wp/v2/posts", timeout=20, headers={"User-Agent": "gadget-tokka-bot"},
-                       params={"categories": BLOG_SNS_CATEGORY, "per_page": 100, "_embed": "wp:featuredmedia",
-                               "_fields": "id,link,slug,title,excerpt,_links,_embedded"})
-    res.raise_for_status()
+    try:
+        posts = fetch_blog_posts_rest()
+    except requests.RequestException as e:
+        # サーバーの国外IPアクセス制限でREST APIが403になるため、RSSフィードで取り直す
+        print(f"ブログ記事の紹介: REST APIが使えないためRSSで取得します（{e}）")
+        posts = fetch_blog_posts_feed()
     recent = state.get("recent", [])
-    posts = [p for p in res.json() if not any(w in p.get("slug", "") for w in BLOG_SNS_EXCLUDE)]
+    posts = [p for p in posts if not any(w in p.get("slug", "") for w in BLOG_SNS_EXCLUDE)]
     fresh = [p for p in posts if p["id"] not in recent] or posts
     if not fresh:
         return None, state
@@ -3170,7 +3214,7 @@ def post_blog_to_threads():
     try:
         image = post["_embedded"]["wp:featuredmedia"][0]["source_url"]
     except (KeyError, IndexError, TypeError):
-        pass
+        image = blog_og_image(post["link"])
     base = threads_base()
     attempts = ([{"media_type": "IMAGE", "image_url": image, "topic_tag": BLOG_SNS_TOPIC}] if image else []) + [
         {"media_type": "TEXT", "topic_tag": BLOG_SNS_TOPIC}, {"media_type": "TEXT"}]
