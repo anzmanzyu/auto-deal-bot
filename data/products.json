@@ -252,22 +252,27 @@
     "price": 3690,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-29 23:13",
+    "price": 3690,
+    "point": 1
    }
   ],
-  "product_name": "1.9インチ 超大画面 スマートウォッチ",
+  "product_name": "スマートウォッチ 1.9インチ超大画面 心拍数 健康管理 歩数記録 スマートウォ",
   "category": "ガジェット",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "大画面で健康管理が楽々",
+  "catch_copy": "楽天でレビューの多い売れ筋",
   "deal_reason": "・大画面でデータが見やすい\n・心拍数や歩数を自動で記録\n・防水設計で雨の日も安心",
-  "score": 92,
+  "score": 93,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/rainbowshoji/cabinet/coupon/imgrc0088053681.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/rainbowshoji/q9pro/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-23 08:23",
-  "last_checked": "2026-10-29 09:00",
+  "last_seen": "2026-10-29 23:13",
+  "last_checked": "2026-10-29 23:13",
   "item_code": "rainbowshoji:10002227",
   "item_name": "【衝撃2,420円〜クーポンで】 ＼楽天1位／ スマートウォッチ 1.9インチ超大画面 心拍数 健康管理 歩数記録 スマートウォッチ IP68防水 レディース メンズ 腕時計 GPS 着信通知 睡眠計 睡眠検測 iphone android おしゃれ 母の日 プレゼント 送料無料",
-  "review_count": 6276,
+  "review_count": 6277,
   "review_average": 4.4
  },
  "47c0d032e1": {
@@ -4366,6 +4371,11 @@
     "t": "2026-10-28 15:52",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-10-29 23:13",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "Anker USB-C ケーブル 1m 2本セット",
@@ -4379,7 +4389,7 @@
   "item_url": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-10-28 15:52",
+  "last_seen": "2026-10-29 23:13",
   "item_code": null,
   "item_name": null
  },
@@ -10511,6 +10521,11 @@
     "t": "2026-10-28 15:52",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-10-29 23:13",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "パナソニック エボルタネオ 単3形 8本パック",
@@ -10526,7 +10541,7 @@
   "item_name": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-10-28 15:52"
+  "last_seen": "2026-10-29 23:13"
  },
  "d59b6ae38f": {
   "records": [
@@ -11653,5 +11668,77 @@
   "review_average": 4.66,
   "last_seen": "2026-10-29 16:07",
   "last_checked": "2026-10-29 16:07"
+ },
+ "29a4a75a15": {
+  "records": [
+   {
+    "t": "2026-10-29 23:13",
+    "price": 3480,
+    "point": 1
+   }
+  ],
+  "product_name": "ワイヤレスイヤホン 5.4対応",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "音楽がもっとクリアに",
+  "deal_reason": "・外出先でもノイズをシャットアウト\n・長時間バッテリーで安心\n・簡単ペアリングですぐ使える",
+  "score": 95,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/besthouse/cabinet/10589697/10589698/imgrc0110978965.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/besthouse/ot-t13x/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "besthouse:10000089",
+  "item_name": "【楽天ランキング1位】ワイヤレスイヤホン Bluetooth イヤホン 5.4対応 bluetooth ブルートゥース ENCノイズキャンセリング IPX5防水 約30時間音楽再生 左右分離型 マイク付き 自動ペアリング 高音質 通話可能 低遅延 iPhone/Android",
+  "review_count": 1838,
+  "review_average": 4.5,
+  "last_seen": "2026-10-29 23:13",
+  "last_checked": "2026-10-29 23:13"
+ },
+ "6a413530c9": {
+  "records": [
+   {
+    "t": "2026-10-29 23:13",
+    "price": 4680,
+    "point": 1
+   }
+  ],
+  "product_name": "キッズ 腕時計 スマートウォッチ 子供 腕時計 32GB 35万画素 カメラ 大",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "楽天でレビューの多い売れ筋",
+  "deal_reason": "",
+  "score": 94,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/goodgoodsshop/cabinet/07202953/10690388/imgrc0106144456.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/goodgoodsshop/ksw11x/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "goodgoodsshop:10000354",
+  "item_name": "＼楽天1位！日本正規品・1年保証&特典あり／ キッズ 腕時計 スマートウォッチ 子供 腕時計 32GB 35万画素 カメラ 大画面 録画録音 ゲーム 音楽 アラーム 歩数計 知育玩具 4歳 5歳 6歳 7歳 8歳 9歳 10歳 男の子 女の子 おもちゃ 小学生 子供 誕生日 クリスマスプレゼント 人気",
+  "review_count": 7036,
+  "review_average": 4.5,
+  "last_seen": "2026-10-29 23:13",
+  "last_checked": "2026-10-29 23:13"
+ },
+ "21113478d8": {
+  "records": [
+   {
+    "t": "2026-10-29 23:13",
+    "price": 6800,
+    "point": 1
+   }
+  ],
+  "product_name": "2026新 楽天1位 HUAWEI Band 11 Aluminum Editi",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "楽天でレビューの多い売れ筋",
+  "deal_reason": "",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/huawei-official/cabinet/13014907/13014914/imgrc0101208061.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/huawei-official/55020anj/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "huawei-official:10000477",
+  "item_name": "2026新【エントリーで10倍P&10%OFF】楽天1位 HUAWEI Band 11 Aluminum Edition / 通常版 スマートウォッチ 8.99mm/17g薄型軽量ボディ アルミニウムケース 24時間睡眠管理 1500nits高輝度 1.62大画面 14日間持続バッテリー 情緒モニタリング LINE通知",
+  "review_count": 6029,
+  "review_average": 4.5,
+  "last_seen": "2026-10-29 23:13",
+  "last_checked": "2026-10-29 23:13"
  }
 }
