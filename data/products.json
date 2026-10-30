@@ -2235,21 +2235,28 @@
     "price": 35999,
     "point": 2,
     "via": "track"
+   },
+   {
+    "t": "2026-10-30 23:04",
+    "price": 35999,
+    "point": 2
    }
   ],
-  "product_name": "2K 260Hz ゲーミングモニター 27インチ",
+  "product_name": "2K 260Hz ゲーミングモニター 27インチ WQHD",
   "category": "ガジェット",
   "slot": "main",
-  "badge": "🔥 本日の目玉",
-  "catch_copy": "超高速リフレッシュで滑らか",
-  "deal_reason": "・2560×1440の高解像度で迫力の映像\n・260Hzの超高リフレッシュで遅延ゼロ\n・IPSパネルで広視野角と色再現性が抜群",
-  "score": 93,
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "鮮やかな映像が手に入る",
+  "deal_reason": "・ゲームでも映像が滑らか\n・色彩が鮮やかで没入感UP\n・長時間でも目が疲れにくい",
+  "score": 95,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/13169327/13169329/111.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/hg-4k27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-18 23:49",
-  "last_checked": "2026-10-30 08:57",
+  "last_seen": "2026-10-30 23:04",
+  "last_checked": "2026-10-30 23:04",
   "item_code": "qifeng:10000116",
-  "item_name": "＼新着！2K 260Hz・別次元／ゲーミングモニター 27インチ WQHD (2560x1440) 260Hz 240Hz モニター IPS非光沢 95%DCI-P3 400nits輝度 pcモニター 2k 1ms応答 PS5/Switch/Mac/PC対応 FreeSync/HDR/スピーカー搭載/画面回転/高さ調整 サブモニター"
+  "item_name": "＼新着！2K 260Hz・別次元／ゲーミングモニター 27インチ WQHD (2560x1440) 260Hz 240Hz モニター IPS非光沢 95%DCI-P3 400nits輝度 pcモニター 2k 1ms応答 PS5/Switch/Mac/PC対応 FreeSync/HDR/スピーカー搭載/画面回転/高さ調整 サブモニター",
+  "review_count": 467,
+  "review_average": 4.7
  },
  "f531a8f8a4": {
   "records": [
@@ -2486,19 +2493,24 @@
     "price": 2280,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-10-30 23:04",
+    "price": 2280,
+    "point": 1
    }
   ],
-  "product_name": "64GB microSDカード (ノーブランド)",
+  "product_name": "64GB マイクロSDカード アダプター付き",
   "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "さらに広がる容量",
-  "deal_reason": "・動画や写真もたっぷり保存\n・UHS-I対応でスムーズ撮影",
-  "score": 87,
+  "catch_copy": "容量たっぷりで安心",
+  "deal_reason": "・64GBでたくさん保存\n・クラス10で高速転送\n・アダプター付で便利",
+  "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bonz/cabinet/03957598/micro64_main02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/bonz/10033097/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-24 20:58",
-  "last_checked": "2026-10-30 08:57",
+  "last_seen": "2026-10-30 23:04",
+  "last_checked": "2026-10-30 23:04",
   "item_code": "bonz:10033097",
   "item_name": "マイクロSDカード 64GB アダプター付き ノーブランド microSDXC class10 UHS-I",
   "review_count": 3086,
@@ -4706,6 +4718,11 @@
     "t": "2026-10-29 23:13",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-10-30 23:04",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "Anker USB-C ケーブル 1m 2本セット",
@@ -4719,7 +4736,7 @@
   "item_url": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-10-29 23:13",
+  "last_seen": "2026-10-30 23:04",
   "item_code": null,
   "item_name": null
  },
@@ -12811,5 +12828,77 @@
   "review_average": 4.79,
   "last_seen": "2026-10-30 16:08",
   "last_checked": "2026-10-30 16:08"
+ },
+ "b51e00364b": {
+  "records": [
+   {
+    "t": "2026-10-30 23:04",
+    "price": 33890,
+    "point": 1
+   }
+  ],
+  "product_name": "Type-C付 27インチ WQHD ゲーミングモニター 260Hz",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "USB‑Cでシンプル接続",
+  "deal_reason": "・ケーブルが一本でOK\n・高リフレッシュで快適\n・色再現が豊かで映える",
+  "score": 94,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kksmart/cabinet/13267944/imgrc0138027332.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/kksmart/hg-4k27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "kksmart:10000008",
+  "item_name": "夏登場★3年保証！Type-C付！ゲーミングモニター 27インチ WQHD 260Hz 240Hz 120Hz USB-C接続 95%DCI-P3 2K 2560×1440 65w給電 400nits FAST IPS 1ms MPRT/OD/HDR スピーカー搭載 全方向スタンド PS5/Switch/Mac/PC SK-2K27 スレートグレー",
+  "review_count": 343,
+  "review_average": 4.73,
+  "last_seen": "2026-10-30 23:04",
+  "last_checked": "2026-10-30 23:04"
+ },
+ "6c40d1f27a": {
+  "records": [
+   {
+    "t": "2026-10-30 23:04",
+    "price": 26980,
+    "point": 1
+   }
+  ],
+  "product_name": "Pixio PX249WAVE 24インチ ゲーミングモニター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "コンパクトに高リフレッシュ",
+  "deal_reason": "・24インチで省スペース\n・240Hzで残像が少ない\n・白デザインで部屋に馴染む",
+  "score": 93,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/pixiogaming/cabinet/px248wave/px248wave.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/pixiogaming/px248wave/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "pixiogaming:10000116",
+  "item_name": "Pixio ゲーミングモニター 24インチ ホワイト PX249WAVE PX248WAVE 白 240hz pcモニター 120Hz 144Hz 165Hz 対応 モニター ピンク ブルー ベージュ フルHD IPS HDR ノングレア スピーカー内蔵 VESA 23.8インチ 液晶 ディスプレイ ピクシオ 公式 【最大5年保証】",
+  "review_count": 420,
+  "review_average": 4.68,
+  "last_seen": "2026-10-30 23:04",
+  "last_checked": "2026-10-30 23:04"
+ },
+ "2cea95eb2c": {
+  "records": [
+   {
+    "t": "2026-10-30 23:04",
+    "price": 5380,
+    "point": 1
+   }
+  ],
+  "product_name": "WiMAX+5G 無制限 Galaxy X11/L11/L12",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "高速5Gでどこでもネット",
+  "deal_reason": "・通信が途切れにくい\n・データ無制限で安心\n・軽量で持ち運び楽々",
+  "score": 92,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/wifi-rental/cabinet/thu/extention/11238219/imgrc0098575796.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/wifi-rental/5g-30day-extention/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "wifi-rental:10001667",
+  "item_name": "【延長専用】 WiMAX+5G無制限 Galaxy 5G X11 L11 L12 L13 Dock01 無制限 wifi レンタル 延長 専用 30日 ポケットwifi Pocket WiFi レンタルwifi ルーター wi-fi 中継器 wifiレンタル ポケットWiFi ポケットWi-Fi WiFiレンタルどっとこむ",
+  "review_count": 570,
+  "review_average": 4.64,
+  "last_seen": "2026-10-30 23:04",
+  "last_checked": "2026-10-30 23:04"
  }
 }
