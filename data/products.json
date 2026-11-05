@@ -3672,6 +3672,11 @@
     "price": 2380,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-05 16:56",
+    "price": 2380,
+    "point": 1
    }
   ],
   "product_name": "スマホスタンド 2段式",
@@ -3679,15 +3684,15 @@
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
   "catch_copy": "手軽に角度調整",
-  "deal_reason": "・2段で好きな角度に\n・軽量で持ち運び簡単",
-  "score": 87,
+  "deal_reason": "・安定したホールド感\n・2段で角度自由自在",
+  "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ioroi/cabinet/08743967/08743968/xxkjzjcqths-01i.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ioroi/10000230/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-30 16:08",
-  "last_checked": "2026-11-05 09:54",
+  "last_seen": "2026-11-05 16:56",
+  "last_checked": "2026-11-05 16:56",
   "item_code": "ioroi:10000230",
   "item_name": "スマホ スタンド 【楽天1位・4冠獲得】 スタンド 寝ながら スマホ スタンド アーム スマホスタンド スマホホルダー アームスタンド 2段調節 スマートフォンスタンド iphone スタンド ベッド xperia arrows galaxy android クリップ おしゃれ ベッド 携帯スタンド AKEIE",
-  "review_count": 2925,
+  "review_count": 2929,
   "review_average": 4.49
  },
  "cdc0803ae4": {
@@ -12285,23 +12290,28 @@
     "price": 10990,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-05 16:56",
+    "price": 10990,
+    "point": 1
    }
   ],
   "product_name": "Anker Soundcore Space One ワイヤレスヘッドホン",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "軽量で迫力サウンド",
-  "deal_reason": "・ノイズキャンセルで集中できる\n・長時間バッテリーで長時間使用\n・装着感が軽く疲れにくい",
-  "score": 95,
+  "catch_copy": "広がるサウンドで没入",
+  "deal_reason": "・アクティブノイズキャンセル搭載\n・長時間快適装着感",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3035_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a3035/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "anker:10001669",
   "item_name": "Anker Soundcore Space One (Bluetooth 5.3 ワイヤレス ヘッドホン)【ウルトラノイズキャンセリング2.0 / 最大55時間音楽再生 / LDAC/ハイレゾ対応 (ワイヤレス/有線) / マルチポイント対応/外音取り込み/マイク内蔵】",
   "review_count": 348,
   "review_average": 4.63,
-  "last_seen": "2026-10-30 08:57",
-  "last_checked": "2026-11-05 00:22"
+  "last_seen": "2026-11-05 16:56",
+  "last_checked": "2026-11-05 16:56"
  },
  "c4d60ba0a1": {
   "records": [
@@ -15679,23 +15689,28 @@
     "price": 5990,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-05 16:56",
+    "price": 5990,
+    "point": 1
    }
   ],
   "product_name": "Anker Soundcore P30i 完全ワイヤレスイヤホン",
   "category": "ガジェット",
   "slot": "main",
-  "badge": "🔥 本日の目玉",
-  "catch_copy": "ノイズキャンセルで静寂",
-  "deal_reason": "・アクティブノイズキャンセルで外音遮断\n・Bluetooth5.4で安定接続\n・コンパクトで持ち運び楽々",
-  "score": 94,
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "ノイズキャンセルで集中",
+  "deal_reason": "・軽量で装着感抜群\n・長時間バッテリーで安心",
+  "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3959_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a3959/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "anker:10001961",
   "item_name": "Anker Soundcore P30i (Bluetooth 5.4) 【完全ワイヤレスイヤホン / アクティブノイズキャンセリング / マルチポイント接続 / 最大45時間再生 / 小型軽量 / スマホスタンド付き充電ケース】",
-  "review_count": 294,
-  "review_average": 4.64,
-  "last_seen": "2026-10-24 20:58",
-  "last_checked": "2026-11-05 09:54"
+  "review_count": 300,
+  "review_average": 4.63,
+  "last_seen": "2026-11-05 16:56",
+  "last_checked": "2026-11-05 16:56"
  },
  "641a2fa69d": {
   "records": [
@@ -20356,5 +20371,77 @@
   "review_average": 4.54,
   "last_seen": "2026-11-05 09:54",
   "last_checked": "2026-11-05 09:54"
+ },
+ "2a30f01821": {
+  "records": [
+   {
+    "t": "2026-11-05 16:56",
+    "price": 5980,
+    "point": 1
+   }
+  ],
+  "product_name": "Anker 1TB ポータブルSSD",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "高速転送で作業快適",
+  "deal_reason": "・USB-Cで高速データ転送\n・コンパクトで持ち運び便利",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lelib/cabinet/item/zappin/ssd-1/1p.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/lelib/ssd-1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "lelib:10000130",
+  "item_name": "【ポイント5倍&1500円オフ】外付けSSD 最大1TB SSD NVMe 外付け ポータブルSSD ハードディスク type-c 高速 USB3.2(Gen2) 外付け SSD アルミ 全4色 ハードディスク 外付けケース 読み込み/書き込み最大速度1000MB/秒 Windows11 Mac iPhone iPad PS5 Xbox PS4 対応",
+  "review_count": 79,
+  "review_average": 4.52,
+  "last_seen": "2026-11-05 16:56",
+  "last_checked": "2026-11-05 16:56"
+ },
+ "1b8e3b6c10": {
+  "records": [
+   {
+    "t": "2026-11-05 16:56",
+    "price": 12100,
+    "point": 20
+   }
+  ],
+  "product_name": "JBL TUNE BEAM ワイヤレスイヤホン",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "迫力サウンドで元気",
+  "deal_reason": "・JBLのクリアな音質\n・軽量でフィット感抜群",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jblstore/cabinet/08029753/tune-beam/tune-beam_thumb02.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/jblstore/tune-beam/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "jblstore:10000138",
+  "item_name": "★エントリーでP10倍＆先着クーポン 11日1：59まで！【公式限定】 JBL TUNE BEAM | ジェービーエル ワイヤレスイヤホン 完全ワイヤレスイヤホン ノイズキャンセリング マルチポイント接続 外音取り込み 専用アプリ IP54防水防塵 最大48時間再生 Bluetooth 5. 3 anc",
+  "review_count": 355,
+  "review_average": 4.14,
+  "last_seen": "2026-11-05 16:56",
+  "last_checked": "2026-11-05 16:56"
+ },
+ "8143cc0c55": {
+  "records": [
+   {
+    "t": "2026-11-05 16:56",
+    "price": 1000,
+    "point": 1
+   }
+  ],
+  "product_name": "iPhoneリングベルト 1000円",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "落下防止で安心",
+  "deal_reason": "・軽くて装着簡単\n・指にフィットして落下防止",
+  "score": 82,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/hello-brillo/cabinet/re01/imgrc0119069854.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/hello-brillo/a0001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "hello-brillo:10000007",
+  "item_name": "【33％OFFクーポン★11/5 23:59迄】人気No.1 スマホ iphone 13 12 落下防止 ベルト バンド スマホリング かわいい おしゃれ スマホ バンド ホルダー スマホケース アイフォン アンドロイド 落下防止アクセサリ ランキング 1位 iStickme",
+  "review_count": 3957,
+  "review_average": 4.45,
+  "last_seen": "2026-11-05 16:56",
+  "last_checked": "2026-11-05 16:56"
  }
 }
