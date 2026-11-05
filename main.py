@@ -3258,6 +3258,126 @@ def post_blog_to_threads():
             print(f"ブログ記事の紹介 1コメ投稿エラー（{threads_error(e)}）")
 
 
+TALK_TOPICS_PATH = "data/talk_topics.json"  # 会話型投稿の「質問ネタ」。自由に書き足し・書き換えできる
+TALK_STATE_PATH = "data/talk_state.json"  # 会話型投稿を最後に出した日と、次に使うネタの番号
+# 「どっち買う？」で並べる定番商品の組（STAPLE_PRODUCTS の表示名, 比べるポイント）
+TALK_VERSUS = [
+    ("ソニー 完全ワイヤレスイヤホン WF-1000XM5", "Apple AirPods 4 ワイヤレスイヤホン", "音とノイキャン重視か、iPhoneとの相性重視か"),
+    ("Anker Soundcore P40i ワイヤレスイヤホン", "Anker Soundcore Liberty 4 NC ワイヤレスイヤホン", "安さ重視か、ちょっと足して上位モデルか"),
+    ("ロジクール ワイヤレスマウス MX Master 3S", "ロジクール トラックボール M575S", "普通のマウスか、手首がラクなトラックボールか"),
+    ("サンディスク エクストリーム ポータブルSSD 1TB", "Samsung T7 Shield ポータブルSSD 1TB", "同じ1TBでも、どこのメーカーを信頼するか"),
+    ("Xiaomi Smart Band 9 スマートバンド", "Fitbit Charge 6 スマートウォッチ", "安くて十分か、ちょっと高くても多機能か"),
+    ("Anker Nano Charger 充電器 30W", "Anker Prime Charger 充電器 100W", "スマホだけでいいか、PCもまとめて充電したいか"),
+    ("ソニー ワイヤレスヘッドホン WH-1000XM5", "ソニー 完全ワイヤレスイヤホン WF-1000XM5", "耳を覆うヘッドホンか、持ち運びやすいイヤホンか"),
+    ("Anker Soundcore P40i ワイヤレスイヤホン", "ソニー 完全ワイヤレスイヤホン WF-1000XM5", "1万円以下で十分か、3倍出してでも上位モデルか"),
+]
+
+
+def latest_price(info):
+    """商品の記録から、いちばん新しい価格（無ければ None）"""
+    recs = [r for r in info.get("records", []) if r.get("price")]
+    return int(recs[-1]["price"]) if recs else None
+
+
+def biggest_drop(products):
+    """直近2日以内に記録した価格が、その前の2週間のいつもの価格（中央値）より大きく下がっている商品を1つ選ぶ"""
+    since = (NOW - timedelta(days=16)).strftime("%Y-%m-%d")
+    fresh = (NOW - timedelta(days=2)).strftime("%Y-%m-%d")
+    best = None
+    for pid, info in products.items():
+        recs = [r for r in info.get("records", []) if r.get("price") and r.get("t", "") >= since]
+        if len(recs) < 3 or recs[-1]["t"] < fresh or not info.get("product_name"):
+            continue
+        cur = int(recs[-1]["price"])
+        before = sorted(int(r["price"]) for r in recs[:-1])
+        prev = before[len(before) // 2]  # いつもの価格（中央値）。一時的な高値と比べて大げさにならないように
+        drop = prev - cur
+        # 4割を超える値下がりは別の商品・セット違いに変わった可能性が高いので外す
+        if drop >= 300 and 0.05 <= drop / prev <= 0.4 and (best is None or drop / prev > best[3] / best[2]):
+            best = (pid, info, prev, drop)
+    return best
+
+
+def talk_post(products, state):
+    """今日の会話型投稿の (本文, 画像URL, 1コメのURL, トピック) を作る。日替わりで「値下がり→買う？待つ？」
+    「どっち買う？」「質問ネタ」を回し、作れない日は質問ネタにする"""
+    kind = NOW.toordinal() % 3
+    if kind == 0:
+        found = biggest_drop(products)
+        if found:
+            pid, info, prev, drop = found
+            cur = prev - drop
+            text = (f"【PR】{info['product_name']}、いつもより安くなってます👀\n\n"
+                    f"いつも ¥{prev:,} → 今 ¥{cur:,}（楽天・当サイトの記録）\n¥{drop:,}の値下がりです。\n\n"
+                    "こういうの見つけたら、すぐ買う派？セールまで待つ派？")
+            return text, info.get("image_url", ""), f"{SITE_URL}item/{pid}.html", THREADS_TOPIC
+    if kind == 1:
+        pids = {}
+        try:
+            with open(STAPLES_PATH, encoding="utf-8") as f:
+                pids = {k: v.get("pid") for k, v in json.load(f).items()}
+        except (OSError, ValueError, AttributeError):
+            pass
+        start = (NOW.toordinal() // 3) % len(TALK_VERSUS)
+        for a, b, point in TALK_VERSUS[start:] + TALK_VERSUS[:start]:  # 価格の記録がそろっている組を順番に探す
+            pa, pb = latest_price(products.get(pids.get(a) or "", {})), latest_price(products.get(pids.get(b) or "", {}))
+            if pa and pb:
+                break
+        if pa and pb:
+            text = (f"【PR】どっち買う？🤔\n\nA：{a}（¥{pa:,}）\nB：{b}（¥{pb:,}）\n\n"
+                    f"{point}で分かれそう。\nAかBか、理由も一緒に教えてください！")
+            return text, "", SITE_URL, THREADS_TOPIC
+    try:
+        with open(TALK_TOPICS_PATH, encoding="utf-8") as f:
+            topics = [t for t in json.load(f) if str(t).strip()]
+    except (OSError, ValueError):
+        topics = []
+    if not topics:
+        return None
+    idx = int(state.get("next_topic", 0)) % len(topics)
+    state["next_topic"] = idx + 1
+    return topics[idx], "", "", BLOG_SNS_TOPIC
+
+
+def post_talk_to_threads():
+    """1日1回（夕方の更新で）、返信が付きやすい会話型の投稿を出す。リンクは本文に入れず、必要なときだけ1コメに付ける"""
+    try:
+        with open(TALK_STATE_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    if state.get("last_date") == TODAY_DATE:
+        print("会話型投稿: 今日は投稿済みのためスキップします。")
+        return
+    made = talk_post(load_products(), state)
+    if not made:
+        print("会話型投稿: ネタが無いためスキップします。")
+        return
+    text, image, link, topic = made
+    base = threads_base()
+    attempts = ([{"media_type": "IMAGE", "image_url": image, "topic_tag": topic}] if image else []) + [
+        {"media_type": "TEXT", "topic_tag": topic}, {"media_type": "TEXT"}]
+    post_id = ""
+    for extra in attempts:
+        try:
+            post_id = threads_publish(base, {"text": text[:480], **extra})
+            break
+        except requests.HTTPError as e:
+            print(f"会話型投稿 {extra['media_type']} 投稿エラー（{threads_error(e)}）")
+    if not post_id:
+        raise RuntimeError("会話型投稿に失敗しました")
+    print("Threadsに会話型の投稿をしました。")
+    state["last_date"] = TODAY_DATE
+    with open(TALK_STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=1)
+    if link and threads_reply_link():
+        time.sleep(5)
+        try:
+            threads_publish(base, {"media_type": "TEXT", "text": f"👇 価格の記録はこちら（毎日 朝・昼・夕方に自動更新）\n{link}", "reply_to_id": post_id})
+        except requests.HTTPError as e:
+            print(f"会話型投稿 1コメ投稿エラー（{threads_error(e)}）")
+
+
 def post_to_sns(deals):
     """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
     if os.getenv("SKIP_SNS") == "true":
@@ -3288,6 +3408,11 @@ def post_to_sns(deals):
             post_blog_to_threads()
         except Exception as e:
             print(f"ブログ記事の紹介 エラー（{safe_status(e)}）")
+    if THREADS_ACCESS_TOKEN and RUN_SLOT == 2:  # 夜に見る人が多いので、夕方の回で出す
+        try:
+            post_talk_to_threads()
+        except Exception as e:
+            print(f"会話型投稿 エラー（{safe_status(e)}）")
 
 
 if __name__ == "__main__" and "--indexnow" in sys.argv:
