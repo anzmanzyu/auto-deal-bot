@@ -15,7 +15,8 @@ import requests
 # 環境変数の読み込み（未設定でもサンプル＆RSSで即テスト動作可能）
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL") or "gemini-flash-latest"
-AMAZON_TAG = os.getenv("AMAZON_TAG", "your-amazon-tag-22")
+# サイト専用のトラッキングID（ブログの anzmanzyu-22 と分けて、どちらから売れたかをレポートで見分ける）
+AMAZON_TAG = os.getenv("AMAZON_SITE_TAG", "namikideals-22")
 RAKUTEN_AFFILIATE_ID = os.getenv("RAKUTEN_AFFILIATE_ID", "")
 VC_SID = os.getenv("VC_SID", "").strip()
 VC_PID = os.getenv("VC_PID", "").strip()
