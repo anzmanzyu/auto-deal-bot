@@ -166,7 +166,7 @@ RANK_STYLES = {
 
 
 def safe_status(e):
-    return getattr(getattr(e, "response", None), "status_code", type(e).__name__)
+    return getattr(getattr(e, "response", 60000), "status_code", type(e).__name__)
 
 
 def rakuten_request(params):
@@ -236,24 +236,24 @@ def fetch_rakuten(keyword, slot_hint, hits, min_price=None, max_price=None, page
     return items
 
 
-# 目玉枠の検索ジャンル（更新ごとに4つずつ順番に使う）
+# 目玉枠の検索ジャンル（更新ごとに4つずつ順番に使う）。上限価格は「見るだけで終わらず買われやすい」価格帯に抑える
 MAIN_QUERIES = [
-    ("ワイヤレスイヤホン", 3000, None),
-    ("モバイルモニター", 8000, None),
-    ("スマートウォッチ", 3000, None),
-    ("ロボット掃除機", 10000, None),
-    ("ヘッドホン ノイズキャンセリング", 5000, None),
-    ("ポータブルSSD", 5000, None),
+    ("ワイヤレスイヤホン", 3000, 20000),
+    ("モバイルモニター", 8000, 30000),
+    ("スマートウォッチ", 3000, 25000),
+    ("ロボット掃除機", 10000, 50000),
+    ("ヘッドホン ノイズキャンセリング", 5000, 30000),
+    ("ポータブルSSD", 5000, 25000),
     ("ミニPC", 20000, None),
-    ("ワイヤレスキーボード", 3000, None),
-    ("ワイヤレスマウス", 2000, None),
-    ("Bluetoothスピーカー", 3000, None),
-    ("タブレット", 15000, None),
-    ("モバイルプロジェクター", 10000, None),
-    ("Wi-Fiルーター", 5000, None),
-    ("ゲーミングモニター", 15000, None),
-    ("ドライブレコーダー", 5000, None),
-    ("ポータブル電源", 15000, None),
+    ("ワイヤレスキーボード", 3000, 15000),
+    ("ワイヤレスマウス", 2000, 10000),
+    ("Bluetoothスピーカー", 3000, 20000),
+    ("タブレット", 15000, 40000),
+    ("モバイルプロジェクター", 10000, 40000),
+    ("Wi-Fiルーター", 5000, 20000),
+    ("ゲーミングモニター", 15000, 40000),
+    ("ドライブレコーダー", 5000, 20000),
+    ("ポータブル電源", 15000, 60000),
 ]
 # ついで買い枠（1,000〜3,000円台の定番品）
 IMPULSE_QUERIES = [
@@ -297,6 +297,8 @@ STAPLE_PRODUCTS = [
 STAPLES_PATH = "data/staples.json"  # 定番商品ごとの、見つけた商品ページ（pid）と見つからなかった回数
 STAPLE_MAX_SEARCH = 12  # 1回の更新で新しく探す定番商品の上限（楽天APIの回数を抑える）
 STAPLE_MAX_MISSES = 3  # この回数見つからなかった定番商品は探すのをやめる
+# 物ではない商品（通信・レンタル・中古など）は買われにくく、Amazonにも無いので候補から外す
+EXCLUDE_TITLE = r"(?:プリペイド|データ|e)SIM|SIMカード|データ(?:容量|延長|チャージ)|ポケットWi-?Fi|モバイルWi-?Fi|レンタル|回線|契約|ギフト券|中古|訳あり|ジャンク"
 RECENT_DAYS = 3  # この日数以内に掲載した商品は候補から外す
 
 
@@ -324,7 +326,8 @@ def fetch_candidates():
             page = 1 + (turn // 3 + i) % 3
             items = fetch_rakuten(keyword, slot_hint, 6, min_price, max_price, page)
             # 直近に掲載した商品は除外して入れ替わりを作る
-            fresh = [c for c in items if rakuten_item_url(c["source_url"]) not in recent]
+            fresh = [c for c in items if rakuten_item_url(c["source_url"]) not in recent
+                     and not re.search(EXCLUDE_TITLE, c["title"], re.I)]
             candidates += fresh[:4 if slot_hint == "main" else 3]
 
     rss_urls = [
@@ -418,6 +421,9 @@ Amazon・楽天のアフィリエイトは「リンクを踏んで24時間以内
   1,000〜3,000円台で「安くて今すぐカートに入れやすい定番品」。候補に無ければ定番品を自分で選んでよい
 - image_url が「あり」の候補（楽天の実在商品）を優先し、できるだけ4件以上はそこから選ぶこと。その場合 product_name は候補の商品名を短く整えたものにし、候補の商品名にブランド名や型番があれば必ず残す
 - reviews（楽天レビューの平均評価と件数）が多く高評価な候補を重視すること
+- ノーブランドの汎用品より、Anker・ソニー・ロジクール・パナソニックなど知名度のあるブランドで型番が分かる商品を優先すること（Amazonでも同じ商品が見つかり、買われやすいため）
+- 目玉枠4件のうち2件以上は1万円以下の商品にすること
+- SIM・データ通信・ポケットWi-Fi・レンタル・中古などのサービスや訳あり品は選ばないこと
 - deal_reason には価格・ポイント倍率や、レビュー・評価に関する言葉を一切書かないこと（サイトの別欄に表示するため）。「こんな人・こんな場面にうれしい」が伝わる、話し言葉寄りの自然な短文にし、「〜搭載」「〜可能」で終わる硬い言い回しは避けること
 - 「最安」「最安値」「底値」「激安」「業界最安」など、価格を断定・誇張する表現は一切使わないこと
 - 候補データに含まれない詳細なスペック数値（重量や解像度など）は推測で書かず、利用シーンやお得感を中心に紹介すること
@@ -669,10 +675,21 @@ def rakuten_item_url(url):
     return url if url.startswith("https://item.rakuten.co.jp/") else ""
 
 
+def amazon_query(product_name):
+    """Amazon検索に使う語。定番商品は型番だけにして、検索結果の先頭に目当ての商品が出るようにする"""
+    low = str(product_name).lower()
+    for label, keyword, groups, lo, hi in STAPLE_PRODUCTS:
+        if label == product_name or all(any(w in low for w in g) for g in groups):
+            return keyword
+    # 楽天の商品名に付きがちな宣伝文句を外す
+    name = re.sub(r"【[^】]*】|\[[^\]]*\]|送料無料|ポイント\d+倍|楽天\S*1位|あす楽", " ", str(product_name))
+    return re.sub(r"\s+", " ", name).strip() or str(product_name)
+
+
 def build_affiliate_urls(product_name, item_url=""):
-    """Amazonは商品名検索、楽天は商品ページ（無ければ検索ページ）のアフィリエイトURLを生成する"""
+    """Amazonは商品名（定番は型番）検索、楽天は商品ページ（無ければ検索ページ）のアフィリエイトURLを生成する"""
     encoded_name = urllib.parse.quote(product_name)
-    amazon_url = with_amazon_tag(f"https://www.amazon.co.jp/s?k={encoded_name}")
+    amazon_url = with_amazon_tag(f"https://www.amazon.co.jp/s?k={urllib.parse.quote(amazon_query(product_name))}")
     rakuten_target = rakuten_item_url(item_url) or f"https://search.rakuten.co.jp/search/mall/{encoded_name}/"
     rakuten_url = with_rakuten_affiliate(rakuten_target)
     return amazon_url, rakuten_url
@@ -2952,9 +2969,10 @@ def select_deals(candidates):
 
 
 def pick_sns_deal(deals):
-    """SNSに投稿する1件（目玉枠で、値下がり・最安記録の商品を優先し、その中でおすすめ度が最も高い商品）を選ぶ"""
-    main = [d for d in deals if d["slot"] == "main" and not d.get("is_sample")]
-    return max(main, key=lambda d: (bool(d.get("price_drop") or d.get("record_low")), d["score"])) if main else None
+    """SNSに投稿する1件を選ぶ。値下がり・最安記録の商品を最優先（ついで買い枠の安い商品も対象）し、
+    次に目玉枠、その中でおすすめ度が最も高い商品"""
+    pool = [d for d in deals if not d.get("is_sample") and (d["slot"] == "main" or d.get("price_drop") or d.get("record_low"))]
+    return max(pool, key=lambda d: (bool(d.get("price_drop") or d.get("record_low")), d["slot"] == "main", d["score"])) if pool else None
 
 
 def sns_price_line(deal):
