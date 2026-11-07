@@ -15715,23 +15715,28 @@
     "price": 2480,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-07 22:56",
+    "price": 2480,
+    "point": 1
    }
   ],
-  "product_name": "スマホスタンド 高さ調整 2点セット",
-  "category": "ガジェット",
+  "product_name": "スマホスタンド 三脚 高評価",
+  "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "角度自由で撮影も快適",
-  "deal_reason": "・高さ調整で最適な視野角\n・軽量で持ち運びも簡単\n・安定感がありスマホが揺れない",
-  "score": 88,
+  "catch_copy": "安定設置で撮影楽々",
+  "deal_reason": "・軽量で持ち運び便利\n・角度調整で最適視野",
+  "score": 86,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lapset/cabinet/10989764/10989768/11467402/imgrc0159517304.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/lapset/compass1603627997/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "lapset:10000007",
   "item_name": "【楽天ランキング1位獲得】三脚 スマホスタンド 高い 軽い スマホ スタンド スマホ三脚 自撮り棒 iphone アンドロイド iphoneスタンド 自撮り 軽量 コンパクト スマホ用三脚 便利 三脚スタンド 新スマホホルダー 210cm 160cm 送料無料",
-  "review_count": 13038,
+  "review_count": 13057,
   "review_average": 4.64,
-  "last_seen": "2026-11-04 16:30",
-  "last_checked": "2026-11-07 16:11"
+  "last_seen": "2026-11-07 22:56",
+  "last_checked": "2026-11-07 22:56"
  },
  "2fd68725da": {
   "records": [
@@ -21716,23 +21721,28 @@
     "price": 19990,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-07 22:56",
+    "price": 19990,
+    "point": 1
    }
   ],
-  "product_name": "18.5インチ 100Hz モバイルゲーミングモニター",
-  "category": "ガジェット・家電",
+  "product_name": "モバイルゲーミングモニター 18.5インチ 100Hz",
+  "category": "ガジェット",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "軽量で快適ゲーム画面",
-  "deal_reason": "・持ち運びに便利な軽さ\n・100Hzで滑らかな映像\n・フルHDで鮮やか表示",
-  "score": 92,
+  "catch_copy": "持ち運び自由な高リフレッシュ",
+  "deal_reason": "・外出先でも快適にゲーム\n・フルHDで映像が鮮やか\n・軽量設計で持ち運び楽々",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/magicraven/cabinet/12247701/12310994/zt01.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/magicraven/y185a28d/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "magicraven:10000004",
   "item_name": "モバイル式ゲーミングモニター モバイルモニター 18.5インチ 100Hz 高速応答 ディスプレイ 大画面 ゲーミングモニター 1080P IPS液晶パネル 自立スタンド サブモニター 100%sRGB FreeSync HDR Type-C HDMI テレワーク",
   "review_count": 140,
   "review_average": 4.5,
-  "last_seen": "2026-11-01 08:24",
-  "last_checked": "2026-11-07 09:07"
+  "last_seen": "2026-11-07 22:56",
+  "last_checked": "2026-11-07 22:56"
  },
  "415b754395": {
   "records": [
@@ -23080,5 +23090,99 @@
   "review_average": 4.41,
   "last_seen": "2026-11-07 16:11",
   "last_checked": "2026-11-07 16:11"
+ },
+ "49a2bdf44e": {
+  "records": [
+   {
+    "t": "2026-11-07 22:56",
+    "price": 22999,
+    "point": 2
+   }
+  ],
+  "product_name": "ゲーミングモニター 24.5インチ 200Hz",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "超高速リフレッシュで滑らか",
+  "deal_reason": "・200Hzで残像が少ない\n・1ms応答で操作遅延ゼロ\n・フルHDでコスパ抜群",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10964244/10964248/imgrc0105882379.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/qifeng/hg-245hcw/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "qifeng:10000156",
+  "item_name": "ゲーミングモニター 24.5インチ 200Hz / 165Hz / 144Hz モニター 1ms pcモニター 1920*1080 FHD HDR パソコン モニター 非光沢 IPS VESA Freesync スピーカー内蔵 cocopar HG-245HCW [1+1年保証]",
+  "review_count": 134,
+  "review_average": 4.66,
+  "last_seen": "2026-11-07 22:56",
+  "last_checked": "2026-11-07 22:56"
+ },
+ "f478d0be94": {
+  "records": [
+   {
+    "t": "2026-11-07 22:56",
+    "price": null,
+    "point": null
+   }
+  ],
+  "product_name": "Anker PowerCore 10000mAh ポータブル充電器",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "コンパクトで長持ち",
+  "deal_reason": "・10,000mAhで外出先も安心\n・コンパクトサイズで持ち運び楽々\n・Anker品質で安全充電",
+  "score": 85,
+  "image_url": "",
+  "item_url": "",
+  "item_code": "",
+  "item_name": "",
+  "review_count": 0,
+  "review_average": 0,
+  "last_seen": "2026-11-07 22:56"
+ },
+ "6ec61f1844": {
+  "records": [
+   {
+    "t": "2026-11-07 22:56",
+    "price": null,
+    "point": null
+   }
+  ],
+  "product_name": "Logitech MX Anywhere 3 ワイヤレスマウス",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "どこでも快適操作",
+  "deal_reason": "・マルチデバイス接続が簡単\n・高速スクロールで作業効率UP\n・コンパクトで持ち運び便利",
+  "score": 84,
+  "image_url": "",
+  "item_url": "",
+  "item_code": "",
+  "item_name": "",
+  "review_count": 0,
+  "review_average": 0,
+  "last_seen": "2026-11-07 22:56"
+ },
+ "f89eeba938": {
+  "records": [
+   {
+    "t": "2026-11-07 22:56",
+    "price": 2973,
+    "point": 2
+   }
+  ],
+  "product_name": "SanDisk microSDXC 64GB 140MB/s",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "高速転送で快適保存",
+  "deal_reason": "・140MB/sで動画もサクサク\n・64GBで容量たっぷり\n・信頼のSanDiskブランド",
+  "score": 87,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/spd-shop/cabinet/12043251/imgrc0162238028.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/spd-shop/satf64g-qunc/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "spd-shop:10000007",
+  "item_name": "【限定特価+ポイント2倍】microSDカード マイクロSD sdカード microSDXC 64GB 140MB/s SanDisk サンディスク Ultra GO UHS-1 CLASS10 U1 A1 海外パッケージ 送料無料 SDSQUGN-064G-GN6MN",
+  "review_count": 373,
+  "review_average": 4.59,
+  "last_seen": "2026-11-07 22:56",
+  "last_checked": "2026-11-07 22:56"
  }
 }
