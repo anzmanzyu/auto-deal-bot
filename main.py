@@ -2997,6 +2997,12 @@ def deal_page_url(deal):
     return SITE_URL + deal["item_page"] if deal.get("item_page") else SITE_URL
 
 
+def threads_url(url, campaign):
+    """Threadsから案内するURLに utm を付ける。GoatCounterの流入元に「threads」と出て、投稿の種類ごとに比べられる"""
+    sep = "&" if "?" in url else "?"
+    return f"{url}{sep}utm_source=threads&utm_medium=social&utm_campaign={campaign}"
+
+
 def sns_body(deal, limit):
     """【PR】と価格の1行を先頭に付けた紹介文。AIの文が無ければ商品名とキャッチコピーで作る"""
     text = deal.get("sns_text") or f"{deal['product_name']}\n{deal.get('catch_copy', '')}\n#ガジェット #セール"
@@ -3107,7 +3113,7 @@ def post_to_threads(deal):
     text = re.sub(r"(?:\s*[#＃][^\s#＃]+)+\s*$", "", sns_body(deal, 400))  # 末尾のタグはまとめて削除
     text = re.sub(r"[#＃](?=\S)", "", text).strip()  # 文中のタグは # だけ外して言葉は残す
     if not reply_link:
-        text += f"\n\n▼価格の推移・現在の価格はこちら\n{deal_page_url(deal)}"
+        text += f"\n\n▼価格の推移・現在の価格はこちら\n{threads_url(deal_page_url(deal), 'deal')}"
     attempts = []
     if deal.get("image_url"):
         attempts.append({"media_type": "IMAGE", "image_url": deal["image_url"], "topic_tag": THREADS_TOPIC})
@@ -3126,7 +3132,7 @@ def post_to_threads(deal):
     if not reply_link:
         return
     time.sleep(5)  # 公開した投稿に返信できるようになるのを待つ
-    reply = f"👇 価格の推移・現在の価格はこちら（毎日 朝・昼・夕方に自動更新）\n{deal_page_url(deal)}"
+    reply = f"👇 価格の推移・現在の価格はこちら（毎日 朝・昼・夕方に自動更新）\n{threads_url(deal_page_url(deal), 'deal')}"
     try:
         threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": post_id})
         print("Threadsの1コメにURLを付けました。")
@@ -3373,7 +3379,7 @@ def post_talk_to_threads():
     if link and threads_reply_link():
         time.sleep(5)
         try:
-            threads_publish(base, {"media_type": "TEXT", "text": f"👇 価格の記録はこちら（毎日 朝・昼・夕方に自動更新）\n{link}", "reply_to_id": post_id})
+            threads_publish(base, {"media_type": "TEXT", "text": f"👇 価格の記録はこちら（毎日 朝・昼・夕方に自動更新）\n{threads_url(link, 'talk')}", "reply_to_id": post_id})
         except requests.HTTPError as e:
             print(f"会話型投稿 1コメ投稿エラー（{threads_error(e)}）")
 
