@@ -1,0 +1,39 @@
+name: Threads Insights
+
+on:
+  workflow_dispatch:
+
+jobs:
+  insights:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List recent Threads posts with views and reactions (read only, no posting)
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.parse, urllib.error
+          token = urllib.parse.quote(os.environ["THREADS_ACCESS_TOKEN"])
+          def get(path):
+              with urllib.request.urlopen(f"https://graph.threads.net/v1.0/{path}&access_token={token}", timeout=20) as r:
+                  return json.loads(r.read())
+          try:
+              posts = get("me/threads?fields=id,timestamp,text,is_reply&limit=40").get("data", [])
+          except urllib.error.HTTPError as e:
+              print("posts error", e.code, e.read()[:300]); raise SystemExit(1)
+          print("日時\t表示\tいいね\t返信\tリポスト\t本文")
+          for p in posts:
+              if p.get("is_reply"):
+                  continue
+              try:
+                  m = {d["name"]: d["values"][0]["value"] for d in get(f"{p['id']}/insights?metric=views,likes,replies,reposts").get("data", [])}
+              except urllib.error.HTTPError as e:
+                  print("insights error", e.code, e.read()[:300]); raise SystemExit(1)
+              text = (p.get("text") or "").replace("\n", " ")[:40]
+              print(f"{p['timestamp'][:16]}\t{m.get('views','-')}\t{m.get('likes','-')}\t{m.get('replies','-')}\t{m.get('reposts','-')}\t{text}")
+          try:
+              u = get("me/threads_insights?metric=views,followers_count")
+              print({d["name"]: d.get("total_value", {}).get("value", d.get("values", [{}])[-1].get("value")) for d in u.get("data", [])})
+          except urllib.error.HTTPError as e:
+              print("account insights error", e.code, e.read()[:200])
+          PY
