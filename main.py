@@ -3445,7 +3445,7 @@ def weekly_report_text(nums, state):
     head = f"AIに作らせたガジェット特価サイト、運用{nums['week']}週目の記録📊" if nums.get("week") else "AIに作らせたガジェット特価サイト、今週の記録📊"
     lines = ["・毎日3回、AIが楽天の売れ筋から特価を選んで自動更新"]
     if nums.get("tracked"):
-        lines.append(f"・毎日価格をチェックしている商品：{nums['tracked']}件")
+        lines.append(f"・今週価格をチェックした商品：{nums['tracked']}件")
     if nums.get("drops"):
         lines.append(f"・今週見つけた値下がり：{nums['drops']}件")
     if nums.get("visitors"):
