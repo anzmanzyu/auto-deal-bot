@@ -958,22 +958,27 @@
     "price": 5980,
     "point": 5,
     "via": "track"
+   },
+   {
+    "t": "2026-11-10 17:26",
+    "price": 5980,
+    "point": 5
    }
   ],
-  "product_name": "Primo レディース スマートウォッチ",
+  "product_name": "Primo レディーススマートウォッチ",
   "category": "ガジェット",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "可愛いデザインで健康管理",
-  "deal_reason": "・小さめサイズで手首にフィット\n・常時表示で時間が見やすい\n・心拍数測定で健康チェック",
-  "score": 90,
+  "catch_copy": "小さくても機能満載",
+  "deal_reason": "・コンパクトで女性にフィット\n・常時表示で時間が見やすい\n・通話機能で便利さUP",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/unboxroom/cabinet/sw/sw-p20/sw-p20main2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/unboxroom/sw-p18t_c/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-11-04 00:03",
-  "last_checked": "2026-11-10 02:25",
+  "last_seen": "2026-11-10 17:26",
+  "last_checked": "2026-11-10 17:26",
   "item_code": "unboxroom:10000113",
   "item_name": "【テストする女性誌「LDK」ベストバイ受賞】 スマートウォッチ レディース 小さめ Primo 常時表示 AMOLEDディスプレイ 通話機能 薄型 防水 iphone Android LINE通知 日本語 腕時計 メンズ ラッピング無料 ギフト プレゼント （SW-P18Nリニューアル）",
-  "review_count": 11714,
+  "review_count": 11734,
   "review_average": 4.37
  },
  "71ac26262e": {
@@ -8241,6 +8246,11 @@
     "t": "2026-11-10 11:45",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-11-10 17:26",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "Anker USB-C ケーブル 1m 2本セット",
@@ -8254,7 +8264,7 @@
   "item_url": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-11-10 11:45",
+  "last_seen": "2026-11-10 17:26",
   "item_code": null,
   "item_name": null
  },
@@ -22107,23 +22117,28 @@
     "price": 2632,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-10 17:26",
+    "price": 2680,
+    "point": 1
    }
   ],
-  "product_name": "SanDisk Ultra 32GB microSDHC",
+  "product_name": "SanDisk Ultra 32GB microSDカード",
   "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "高速転送で快適保存",
-  "deal_reason": "・UHS-I対応で高速読み書き\n・信頼のSanDiskブランド\n・防水・耐衝撃で安心",
-  "score": 87,
+  "catch_copy": "高速で安心の保存力",
+  "deal_reason": "・高速Class10で撮影も快適\n・信頼のSanDiskブランド\n・コンパクトで持ち運び簡単",
+  "score": 91,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kazamidori/cabinet/thum_sd/0619659184162.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/kazamidori/0619659184162/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "kazamidori:10014970",
   "item_name": "マイクロSDカード microSD 32GB microSDカード microSDHC SanDisk サンディスク Ultra Class10 UHS-I A1 R:120MB/s Nintendo Switch動作確認済 海外リテール SDSQUA4-032G-GN6MN ◆メ",
   "review_count": 433,
   "review_average": 4.72,
-  "last_seen": "2026-11-07 16:11",
-  "last_checked": "2026-11-10 11:45"
+  "last_seen": "2026-11-10 17:26",
+  "last_checked": "2026-11-10 17:26"
  },
  "eac1f21429": {
   "records": [
@@ -23926,23 +23941,28 @@
     "price": 6800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-10 17:26",
+    "price": 6800,
+    "point": 1
    }
   ],
-  "product_name": "HUAWEI Band 11 Aluminum Edition",
+  "product_name": "Huawei Band 11 Aluminum Edition",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "薄型で軽やかに装着",
-  "deal_reason": "・わずか8gの超軽量デザイン\n・長時間バッテリーで安心\n・シンプル操作で使いやすい",
-  "score": 87,
+  "catch_copy": "軽量で健康管理が楽々",
+  "deal_reason": "・薄型で装着感が抜群\n・心拍数や睡眠をしっかり測定\n・長時間バッテリーで安心",
+  "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/huawei-official/cabinet/13014907/13014914/imgrc0101208061.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/huawei-official/55020anj/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "huawei-official:10000477",
   "item_name": "【公式】楽天1位 HUAWEI Band 11 Aluminum Edition / 通常版 スマートウォッチ 8.99mm/17g薄型軽量ボディ アルミニウムケース 24時間睡眠管理 1500nits高輝度 1.62大画面 14日間持続バッテリー 情緒モニタリング LINE通知",
-  "review_count": 6037,
+  "review_count": 6040,
   "review_average": 4.5,
-  "last_seen": "2026-11-04 09:37",
-  "last_checked": "2026-11-10 02:25"
+  "last_seen": "2026-11-10 17:26",
+  "last_checked": "2026-11-10 17:26"
  },
  "569e017d5d": {
   "records": [
@@ -27398,5 +27418,53 @@
   "review_average": 4.28,
   "last_seen": "2026-11-10 11:45",
   "last_checked": "2026-11-10 11:45"
+ },
+ "2450c6a6da": {
+  "records": [
+   {
+    "t": "2026-11-10 17:26",
+    "price": 16990,
+    "point": 2
+   }
+  ],
+  "product_name": "AIRROBO P30 G60 ロボット掃除機",
+  "category": "日用品・家電",
+  "slot": "main",
+  "badge": "⭐ 高評価の人気品",
+  "catch_copy": "水拭きでピカピカ掃除",
+  "deal_reason": "・水拭きで床をしっかり除菌\n・自動ゴミ収集で手間いらず\n・薄型設計で狭い場所もOK",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/airrobo/cabinet/12296417/imgrc0129060820.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/airrobo/ym-jp-p30/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "airrobo:10000075",
+  "item_name": "【クーポンで14190円＋P2倍】ロボット掃除機 水拭き AIRROBO P30 G60 自動掃除ロボット 自動ゴミ収集 薄型 強力吸引 お掃除ロボット 音量調節 静音 120分間 WiFi アプリ リモコン 自動充電 自動掃除機 クリーナー 床拭き 落下防止 拭き掃除",
+  "review_count": 651,
+  "review_average": 4.53,
+  "last_seen": "2026-11-10 17:26",
+  "last_checked": "2026-11-10 17:26"
+ },
+ "26c992c9fa": {
+  "records": [
+   {
+    "t": "2026-11-10 17:26",
+    "price": 19800,
+    "point": 1
+   }
+  ],
+  "product_name": "15.6インチ ポータブルモニター",
+  "category": "日用品・家電",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "持ち運びに便利な大画面",
+  "deal_reason": "・HDMI・USB‑Cで多機種対応\n・軽量でバッグにすっきり収納\n・フルHDで映像が鮮やか",
+  "score": 85,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/auc-risecreation/cabinet/product/top/c0111_01x_rise_em.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/auc-risecreation/c0111/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "auc-risecreation:10004411",
+  "item_name": "＼レビュー投稿で保証延長／モバイルモニター 15.6 ディスプレイ ポータブルモニター モニター モバイルディスプレイ hdmi タイプC デュアルディスプレイ スタンド ゲーム 液晶 薄型 軽量",
+  "review_count": 278,
+  "review_average": 4.15,
+  "last_seen": "2026-11-10 17:26",
+  "last_checked": "2026-11-10 17:26"
  }
 }
