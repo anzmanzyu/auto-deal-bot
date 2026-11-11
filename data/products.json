@@ -992,6 +992,12 @@
     "t": "2026-11-10 17:26",
     "price": 5980,
     "point": 5
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 5980,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "Primo レディーススマートウォッチ",
@@ -1004,7 +1010,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/unboxroom/cabinet/sw/sw-p20/sw-p20main2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/unboxroom/sw-p18t_c/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-10 17:26",
+  "last_checked": "2026-11-11 16:45",
   "item_code": "unboxroom:10000113",
   "item_name": "【テストする女性誌「LDK」ベストバイ受賞】 スマートウォッチ レディース 小さめ Primo 常時表示 AMOLEDディスプレイ 通話機能 薄型 防水 iphone Android LINE通知 日本語 腕時計 メンズ ラッピング無料 ギフト プレゼント （SW-P18Nリニューアル）",
   "review_count": 11734,
@@ -3123,19 +3129,24 @@
     "price": 20999,
     "point": 2,
     "via": "track"
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 20999,
+    "point": 2
    }
   ],
-  "product_name": "黒/白 23.8インチ 240Hzゲーミングモニター",
-  "category": "ガジェット",
+  "product_name": "240Hz 23.8インチ ゲーミングモニター",
+  "category": "ガジェット・家電",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "滑らかに高速映像",
-  "deal_reason": "・4Kに近い滑らかさでゲームが快適\n・VRR対応で映像が割れにくい\n・デザインがシックで部屋に映える",
-  "score": 95,
+  "catch_copy": "滑らかな高速映像",
+  "deal_reason": "・高速リフレッシュで残像が少ない\n・フルHDで鮮やかに映る\n・ゲームに最適な低遅延",
+  "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/12866454/12866455/imgrc0145076725.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/hg-238h/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-11-05 00:22",
-  "last_checked": "2026-11-11 00:33",
+  "last_seen": "2026-11-11 16:45",
+  "last_checked": "2026-11-11 16:45",
   "item_code": "qifeng:10000074",
   "item_name": "【3+2年保証・240Hzの速さを体感せよ】黒/白 ゲーミングモニター 240Hz VRR対応 モニター 23.8インチ FHD 1080p 非光沢 IPSパネル pcモニター 1ms応答 240 / 200 / 180 / 120 / 100 / 60Hz対応 狭額縁 パソコンモニター 24インチ Switch/PS4/5/Xbox/DVD/ゲーム機 cocopar",
   "review_count": 1225,
@@ -3604,19 +3615,24 @@
     "price": 18999,
     "point": 2,
     "via": "track"
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 18999,
+    "point": 2
    }
   ],
-  "product_name": "27インチ 144Hz 1msゲーミングモニター",
-  "category": "ガジェット",
+  "product_name": "27インチ 144Hz ゲーミングモニター",
+  "category": "ガジェット・家電",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "瞬時に映像が追従",
-  "deal_reason": "・1ms応答で残像がほぼゼロ\n・144Hzで滑らかな動き\n・スタイリッシュな薄型デザイン",
-  "score": 93,
+  "catch_copy": "広い画面で迫力UP",
+  "deal_reason": "・27インチで視野が広がる\n・144Hzで滑らかな動き\n・1ms応答で遅延なし",
+  "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10249172/10249174/imgrc0100153303.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/yc-27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-11-05 00:22",
-  "last_checked": "2026-11-11 00:33",
+  "last_seen": "2026-11-11 16:45",
+  "last_checked": "2026-11-11 16:45",
   "item_code": "qifeng:10000075",
   "item_name": "★180Hz/165Hz/144Hz /100Hz★ モニター 27インチ 1080P フルHD ゲーミングモニター 1ms応答 2mm狭額縁 8mm薄型 pcモニター パソコン モニター VA非光沢 角度調整 VESA スピーカー cocopar HG-27",
   "review_count": 914,
@@ -3770,22 +3786,27 @@
     "price": 1900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 1900,
+    "point": 1
    }
   ],
-  "product_name": "32GB マイクロSDカード class10",
+  "product_name": "32GB microSDカード アダプター付",
   "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "容量と速度のバランス",
-  "deal_reason": "・32GBでたっぷり保存\n・class10で高速転送",
-  "score": 88,
+  "catch_copy": "容量たっぷりで安心",
+  "deal_reason": "・32GBで写真も動画も保存\n・クラス10で高速転送\n・付属アダプターで便利",
+  "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bonz/cabinet/03957598/micro32_main02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/bonz/377-00038-micro/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-30 16:08",
-  "last_checked": "2026-11-11 00:33",
+  "last_seen": "2026-11-11 16:45",
+  "last_checked": "2026-11-11 16:45",
   "item_code": "bonz:10033080",
   "item_name": "マイクロSDカード 32GB アダプター付き ノーブランド microSDHC class10",
-  "review_count": 8321,
+  "review_count": 8322,
   "review_average": 4.55
  },
  "dd566b2af5": {
@@ -17723,23 +17744,28 @@
     "price": 6980,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 6980,
+    "point": 10
    }
   ],
-  "product_name": "ドライブレコーダー 前後2カメラ",
-  "category": "ガジェット",
+  "product_name": "P10倍 前後ドライブレコーダー",
+  "category": "ガジェット・家電",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "前後映像で安全運転",
-  "deal_reason": "・前後カメラで死角なし\n・手軽に設置できる",
-  "score": 85,
+  "catch_copy": "安全運転をサポート",
+  "deal_reason": "・前後カメラで全方位記録\n・高感度で暗所でも鮮明\n・長期保証で安心",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/aideall/cabinet/10896179/11069502/1-4.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/aideall/s-xc8-bk/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "aideall:10000083",
-  "item_name": "★限定クーポンで6282円&P5倍★ドライブレコーダー 前後2カメラ 前後 ドラレコ 半年 保証 ノイズ対策 フルHD高画質 常時 衝撃録画 安全運転 超広角 駐車監視 3.0インチ液晶 暗視 WDR 170°広角 ループ 衝撃 上書き録画 動体検知 32G SDカード カー用品 配線コード 高速起動",
-  "review_count": 513,
+  "item_name": "★P10倍で6350円★ドライブレコーダー 前後2カメラ 前後 ドラレコ 半年 保証 ノイズ対策 フルHD高画質 常時 衝撃録画 安全運転 超広角 駐車監視 3.0インチ液晶 暗視 WDR 170°広角 ループ 衝撃 上書き録画 動体検知 32G SDカード カー用品 配線コード 高速起動",
+  "review_count": 520,
   "review_average": 4.51,
-  "last_seen": "2026-11-03 16:56",
-  "last_checked": "2026-11-11 00:33"
+  "last_seen": "2026-11-11 16:45",
+  "last_checked": "2026-11-11 16:45"
  },
  "09c08487c5": {
   "records": [
@@ -23004,6 +23030,12 @@
     "t": "2026-11-10 17:26",
     "price": 2680,
     "point": 1
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 2680,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SanDisk Ultra 32GB microSDカード",
@@ -23020,7 +23052,7 @@
   "review_count": 433,
   "review_average": 4.72,
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-10 17:26"
+  "last_checked": "2026-11-11 16:45"
  },
  "eac1f21429": {
   "records": [
@@ -24929,6 +24961,12 @@
     "t": "2026-11-10 17:26",
     "price": 6800,
     "point": 1
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 6800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Huawei Band 11 Aluminum Edition",
@@ -24945,7 +24983,7 @@
   "review_count": 6040,
   "review_average": 4.5,
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-10 17:26"
+  "last_checked": "2026-11-11 16:45"
  },
  "569e017d5d": {
   "records": [
@@ -28748,6 +28786,12 @@
     "t": "2026-11-10 17:26",
     "price": 16990,
     "point": 2
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 16990,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "AIRROBO P30 G60 ロボット掃除機",
@@ -28760,11 +28804,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/airrobo/cabinet/12296417/imgrc0129060820.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/airrobo/ym-jp-p30/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "airrobo:10000075",
-  "item_name": "【クーポンで14190円＋P2倍】ロボット掃除機 水拭き AIRROBO P30 G60 自動掃除ロボット 自動ゴミ収集 薄型 強力吸引 お掃除ロボット 音量調節 静音 120分間 WiFi アプリ リモコン 自動充電 自動掃除機 クリーナー 床拭き 落下防止 拭き掃除",
+  "item_name": "【クーポンで14190円】ロボット掃除機 水拭き AIRROBO P30 G60 自動掃除ロボット 自動ゴミ収集 薄型 強力吸引 お掃除ロボット 音量調節 静音 120分間 WiFi アプリ リモコン 自動充電 自動掃除機 クリーナー 床拭き 落下防止 拭き掃除",
   "review_count": 651,
   "review_average": 4.53,
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-10 17:26"
+  "last_checked": "2026-11-11 16:45"
  },
  "26c992c9fa": {
   "records": [
@@ -28772,6 +28816,12 @@
     "t": "2026-11-10 17:26",
     "price": 19800,
     "point": 1
+   },
+   {
+    "t": "2026-11-11 16:45",
+    "price": 19800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "15.6インチ ポータブルモニター",
@@ -28788,7 +28838,7 @@
   "review_count": 278,
   "review_average": 4.15,
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-10 17:26"
+  "last_checked": "2026-11-11 16:45"
  },
  "46146aeb2d": {
   "records": [
@@ -28837,5 +28887,52 @@
   "review_average": 4.57,
   "last_seen": "2026-11-11 09:40",
   "last_checked": "2026-11-11 09:40"
+ },
+ "0519320247": {
+  "records": [
+   {
+    "t": "2026-11-11 16:45",
+    "price": null,
+    "point": null
+   }
+  ],
+  "product_name": "Anker PowerCore 10000mAh ポータブルバッテリー",
+  "category": "ガジェット・家電",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "いつでもフル充電",
+  "deal_reason": "・コンパクトで持ち運び楽々\n・10000mAhでスマホ2回充電\n・高速PD対応で時間短縮",
+  "score": 85,
+  "image_url": "",
+  "item_url": "",
+  "item_code": "",
+  "item_name": "",
+  "review_count": 0,
+  "review_average": 0,
+  "last_seen": "2026-11-11 16:45"
+ },
+ "e6163dd7d7": {
+  "records": [
+   {
+    "t": "2026-11-11 16:45",
+    "price": 1360,
+    "point": 1
+   }
+  ],
+  "product_name": "ミネラルウォーター 2L×9本",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "まとめ買いで節約",
+  "deal_reason": "・2L大容量で家族に最適\n・9本セットで長期保存OK\n・ミネラル豊富で健康サポート",
+  "score": 82,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/enetroom/cabinet/jishahin50/1908794rk.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/enetroom/1908794-cp/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "enetroom:10194979",
+  "item_name": "水 2リットル 9本 ミネラルウォーター ラベルレス 天然水 バナジウム 非常食 防災食 保存 ストック まとめ買い 新生活 アイリスオーヤマ 富士山の天然水 2L *【代引き不可】［2611SS］",
+  "review_count": 25,
+  "review_average": 4.6,
+  "last_seen": "2026-11-11 16:45",
+  "last_checked": "2026-11-11 16:45"
  }
 }
