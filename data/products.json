@@ -1027,6 +1027,12 @@
     "price": 5980,
     "point": 5,
     "via": "track"
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 5980,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "Primo レディーススマートウォッチ",
@@ -1039,7 +1045,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/unboxroom/cabinet/sw/sw-p20/sw-p20main2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/unboxroom/sw-p18t_c/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-11 16:45",
+  "last_checked": "2026-11-12 17:21",
   "item_code": "unboxroom:10000113",
   "item_name": "【テストする女性誌「LDK」ベストバイ受賞】 スマートウォッチ レディース 小さめ Primo 常時表示 AMOLEDディスプレイ 通話機能 薄型 防水 iphone Android LINE通知 日本語 腕時計 メンズ ラッピング無料 ギフト プレゼント （SW-P18Nリニューアル）",
   "review_count": 11734,
@@ -3233,6 +3239,12 @@
     "t": "2026-11-11 16:45",
     "price": 20999,
     "point": 2
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 20999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "240Hz 23.8インチ ゲーミングモニター",
@@ -3245,7 +3257,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/12866454/12866455/imgrc0145076725.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/hg-238h/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-11 16:45",
-  "last_checked": "2026-11-11 16:45",
+  "last_checked": "2026-11-12 17:21",
   "item_code": "qifeng:10000074",
   "item_name": "【3+2年保証・240Hzの速さを体感せよ】黒/白 ゲーミングモニター 240Hz VRR対応 モニター 23.8インチ FHD 1080p 非光沢 IPSパネル pcモニター 1ms応答 240 / 200 / 180 / 120 / 100 / 60Hz対応 狭額縁 パソコンモニター 24インチ Switch/PS4/5/Xbox/DVD/ゲーム機 cocopar",
   "review_count": 1225,
@@ -3731,6 +3743,12 @@
     "t": "2026-11-11 16:45",
     "price": 18999,
     "point": 2
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 18999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "27インチ 144Hz ゲーミングモニター",
@@ -3743,7 +3761,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10249172/10249174/imgrc0100153303.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/yc-27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-11 16:45",
-  "last_checked": "2026-11-11 16:45",
+  "last_checked": "2026-11-12 17:21",
   "item_code": "qifeng:10000075",
   "item_name": "★180Hz/165Hz/144Hz /100Hz★ モニター 27インチ 1080P フルHD ゲーミングモニター 1ms応答 2mm狭額縁 8mm薄型 pcモニター パソコン モニター VA非光沢 角度調整 VESA スピーカー cocopar HG-27",
   "review_count": 914,
@@ -8875,6 +8893,11 @@
     "t": "2026-11-12 00:07",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "Anker USB-C ケーブル 1m 2本セット",
@@ -8888,7 +8911,7 @@
   "item_url": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-11-12 00:07",
+  "last_seen": "2026-11-12 17:21",
   "item_code": null,
   "item_name": null
  },
@@ -17307,23 +17330,28 @@
     "price": 2249,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 2249,
+    "point": 1
    }
   ],
   "product_name": "UGREEN ワイヤレスマウス 6ボタン",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "快適操作で作業効率UP",
-  "deal_reason": "・長時間使えて疲れにくい\n・6ボタンでショートカット自在\n・コスパ抜群で初心者向き",
-  "score": 92,
+  "catch_copy": "静かで快適な操作感",
+  "deal_reason": "・長時間使っても疲れにくい設計・5段階DPIで細かく調整可能・2.4GHzで遅延少なく快適",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ugreen-gear/cabinet/11871349/90545-1.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ugreen-gear/90545/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "ugreen-gear:10000327",
   "item_name": "UGREEN 人間工学 ワイヤレスマウス 6ボタン コスパ最高マウス 無線2.4GHz 静音マウス5段階DPI切替 4000DPI ノートPC MacBook Chromebook パソコンなど対応 Mac Windows PC Laptop Macbook多機種対応 ピンク ブラック 出張 マウス",
-  "review_count": 1720,
-  "review_average": 4.54,
-  "last_seen": "2026-11-06 00:25",
-  "last_checked": "2026-11-12 10:54"
+  "review_count": 1729,
+  "review_average": 4.55,
+  "last_seen": "2026-11-12 17:21",
+  "last_checked": "2026-11-12 17:21"
  },
  "77be563202": {
   "records": [
@@ -17462,23 +17490,28 @@
     "price": 3990,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 3990,
+    "point": 1
    }
   ],
-  "product_name": "Anker Soundcore Select 4 Go スピーカー",
+  "product_name": "Anker Soundcore Select 4 Go",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "どこでも音楽を楽しむ",
-  "deal_reason": "・コンパクトなのに迫力サウンド\n・バッテリー長持ちで外出に最適\n・Bluetooth接続がスムーズ",
-  "score": 93,
+  "catch_copy": "持ち運び楽々のコンパクト音響",
+  "deal_reason": "・最大20時間再生で長時間使用可・防水設計でアウトドアでも安心・5W出力でクリアなサウンド",
+  "score": 87,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a31x1_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a31x1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "anker:10002132",
   "item_name": "Anker Soundcore Select 4 Go bluetooth スピーカー【最大20時間再生 / 5W出力 / パッシブラジエーター搭載 / IP67防塵防水規格 / ワイヤレスステレオ対応】",
-  "review_count": 615,
+  "review_count": 629,
   "review_average": 4.69,
-  "last_seen": "2026-10-31 16:00",
-  "last_checked": "2026-11-12 10:54"
+  "last_seen": "2026-11-12 17:21",
+  "last_checked": "2026-11-12 17:21"
  },
  "a3c915b060": {
   "records": [
@@ -17772,6 +17805,11 @@
     "price": 39800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 39800,
+    "point": 1
    }
   ],
   "product_name": "カベーニ モバイル プロジェクター 小型 ワイヤレス 天井 ホームシアター 子供",
@@ -17780,15 +17818,15 @@
   "badge": "⭐ 高評価の人気品",
   "catch_copy": "楽天でレビューの多い売れ筋",
   "deal_reason": "・小型でも大画面投影\n・ワイヤレスで設置自由\n・高輝度で屋内外どこでも",
-  "score": 89,
+  "score": 86,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ueno-mono/cabinet/07145467/07145474/imgrc0086661154.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ueno-mono/kabeni/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "ueno-mono:10000022",
-  "item_name": "【2000円OFF!本日23:59まで】 カベーニ モバイル プロジェクター 小型 ワイヤレス 天井 ホームシアター 子供 壁 家庭用 コンパクト プロジェクター Bluetooth スマホ WiFi HDMI DVD 軽量 モバイルプロジェクター android iPhone 小型プロジェクター ホームプロジェクター",
-  "review_count": 8356,
+  "item_name": "【2年～4年半保証】 カベーニ モバイル プロジェクター 小型 ワイヤレス 天井 ホームシアター 子供 壁 家庭用 コンパクト プロジェクター Bluetooth スマホ WiFi HDMI DVD 軽量 モバイルプロジェクター android iPhone 三脚 小型プロジェクター 映画 ホームプロジェクター",
+  "review_count": 8358,
   "review_average": 4.59,
-  "last_seen": "2026-10-31 16:00",
-  "last_checked": "2026-11-12 00:07"
+  "last_seen": "2026-11-12 17:21",
+  "last_checked": "2026-11-12 17:21"
  },
  "82f8fd9609": {
   "records": [
@@ -21808,23 +21846,28 @@
     "price": 3900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 3900,
+    "point": 1
    }
   ],
-  "product_name": "Logitech 無線マウス＆キーボード MK295",
+  "product_name": "Logitech MK295 ワイヤレスセット",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "静音＆耐水で快適操作",
-  "deal_reason": "・コードレスでデスクすっきり\n・耐水設計で安心使用",
-  "score": 88,
+  "catch_copy": "デスク周りをすっきり整理",
+  "deal_reason": "・キーボードとマウスが一体で省スペース・静音キーでオフィスでも安心・Unifying非対応でも簡単接続",
+  "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/logicool/cabinet/prd/kb/mk295gp/mk295gp_r1.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/logicool/mk295gp/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "logicool:10000344",
   "item_name": "ロジクール ワイヤレスマウス キーボード セット MK295GP MK295OW 静音 耐水 無線 USB接続 Unifying非対応 MK295 国内正規品 2年間無償保証",
-  "review_count": 750,
+  "review_count": 751,
   "review_average": 4.52,
-  "last_seen": "2026-11-03 11:19",
-  "last_checked": "2026-11-12 10:54"
+  "last_seen": "2026-11-12 17:21",
+  "last_checked": "2026-11-12 17:21"
  },
  "ae5b790d37": {
   "records": [
@@ -22019,6 +22062,11 @@
     "t": "2026-11-12 00:07",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "パナソニック エボルタネオ 単3形 8本パック",
@@ -22034,7 +22082,7 @@
   "item_name": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-11-12 00:07"
+  "last_seen": "2026-11-12 17:21"
  },
  "d59b6ae38f": {
   "records": [
@@ -23907,6 +23955,12 @@
     "price": 2680,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 2632,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SanDisk Ultra 32GB microSDカード",
@@ -23923,7 +23977,7 @@
   "review_count": 433,
   "review_average": 4.72,
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-11 16:45"
+  "last_checked": "2026-11-12 17:21"
  },
  "eac1f21429": {
   "records": [
@@ -30255,6 +30309,12 @@
     "t": "2026-11-11 16:45",
     "price": 1360,
     "point": 1
+   },
+   {
+    "t": "2026-11-12 17:21",
+    "price": 1360,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミネラルウォーター 2L×9本",
@@ -30271,6 +30331,6 @@
   "review_count": 25,
   "review_average": 4.6,
   "last_seen": "2026-11-11 16:45",
-  "last_checked": "2026-11-11 16:45"
+  "last_checked": "2026-11-12 17:21"
  }
 }
