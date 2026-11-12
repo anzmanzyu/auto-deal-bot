@@ -3493,6 +3493,117 @@ def post_weekly_report_to_threads():
     return True
 
 
+REPLY_STATE_PATH = "data/reply_state.json"  # 返信済みのコメントID（同じコメントに二度返信しないため）
+REPLY_MAX_PER_RUN = 8  # 1回の更新で返信する上限。急に大量に返信してスパム扱いされないように
+REPLY_LOOKBACK_DAYS = 3  # この日数より前の投稿・コメントには返信しない
+
+
+def ai_text(prompt):
+    """短い文章を1つ作る。Gemini → Groq の順に試し、どちらもダメなら空文字"""
+    if GEMINI_API_KEY:
+        try:
+            res = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}",
+                                json={"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"temperature": 0.7}}, timeout=30)
+            res.raise_for_status()
+            return res.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except Exception as e:
+            print(f"返信文: Gemini エラー（{safe_status(e)}）")
+    if GROQ_API_KEY:
+        headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
+        for model in (GROQ_MODEL, "llama-3.3-70b-versatile"):
+            try:
+                res = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, timeout=60,
+                                    json={"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.7})
+                res.raise_for_status()
+                return res.json()["choices"][0]["message"]["content"].strip()
+            except Exception as e:
+                print(f"返信文: Groq {model} エラー（{safe_status(e)}）")
+    return ""
+
+
+def reply_prompt(post_text, comment):
+    return f"""あなたはThreadsでガジェット特価情報を発信している「Namiki」本人です。自分の投稿に付いたコメントへの返信を1つ書いてください。
+
+# 自分の投稿
+{post_text[:300]}
+
+# もらったコメント
+{comment[:300]}
+
+# ルール
+- 友だちに返すような、くだけすぎない丁寧語。1〜2文、60文字以内
+- コメントの内容に具体的に触れる。定型文のような「コメントありがとうございます！」だけで終わらせない
+- 質問されたら、投稿に書いてあることの範囲で答える。分からないことは分からないと言う
+- 値段・在庫・性能などの事実を新しく作らない。URL・ハッシュタグ・宣伝は入れない
+- 絵文字は0〜1個
+- 宣伝・スパム・攻撃的・意味の分からないコメントには、返信せず SKIP とだけ書く
+
+返信文だけを出力してください。"""
+
+
+def clean_reply(text):
+    """AIの出力から返信文だけを取り出す。返信しないときは空文字"""
+    text = re.sub(r"<think>.*?</think>", "", text or "", flags=re.S).strip().strip("「」\"'")
+    if not text or "SKIP" in text.upper():
+        return ""
+    text = re.sub(r"https?://\S+|[#＃]\S+", "", text).strip()
+    text = text.splitlines()[0].strip() if text else ""
+    return text[:120]
+
+
+def reply_to_threads_comments():
+    """自分の最近の投稿に付いたコメントに、AIで1つずつ返信する。返信済みは記録して二度返さない"""
+    try:
+        with open(REPLY_STATE_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    done = list(state.get("replied", []))
+    base = threads_base()
+    me = requests.get(f"{base}", params={"fields": "username", "access_token": THREADS_ACCESS_TOKEN}, timeout=15)
+    me.raise_for_status()
+    my_name = me.json().get("username", "")
+    since = (NOW - timedelta(days=REPLY_LOOKBACK_DAYS)).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
+    res = requests.get(f"{base}/threads", params={"fields": "id,text,timestamp", "limit": 25, "access_token": THREADS_ACCESS_TOKEN}, timeout=20)
+    res.raise_for_status()
+    posts = [p for p in res.json().get("data", []) if str(p.get("timestamp", ""))[:19] >= since]
+    sent = 0
+    for post in posts:
+        try:
+            r = requests.get(f"https://graph.threads.net/v1.0/{post['id']}/replies",
+                             params={"fields": "id,text,username,timestamp", "access_token": THREADS_ACCESS_TOKEN}, timeout=20)
+            r.raise_for_status()
+        except requests.HTTPError as e:
+            print(f"コメント取得エラー（{threads_error(e)}）")
+            if is_permission_error(e):
+                print("コメントを読む権限（threads_read_replies）が無いため、自動返信をスキップします。")
+                return
+            continue
+        for c in r.json().get("data", []):
+            if sent >= REPLY_MAX_PER_RUN:
+                break
+            if c.get("id") in done or c.get("username") == my_name or not str(c.get("text", "")).strip():
+                continue
+            if str(c.get("timestamp", ""))[:19] < since:
+                continue
+            reply = clean_reply(ai_text(reply_prompt(post.get("text", ""), c["text"])))
+            done.append(c["id"])  # 返信しないと決めたコメントも記録し、次回また考えないようにする
+            if not reply:
+                print("自動返信: 返信しないコメントをスキップしました。")
+                continue
+            try:
+                threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": c["id"]})
+                sent += 1
+                print("自動返信: コメントに返信しました。")
+                time.sleep(20)  # 立て続けに返信しない
+            except requests.HTTPError as e:
+                print(f"自動返信エラー（{threads_error(e)}）")
+    state["replied"] = done[-500:]
+    with open(REPLY_STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=1)
+    print(f"自動返信: {sent}件返信しました。")
+
+
 def post_to_sns(deals):
     """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
     if os.getenv("SKIP_SNS") == "true":
@@ -3538,6 +3649,11 @@ def post_to_sns(deals):
             post_talk_to_threads()
         except Exception as e:
             print(f"会話型投稿 エラー（{safe_status(e)}）")
+    if THREADS_ACCESS_TOKEN and os.getenv("THREADS_AUTO_REPLY", "on") != "off":  # リポジトリ変数 THREADS_AUTO_REPLY=off で止められる
+        try:
+            reply_to_threads_comments()
+        except Exception as e:
+            print(f"自動返信 エラー（{safe_status(e)}）")
 
 
 if __name__ == "__main__" and "--indexnow" in sys.argv:
