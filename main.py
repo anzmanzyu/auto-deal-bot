@@ -3537,18 +3537,31 @@ def reply_prompt(post_text, comment):
 - 値段・在庫・性能などの事実を新しく作らない。URL・ハッシュタグ・宣伝は入れない
 - 絵文字は0〜1個
 - 宣伝・スパム・攻撃的・意味の分からないコメントには、返信せず SKIP とだけ書く
+- コメントが値段・どこで買えるか・商品の詳細を聞いている場合だけ、返信文の先頭に [LINK] と付ける（リンクは自分で書かない。後で自動で付ける）
 
 返信文だけを出力してください。"""
 
 
 def clean_reply(text):
-    """AIの出力から返信文だけを取り出す。返信しないときは空文字"""
+    """AIの出力から (返信文, リンクを付けるか) を取り出す。返信しないときは ("", False)"""
     text = re.sub(r"<think>.*?</think>", "", text or "", flags=re.S).strip().strip("「」\"'")
     if not text or "SKIP" in text.upper():
-        return ""
-    text = re.sub(r"https?://\S+|[#＃]\S+", "", text).strip()
+        return "", False
+    want_link = "[LINK]" in text.upper()
+    text = re.sub(r"\[LINK\]", "", text, flags=re.I)
+    text = re.sub(r"https?://\S+|[#＃]\S+", "", text).strip().strip("「」\"'")
     text = text.splitlines()[0].strip() if text else ""
-    return text[:120]
+    return text[:120], want_link and bool(text)
+
+
+def reply_link_url(replies, my_name):
+    """投稿の1コメ（自分の返信）にあるサイトURLを、返信からの流入と分かる形にして返す。無ければトップページ"""
+    for c in replies:
+        if c.get("username") == my_name:
+            m = re.search(r"https?://\S+", str(c.get("text", "")))
+            if m and SITE_URL.split("//")[-1].split("/")[0] in m.group(0):
+                return threads_url(m.group(0).split("?")[0], "reply")
+    return threads_url(SITE_URL, "reply")
 
 
 def reply_to_threads_comments():
@@ -3579,18 +3592,24 @@ def reply_to_threads_comments():
                 print("コメントを読む権限（threads_read_replies）が無いため、自動返信をスキップします。")
                 return
             continue
-        for c in r.json().get("data", []):
+        replies = r.json().get("data", [])
+        linked = False  # 1つの投稿でリンクを付けるのは1回まで（前回までに付けた分は数えない簡易版）
+        for c in replies:
             if sent >= REPLY_MAX_PER_RUN:
                 break
             if c.get("id") in done or c.get("username") == my_name or not str(c.get("text", "")).strip():
                 continue
             if str(c.get("timestamp", ""))[:19] < since:
                 continue
-            reply = clean_reply(ai_text(reply_prompt(post.get("text", ""), c["text"])))
+            reply, want_link = clean_reply(ai_text(reply_prompt(post.get("text", ""), c["text"])))
             done.append(c["id"])  # 返信しないと決めたコメントも記録し、次回また考えないようにする
             if not reply:
                 print("自動返信: 返信しないコメントをスキップしました。")
                 continue
+            if want_link and not linked:
+                # 聞かれたときだけ、自分のサイトの価格ページへ案内する。サイトにアフィリエイトリンクがあるため（PR）を付ける
+                reply += f"\n（PR）価格の推移はこちら👉 {reply_link_url(replies, my_name)}"
+                linked = True
             try:
                 threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": c["id"]})
                 sent += 1
