@@ -3384,6 +3384,226 @@ def post_talk_to_threads():
             print(f"会話型投稿 1コメ投稿エラー（{threads_error(e)}）")
 
 
+WEEKLY_STATE_PATH = "data/weekly_state.json"  # 週1回の運用実録投稿を最後に出した日と、次に使う締めの文の番号
+WEEKLY_TOPIC = "副業"
+GOATCOUNTER_TOKEN = os.getenv("GOATCOUNTER_TOKEN", "")  # 任意。あればサイト訪問者数も実録に入れる
+NOTE_URL = os.getenv("NOTE_URL", "").strip()  # 任意。あれば実録投稿の1コメでnoteへ案内する（無ければサイトへ）
+WEEKLY_ENDINGS = [
+    "やったのは「仕組みを1回作っただけ」。\nコードもほぼAIに書いてもらったので、思ったよりかんたんでした。\n\nAIで副業を自動化してみたい人、気になることあれば返信ください🙌",
+    "毎日やってるのは、たまに数字を見るくらい。\n残りはAIが朝・昼・夕方に勝手に回してくれます。\n\n副業を仕組み化したい人、どこから始めるか聞かれたら答えます🙌",
+    "最初の1週間で作って、あとはほぼ放置。\nAIに任せられる作業は、想像よりずっと多かったです。\n\n同じように副業でAIを使ってる人いますか？👀",
+]
+
+
+def weekly_numbers():
+    """実録投稿に入れる数字を集める。取れなかった項目は入れない（数字はすべて実データ）"""
+    nums = {}
+    try:
+        days = sorted(f[:10] for f in os.listdir("public/archive") if re.match(r"\d{4}-\d{2}-\d{2}\.html$", f))
+        start = datetime.strptime(days[0], "%Y-%m-%d").replace(tzinfo=JST)
+        nums["week"] = (NOW - start).days // 7 + 1
+    except (OSError, IndexError, ValueError):
+        pass
+    products = load_products()
+    since = (NOW - timedelta(days=7)).strftime("%Y-%m-%d")
+    nums["tracked"] = sum(1 for info in products.values() if any(r.get("t", "") >= since for r in info.get("records", [])))
+    drops = 0
+    for info in products.values():
+        recs = [r for r in info.get("records", []) if r.get("price")]
+        week = [int(r["price"]) for r in recs if r.get("t", "") >= since]
+        before = [int(r["price"]) for r in recs if r.get("t", "") < since]
+        if week and before and min(week) < before[-1]:
+            drops += 1
+    nums["drops"] = drops
+    if THREADS_ACCESS_TOKEN:
+        try:
+            res = requests.get(f"{threads_base()}/threads_insights", params={
+                "metric": "views,followers_count", "since": int((NOW - timedelta(days=7)).timestamp()),
+                "until": int(NOW.timestamp()), "access_token": THREADS_ACCESS_TOKEN}, timeout=20)
+            res.raise_for_status()
+            for d in res.json().get("data", []):
+                if d.get("name") == "views":
+                    nums["views"] = sum(int(v.get("value") or 0) for v in d.get("values", []))
+                elif d.get("name") == "followers_count":
+                    nums["followers"] = int(d.get("total_value", {}).get("value") or 0)
+        except Exception as e:
+            print(f"実録投稿: Threadsの数字を取れませんでした（{safe_status(e)}）")
+    if GOATCOUNTER_TOKEN:
+        try:
+            res = requests.get("https://namikilog.goatcounter.com/api/v0/stats/total", params={
+                "start": (NOW - timedelta(days=7)).strftime("%Y-%m-%d"), "end": TODAY_DATE},
+                headers={"Authorization": f"Bearer {GOATCOUNTER_TOKEN}"}, timeout=20)
+            res.raise_for_status()
+            nums["visitors"] = int(res.json().get("total") or 0)
+        except Exception as e:
+            print(f"実録投稿: サイトの訪問者数を取れませんでした（{safe_status(e)}）")
+    return nums
+
+
+def weekly_report_text(nums, state):
+    """「AIで作った特価サイト、運用◯週目の記録」の本文。副業・AI・かんたんの言葉を入れ、広告に見えない形にする"""
+    head = f"AIに作らせたガジェット特価サイト、運用{nums['week']}週目の記録📊" if nums.get("week") else "AIに作らせたガジェット特価サイト、今週の記録📊"
+    lines = ["・毎日3回、AIが楽天の売れ筋から特価を選んで自動更新"]
+    if nums.get("tracked"):
+        lines.append(f"・今週価格をチェックした商品：{nums['tracked']}件")
+    if nums.get("drops"):
+        lines.append(f"・今週見つけた値下がり：{nums['drops']}件")
+    if nums.get("visitors"):
+        lines.append(f"・サイトに来てくれた人：{nums['visitors']}人")
+    if nums.get("views"):
+        lines.append(f"・Threadsの表示：{nums['views']:,}回" + (f"（フォロワー{nums['followers']}人）" if nums.get("followers") else ""))
+    idx = int(state.get("next_ending", 0)) % len(WEEKLY_ENDINGS)
+    state["next_ending"] = idx + 1
+    return f"{head}\n\n" + "\n".join(lines) + f"\n\n{WEEKLY_ENDINGS[idx]}"
+
+
+def post_weekly_report_to_threads():
+    """毎週日曜の夕方の更新で1回、運用の実録を投稿する。1コメでnote（設定があれば）かサイトへ案内する"""
+    try:
+        with open(WEEKLY_STATE_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    if state.get("last_date") == TODAY_DATE:
+        print("実録投稿: 今日は投稿済みのためスキップします。")
+        return False
+    text = weekly_report_text(weekly_numbers(), state)
+    base = threads_base()
+    post_id = ""
+    for extra in ({"topic_tag": WEEKLY_TOPIC}, {}):
+        try:
+            post_id = threads_publish(base, {"media_type": "TEXT", "text": text[:480], **extra})
+            break
+        except requests.HTTPError as e:
+            print(f"実録投稿 エラー（{threads_error(e)}）")
+    if not post_id:
+        raise RuntimeError("実録投稿に失敗しました")
+    print("Threadsに運用の実録を投稿しました。")
+    state["last_date"] = TODAY_DATE
+    with open(WEEKLY_STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=1)
+    if threads_reply_link():
+        reply = (f"仕組みの作り方は、noteにまとめています👇\n{NOTE_URL}" if NOTE_URL
+                 else f"実際に動いているサイトはこちら👇\n{threads_url(SITE_URL, 'weekly')}")
+        time.sleep(5)
+        try:
+            threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": post_id})
+        except requests.HTTPError as e:
+            print(f"実録投稿 1コメ投稿エラー（{threads_error(e)}）")
+    return True
+
+
+REPLY_STATE_PATH = "data/reply_state.json"  # 返信済みのコメントID（同じコメントに二度返信しないため）
+REPLY_MAX_PER_RUN = 8  # 1回の更新で返信する上限。急に大量に返信してスパム扱いされないように
+REPLY_LOOKBACK_DAYS = 3  # この日数より前の投稿・コメントには返信しない
+
+
+def ai_text(prompt):
+    """短い文章を1つ作る。Gemini → Groq の順に試し、どちらもダメなら空文字"""
+    if GEMINI_API_KEY:
+        try:
+            res = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}",
+                                json={"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"temperature": 0.7}}, timeout=30)
+            res.raise_for_status()
+            return res.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except Exception as e:
+            print(f"返信文: Gemini エラー（{safe_status(e)}）")
+    if GROQ_API_KEY:
+        headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
+        for model in (GROQ_MODEL, "llama-3.3-70b-versatile"):
+            try:
+                res = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, timeout=60,
+                                    json={"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.7})
+                res.raise_for_status()
+                return res.json()["choices"][0]["message"]["content"].strip()
+            except Exception as e:
+                print(f"返信文: Groq {model} エラー（{safe_status(e)}）")
+    return ""
+
+
+def reply_prompt(post_text, comment):
+    return f"""あなたはThreadsでガジェット特価情報を発信している「Namiki」本人です。自分の投稿に付いたコメントへの返信を1つ書いてください。
+
+# 自分の投稿
+{post_text[:300]}
+
+# もらったコメント
+{comment[:300]}
+
+# ルール
+- 友だちに返すような、くだけすぎない丁寧語。1〜2文、60文字以内
+- コメントの内容に具体的に触れる。定型文のような「コメントありがとうございます！」だけで終わらせない
+- 質問されたら、投稿に書いてあることの範囲で答える。分からないことは分からないと言う
+- 値段・在庫・性能などの事実を新しく作らない。URL・ハッシュタグ・宣伝は入れない
+- 絵文字は0〜1個
+- 宣伝・スパム・攻撃的・意味の分からないコメントには、返信せず SKIP とだけ書く
+
+返信文だけを出力してください。"""
+
+
+def clean_reply(text):
+    """AIの出力から返信文だけを取り出す。返信しないときは空文字"""
+    text = re.sub(r"<think>.*?</think>", "", text or "", flags=re.S).strip().strip("「」\"'")
+    if not text or "SKIP" in text.upper():
+        return ""
+    text = re.sub(r"https?://\S+|[#＃]\S+", "", text).strip()
+    text = text.splitlines()[0].strip() if text else ""
+    return text[:120]
+
+
+def reply_to_threads_comments():
+    """自分の最近の投稿に付いたコメントに、AIで1つずつ返信する。返信済みは記録して二度返さない"""
+    try:
+        with open(REPLY_STATE_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    done = list(state.get("replied", []))
+    base = threads_base()
+    me = requests.get(f"{base}", params={"fields": "username", "access_token": THREADS_ACCESS_TOKEN}, timeout=15)
+    me.raise_for_status()
+    my_name = me.json().get("username", "")
+    since = (NOW - timedelta(days=REPLY_LOOKBACK_DAYS)).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
+    res = requests.get(f"{base}/threads", params={"fields": "id,text,timestamp", "limit": 25, "access_token": THREADS_ACCESS_TOKEN}, timeout=20)
+    res.raise_for_status()
+    posts = [p for p in res.json().get("data", []) if str(p.get("timestamp", ""))[:19] >= since]
+    sent = 0
+    for post in posts:
+        try:
+            r = requests.get(f"https://graph.threads.net/v1.0/{post['id']}/replies",
+                             params={"fields": "id,text,username,timestamp", "access_token": THREADS_ACCESS_TOKEN}, timeout=20)
+            r.raise_for_status()
+        except requests.HTTPError as e:
+            print(f"コメント取得エラー（{threads_error(e)}）")
+            if is_permission_error(e):
+                print("コメントを読む権限（threads_read_replies）が無いため、自動返信をスキップします。")
+                return
+            continue
+        for c in r.json().get("data", []):
+            if sent >= REPLY_MAX_PER_RUN:
+                break
+            if c.get("id") in done or c.get("username") == my_name or not str(c.get("text", "")).strip():
+                continue
+            if str(c.get("timestamp", ""))[:19] < since:
+                continue
+            reply = clean_reply(ai_text(reply_prompt(post.get("text", ""), c["text"])))
+            done.append(c["id"])  # 返信しないと決めたコメントも記録し、次回また考えないようにする
+            if not reply:
+                print("自動返信: 返信しないコメントをスキップしました。")
+                continue
+            try:
+                threads_publish(base, {"media_type": "TEXT", "text": reply, "reply_to_id": c["id"]})
+                sent += 1
+                print("自動返信: コメントに返信しました。")
+                time.sleep(20)  # 立て続けに返信しない
+            except requests.HTTPError as e:
+                print(f"自動返信エラー（{threads_error(e)}）")
+    state["replied"] = done[-500:]
+    with open(REPLY_STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=1)
+    print(f"自動返信: {sent}件返信しました。")
+
+
 def post_to_sns(deals):
     """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
     if os.getenv("SKIP_SNS") == "true":
@@ -3397,11 +3617,15 @@ def post_to_sns(deals):
     if not deal:
         print("SNS投稿: AIで選んだ商品が無いためスキップします。")
         return
+    if RUN_SLOT == 1 and not (deal.get("price_drop") or deal.get("record_low")):
+        # 反応の無い投稿が続くとおすすめに載りにくいので、昼は値下がり・最安記録の商品があるときだけ出す（1日2〜3本）
+        print("SNS投稿: 昼の回は値下がり・最安記録の商品が無いためスキップします。")
+        deal = None
     targets = (
         ("X", all((X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET)), post_to_x),
         ("Threads", bool(THREADS_ACCESS_TOKEN), post_to_threads),
     )
-    for name, configured, func in targets:
+    for name, configured, func in targets if deal else ():
         if not configured:
             print(f"{name}: キー未設定のため投稿をスキップします。")
             continue
@@ -3414,11 +3638,22 @@ def post_to_sns(deals):
             post_blog_to_threads()
         except Exception as e:
             print(f"ブログ記事の紹介 エラー（{safe_status(e)}）")
-    if THREADS_ACCESS_TOKEN and RUN_SLOT == 2:  # 夜に見る人が多いので、夕方の回で出す
+    weekly_done = False
+    if THREADS_ACCESS_TOKEN and RUN_SLOT == 2 and NOW.weekday() == 6:  # 日曜の夕方に週1回の実録。その日は会話型を休む
+        try:
+            weekly_done = post_weekly_report_to_threads()
+        except Exception as e:
+            print(f"実録投稿 エラー（{safe_status(e)}）")
+    if THREADS_ACCESS_TOKEN and RUN_SLOT == 2 and not weekly_done:  # 夜に見る人が多いので、夕方の回で出す
         try:
             post_talk_to_threads()
         except Exception as e:
             print(f"会話型投稿 エラー（{safe_status(e)}）")
+    if THREADS_ACCESS_TOKEN and os.getenv("THREADS_AUTO_REPLY", "on") != "off":  # リポジトリ変数 THREADS_AUTO_REPLY=off で止められる
+        try:
+            reply_to_threads_comments()
+        except Exception as e:
+            print(f"自動返信 エラー（{safe_status(e)}）")
 
 
 if __name__ == "__main__" and "--indexnow" in sys.argv:
