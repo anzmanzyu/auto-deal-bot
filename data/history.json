@@ -1,5 +1,16 @@
 [
   {
+    "date": "2026-11-14",
+    "products": [
+      "Logitech M240 Silent Bluetooth マウス",
+      "Anker Soundcore 2 ワイヤレススピーカー",
+      "Logitech ERGO M575SP トラックボールマウス",
+      "RELAX マルチレトロラジオ",
+      "モバイルバッテリー 10000mAh ケーブル内蔵",
+      "炭酸水 500ml×24本 (レモン・グレープフルーツ)"
+    ]
+  },
+  {
     "date": "2026-11-13",
     "products": [
       "JBL ワイヤレスイヤホン WAVE BEAM 2",
@@ -314,17 +325,6 @@
       "AIRROBO P20 薄型ロボット掃除機",
       "超軽量 大容量 モバイルバッテリー",
       "急速PD対応 USB-C ケーブル"
-    ]
-  },
-  {
-    "date": "2026-10-15",
-    "products": [
-      "アイオー RECBOX 6TB HDD",
-      "ASUS TUF Gaming A14 FA401UM",
-      "キオクシア EXCERIA PLUS G4 1TB SSD",
-      "MSI Prestige 13 AI+ A3M",
-      "七色LEDテープライト リモコン付",
-      "エレコム 10000mAh モバイルバッテリー"
     ]
   }
 ]
