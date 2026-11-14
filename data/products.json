@@ -370,23 +370,28 @@
     "price": 16800,
     "point": 10,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 16800,
+    "point": 10
    }
   ],
   "product_name": "WINTEN 15.6インチ モバイルモニター",
-  "category": "日用品・家電",
+  "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "テレワークに最適な大画面",
-  "deal_reason": "・デュアルディスプレイで作業効率UP\n・軽量設計で持ち運び楽々\n・10倍ポイントでお得に購入",
-  "score": 96,
+  "catch_copy": "どこでもデュアル画面",
+  "deal_reason": "・フルHDで映像が鮮やか\n・USB-Cで簡単接続\n・軽量設計で持ち運び楽々",
+  "score": 87,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/win10/cabinet/monitor/imgrc0112809238.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/win10/5523/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-11-02 16:42",
+  "last_seen": "2026-11-14 16:37",
   "item_code": "win10:10009635",
-  "review_count": 5186,
+  "review_count": 5188,
   "review_average": 4.61,
-  "last_checked": "2026-11-14 09:53",
-  "item_name": "WINTEN モバイルモニター 15.6インチ テレワーク/デュアルモニター/サブモニターに最適！ゲーミング 1080P FHD IPSパネル 軽量 薄型 非光沢 カバー付 ミニPC Switch iPhone Type-C/HDMI接続 [1年保証] WT-156H2-BS 5523"
+  "last_checked": "2026-11-14 16:37",
+  "item_name": "【期間限定P10倍】WINTEN モバイルモニター 15.6インチ テレワーク/デュアルモニター/サブモニターに最適！ゲーミング 1080P FHD IPSパネル 軽量 薄型 非光沢 カバー付 ミニPC Switch iPhone Type-C/HDMI接続 [1年保証] WT-156H2-BS 5523"
  },
  "37c70ef5a6": {
   "records": [
@@ -4010,6 +4015,12 @@
     "price": 18999,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 18999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "27インチ 144Hz ゲーミングモニター",
@@ -4022,7 +4033,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10249172/10249174/imgrc0100153303.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/yc-27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-11 16:45",
-  "last_checked": "2026-11-13 16:59",
+  "last_checked": "2026-11-14 16:37",
   "item_code": "qifeng:10000075",
   "item_name": "★180Hz/165Hz/144Hz /100Hz★ モニター 27インチ 1080P フルHD ゲーミングモニター 1ms応答 2mm狭額縁 8mm薄型 pcモニター パソコン モニター VA非光沢 角度調整 VESA スピーカー cocopar HG-27",
   "review_count": 914,
@@ -5083,19 +5094,24 @@
     "price": 2280,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 2280,
+    "point": 1
    }
   ],
-  "product_name": "64GB マイクロSDカード アダプター付き",
-  "category": "日用品・家電",
+  "product_name": "SanDisk 64GB microSDXC カード",
+  "category": "ガジェット",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "容量たっぷりで安心",
-  "deal_reason": "・64GBでたくさん保存\n・クラス10で高速転送\n・アダプター付で便利",
-  "score": 90,
+  "catch_copy": "高速保存で安心",
+  "deal_reason": "・UHS-Iで高速転送\n・耐衝撃・防水で安心\n・スマホやカメラに最適",
+  "score": 86,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/bonz/cabinet/03957598/micro64_main02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/bonz/10033097/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-10-30 23:04",
-  "last_checked": "2026-11-14 00:19",
+  "last_seen": "2026-11-14 16:37",
+  "last_checked": "2026-11-14 16:37",
   "item_code": "bonz:10033097",
   "item_name": "マイクロSDカード 64GB アダプター付き ノーブランド microSDXC class10 UHS-I",
   "review_count": 3086,
@@ -5271,22 +5287,27 @@
     "price": 2380,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 2380,
+    "point": 1
    }
   ],
-  "product_name": "スマホスタンド 2段 アーム型",
+  "product_name": "スマホスタンド 2段",
   "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "スマホを自由に置ける",
-  "deal_reason": "・2段調整で角度自由自在\n・しっかり固定で安定感抜群\n・コンパクトで持ち運び便利",
-  "score": 89,
+  "catch_copy": "手軽に角度調整",
+  "deal_reason": "・2段階で見やすさ調整\n・軽量で持ち運び便利\n・安定感があり倒れにくい",
+  "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ioroi/cabinet/08743967/08743968/xxkjzjcqths-01i.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ioroi/10000230/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "last_seen": "2026-11-08 23:16",
-  "last_checked": "2026-11-14 09:53",
+  "last_seen": "2026-11-14 16:37",
+  "last_checked": "2026-11-14 16:37",
   "item_code": "ioroi:10000230",
   "item_name": "スマホ スタンド 【楽天1位・4冠獲得】 スタンド 寝ながら スマホ スタンド アーム スマホスタンド スマホホルダー アームスタンド 2段調節 スマートフォンスタンド iphone スタンド ベッド xperia arrows galaxy android クリップ おしゃれ ベッド 携帯スタンド AKEIE",
-  "review_count": 2930,
+  "review_count": 2931,
   "review_average": 4.49
  },
  "cdc0803ae4": {
@@ -10021,6 +10042,12 @@
     "price": 99706,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 99706,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Plus 405 Combo",
@@ -10035,7 +10062,7 @@
   "review_count": 1428,
   "review_average": 4.45,
   "last_seen": "2026-10-19 10:54",
-  "last_checked": "2026-11-13 16:59",
+  "last_checked": "2026-11-14 16:37",
   "item_code": "irobotstore:10000557",
   "item_name": "【公式】 Roomba Plus 405 Combo + AutoWash ルンバ オンライン限定 アイロボット ロボット掃除機 2025 お掃除ロボット 水拭き 床拭き 拭き掃除 自動ゴミ収集 マッピング 高性能 モップ自動洗浄 全自動 iRobot 日本 国内 正規品 メーカー保証 延長保証 送料無料"
  },
@@ -11085,6 +11112,12 @@
     "price": 1528,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 1528,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "LDC 国産 500ml 炭酸水 24本セット",
@@ -11099,7 +11132,7 @@
   "review_count": 4173,
   "review_average": 4.76,
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-11-13 16:59",
+  "last_checked": "2026-11-14 16:37",
   "item_code": "jyonetsubatake:10000152",
   "item_name": "炭酸水 500ml 24本/48本 ペットボトル プレーン 24本入 1箱/2箱 LDC 国産 山形産 やさしい水の炭酸水 ケース まとめ買い ソーダ ハイボール 割材"
  },
@@ -11632,21 +11665,26 @@
     "price": 11880,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 11880,
+    "point": 1
    }
   ],
-  "product_name": "Shokz OpenMove 骨伝導イヤホン",
+  "product_name": "Shokz OpenMove 骨伝導ヘッドホン",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "骨伝導で安全リスニング",
-  "deal_reason": "・耳を塞がず周囲音も聞こえる・軽量デザインで持ち運び楽々・防水でアウトドアに最適",
-  "score": 88,
+  "catch_copy": "耳を塞がず音楽を",
+  "deal_reason": "・骨伝導で外音も聞き取りやすい\n・防水設計で汗や雨も安心\n・軽量で長時間装着OK",
+  "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/aftershokz-official/cabinet/09860676/imgrc0161244757.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/aftershokz-official/aft-sp-000054/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
-  "review_count": 974,
+  "review_count": 976,
   "review_average": 4.51,
-  "last_seen": "2026-11-09 16:59",
-  "last_checked": "2026-11-14 09:53",
+  "last_seen": "2026-11-14 16:37",
+  "last_checked": "2026-11-14 16:37",
   "item_code": "aftershokz-official:10000007",
   "item_name": "【公式】Shokz OpenMove ショックス 骨伝導イヤホン ワイヤレスヘッドホン 耳を塞がない ノイズキャンセリングイヤホン 防水 Bluetooth5.1 スレートグレー アルパインホワイト 24ヶ月保証 送料無料 公式ストア"
  },
@@ -18526,6 +18564,12 @@
     "price": 2249,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 2249,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN ワイヤレスマウス 6ボタン",
@@ -18542,7 +18586,7 @@
   "review_count": 1729,
   "review_average": 4.55,
   "last_seen": "2026-11-12 17:21",
-  "last_checked": "2026-11-13 16:59"
+  "last_checked": "2026-11-14 16:37"
  },
  "77be563202": {
   "records": [
@@ -20606,6 +20650,12 @@
     "t": "2026-11-13 16:59",
     "price": 2480,
     "point": 1
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 2480,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スマホスタンド 高さ調整型",
@@ -20622,7 +20672,7 @@
   "review_count": 13088,
   "review_average": 4.64,
   "last_seen": "2026-11-13 16:59",
-  "last_checked": "2026-11-13 16:59"
+  "last_checked": "2026-11-14 16:37"
  },
  "2fd68725da": {
   "records": [
@@ -25041,6 +25091,12 @@
     "t": "2026-11-13 16:59",
     "price": 1880,
     "point": 1
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 1880,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スマホ・タブレットスタンド 1,015円～",
@@ -25057,7 +25113,7 @@
   "review_count": 11577,
   "review_average": 4.64,
   "last_seen": "2026-11-13 16:59",
-  "last_checked": "2026-11-13 16:59"
+  "last_checked": "2026-11-14 16:37"
  },
  "7294e6dd83": {
   "records": [
@@ -25698,6 +25754,12 @@
     "price": 2632,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 2632,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SanDisk Ultra 32GB microSDカード",
@@ -25714,7 +25776,7 @@
   "review_count": 433,
   "review_average": 4.72,
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-13 16:59"
+  "last_checked": "2026-11-14 16:37"
  },
  "eac1f21429": {
   "records": [
@@ -25829,23 +25891,28 @@
     "price": 4980,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 4980,
+    "point": 1
    }
   ],
   "product_name": "Mi Tune05 ワイヤレスイヤホン",
   "category": "ガジェット",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "軽快なサウンドで毎日快適",
-  "deal_reason": "・低遅延で動画もスムーズ\n・装着感が軽く長時間使用可\n・防滴設計で雨でも安心",
-  "score": 92,
+  "catch_copy": "軽快なサウンドが日常に",
+  "deal_reason": "・装着感が抜群で長時間快適\n・ANCで雑音をしっかりカット\n・Bluetooth5.4で安定接続",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/milink-inc/cabinet/sn/tune05_snwh.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/milink-inc/qcy-t5/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "milink-inc:10000254",
   "item_name": "【スポーツ型 耳掛け式 】Mi Tune05 ワイヤレスイヤホン bluetooth 5.4 イヤホン 耳掛け ENC ノイズキャンセリング 完全 ワイヤレス ブルートゥース イヤホン 耳かけ 落下防止 両耳 片耳 高音質 マイク付き 長時間 通話 防水 スポーツ ランニング iPhone Android",
   "review_count": 1064,
   "review_average": 4.37,
-  "last_seen": "2026-11-08 08:38",
-  "last_checked": "2026-11-14 09:53"
+  "last_seen": "2026-11-14 16:37",
+  "last_checked": "2026-11-14 16:37"
  },
  "0c72811fce": {
   "records": [
@@ -28937,6 +29004,12 @@
     "price": 23980,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 23980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "AOC タブレット M10 10インチ",
@@ -28953,7 +29026,7 @@
   "review_count": 1317,
   "review_average": 4.57,
   "last_seen": "2026-11-06 09:57",
-  "last_checked": "2026-11-13 16:59"
+  "last_checked": "2026-11-14 16:37"
  },
  "6b031b86d7": {
   "records": [
@@ -30063,23 +30136,28 @@
     "price": 7700,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 7700,
+    "point": 1
    }
   ],
-  "product_name": "MORELLATO レザー時計ベルト",
+  "product_name": "Morellato レザー時計ベルト",
   "category": "日用品・家電",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "高級感が手首に映える",
-  "deal_reason": "・本革素材で上質な手触り\n・20mm・22mm対応で汎用性◎\n・耐久性が高く長持ち",
-  "score": 88,
+  "catch_copy": "腕元に上質な風合い",
+  "deal_reason": "・本革で高級感が長持ち\n・20mmサイズで多くの時計に対応\n・簡単交換でスタイル変化",
+  "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/mano-a-mano/cabinet/thum05/x2269480_t01_02.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/mano-a-mano/x2269480/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "mano-a-mano:10000029",
   "item_name": "腕時計 ベルト 20mm 時計ベルト 22mm レザー 革ベルト MORELLATO モレラート BOLLE ボーレ 時計 バンド 19mm 時計バンド 18mm 替えベルト 12mm 13mm 14mm 15mm 16mm 17mm 21mm 24mm 26mm 28mm 交換ベルト 本革 牛革 交換用工具 スマートウォッチ レディース メンズ x2269480",
-  "review_count": 4064,
+  "review_count": 4065,
   "review_average": 4.61,
-  "last_seen": "2026-11-08 08:38",
-  "last_checked": "2026-11-14 00:19"
+  "last_seen": "2026-11-14 16:37",
+  "last_checked": "2026-11-14 16:37"
  },
  "39040f9d43": {
   "records": [
@@ -33011,6 +33089,12 @@
     "price": 1360,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-14 16:37",
+    "price": 1360,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミネラルウォーター 2L×9本",
@@ -33027,7 +33111,7 @@
   "review_count": 25,
   "review_average": 4.6,
   "last_seen": "2026-11-11 16:45",
-  "last_checked": "2026-11-13 16:59"
+  "last_checked": "2026-11-14 16:37"
  },
  "e38fbdb416": {
   "records": [
