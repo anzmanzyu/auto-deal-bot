@@ -1,5 +1,16 @@
 [
   {
+    "date": "2026-11-15",
+    "products": [
+      "Anker Soundcore P31i 完全ワイヤレスイヤホン",
+      "EDIFIER W820NB PLUS Gen2 ワイヤレスヘッドホン",
+      "ポータブルSSD 512GB USB3.2",
+      "Logitech K295GP ワイヤレスキーボード",
+      "オシャモバ 5000mAh モバイルバッテリー",
+      "RoiCiel 磁気USB充電ケーブル"
+    ]
+  },
+  {
     "date": "2026-11-14",
     "products": [
       "Anker Prime Wall Charger (67W, 3 ports, GaN)",
@@ -313,17 +324,6 @@
       "JBL WAVE BEAM 2 ワイヤレスイヤホン",
       "GaN搭載 急速充電器 Type-Cケーブル付き",
       "アイリスオーヤマ 強炭酸水 500ml 24本"
-    ]
-  },
-  {
-    "date": "2026-10-16",
-    "products": [
-      "楽天1位 ワイヤレスイヤホン Bluetooth5.4",
-      "WINTEN 15.6インチ モバイルモニター",
-      "Primo レディース スマートウォッチ",
-      "AIRROBO P20 薄型ロボット掃除機",
-      "超軽量 大容量 モバイルバッテリー",
-      "急速PD対応 USB-C ケーブル"
     ]
   }
 ]
