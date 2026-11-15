@@ -381,6 +381,12 @@
     "t": "2026-11-14 16:37",
     "price": 16800,
     "point": 10
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 16800,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "WINTEN 15.6インチ モバイルモニター",
@@ -396,7 +402,7 @@
   "item_code": "win10:10009635",
   "review_count": 5188,
   "review_average": 4.61,
-  "last_checked": "2026-11-14 16:37",
+  "last_checked": "2026-11-15 23:42",
   "item_name": "【期間限定P10倍】WINTEN モバイルモニター 15.6インチ テレワーク/デュアルモニター/サブモニターに最適！ゲーミング 1080P FHD IPSパネル 軽量 薄型 非光沢 カバー付 ミニPC Switch iPhone Type-C/HDMI接続 [1年保証] WT-156H2-BS 5523"
  },
  "37c70ef5a6": {
@@ -4141,6 +4147,12 @@
     "price": 18999,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 16999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "27インチ 144Hz ゲーミングモニター",
@@ -4153,7 +4165,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10249172/10249174/imgrc0100153303.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/yc-27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-11 16:45",
-  "last_checked": "2026-11-14 16:37",
+  "last_checked": "2026-11-15 23:42",
   "item_code": "qifeng:10000075",
   "item_name": "★180Hz/165Hz/144Hz /100Hz★ モニター 27インチ 1080P フルHD ゲーミングモニター 1ms応答 2mm狭額縁 8mm薄型 pcモニター パソコン モニター VA非光沢 角度調整 VESA スピーカー cocopar HG-27",
   "review_count": 914,
@@ -9813,6 +9825,11 @@
     "t": "2026-11-14 09:53",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "Anker USB-C ケーブル 1m 2本セット",
@@ -9826,7 +9843,7 @@
   "item_url": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-11-14 09:53",
+  "last_seen": "2026-11-15 23:42",
   "item_code": null,
   "item_name": null
  },
@@ -10351,6 +10368,12 @@
     "price": 99706,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 99706,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Plus 405 Combo",
@@ -10365,7 +10388,7 @@
   "review_count": 1428,
   "review_average": 4.45,
   "last_seen": "2026-10-19 10:54",
-  "last_checked": "2026-11-14 16:37",
+  "last_checked": "2026-11-15 23:42",
   "item_code": "irobotstore:10000557",
   "item_name": "【公式】 Roomba Plus 405 Combo + AutoWash ルンバ オンライン限定 アイロボット ロボット掃除機 2025 お掃除ロボット 水拭き 床拭き 拭き掃除 自動ゴミ収集 マッピング 高性能 モップ自動洗浄 全自動 iRobot 日本 国内 正規品 メーカー保証 延長保証 送料無料"
  },
@@ -11451,6 +11474,12 @@
     "price": 1528,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 1528,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "LDC 国産 500ml 炭酸水 24本セット",
@@ -11465,7 +11494,7 @@
   "review_count": 4173,
   "review_average": 4.76,
   "last_seen": "2026-10-23 21:35",
-  "last_checked": "2026-11-14 16:37",
+  "last_checked": "2026-11-15 23:42",
   "item_code": "jyonetsubatake:10000152",
   "item_name": "炭酸水 500ml 24本/48本 ペットボトル プレーン 24本入 1箱/2箱 LDC 国産 山形産 やさしい水の炭酸水 ケース まとめ買い ソーダ ハイボール 割材"
  },
@@ -19147,6 +19176,12 @@
     "price": 2249,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 2249,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN ワイヤレスマウス 6ボタン",
@@ -19163,7 +19198,7 @@
   "review_count": 1729,
   "review_average": 4.55,
   "last_seen": "2026-11-12 17:21",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "77be563202": {
   "records": [
@@ -20026,23 +20061,28 @@
     "price": 7480,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 7480,
+    "point": 1
    }
   ],
-  "product_name": "バッファロー WiFi6 IPv6 ルーター",
+  "product_name": "バッファロー Wi‑Fi6 ルーター (IPv6対応)",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "IPv6対応で未来型",
-  "deal_reason": "・IPv6で高速通信\n・1年保証付きで安心",
-  "score": 88,
+  "catch_copy": "高速Wi‑Fiで快適ネット",
+  "deal_reason": "・家中どこでも安定接続\n・設定がシンプルで初心者向き\n・3年保証で長く安心",
+  "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/pcshop-best/cabinet/compass1731286828.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/pcshop-best/002-0001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "pcshop-best:10000139",
   "item_name": "【最短即日発送】＼3年保証＆ランキング1位／ バッファロー ルーター wifi6 IPv6 無線LAN WiFi 無線LANルーター 無線親機 無線ルーター 楽天ひかり ソフトバンク光 二階建て BUFFALO Wi-Fi WiFiルーター WSR-3000AX4L WSR-3000AX4P_DBK WSR3600BE4P-BK wifi6対応 Wi-Fi7",
-  "review_count": 1884,
+  "review_count": 1908,
   "review_average": 4.66,
-  "last_seen": "2026-11-03 16:56",
-  "last_checked": "2026-11-15 16:53"
+  "last_seen": "2026-11-15 23:42",
+  "last_checked": "2026-11-15 23:42"
  },
  "0ffab5232f": {
   "records": [
@@ -21315,6 +21355,12 @@
     "price": 2480,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 2480,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スマホスタンド 高さ調整型",
@@ -21331,7 +21377,7 @@
   "review_count": 13088,
   "review_average": 4.64,
   "last_seen": "2026-11-13 16:59",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "2fd68725da": {
   "records": [
@@ -24454,6 +24500,11 @@
     "t": "2026-11-14 09:53",
     "price": null,
     "point": null
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": null,
+    "point": null
    }
   ],
   "product_name": "パナソニック エボルタネオ 単3形 8本パック",
@@ -24469,7 +24520,7 @@
   "item_name": null,
   "review_count": null,
   "review_average": null,
-  "last_seen": "2026-11-14 09:53"
+  "last_seen": "2026-11-15 23:42"
  },
  "d59b6ae38f": {
   "records": [
@@ -25918,6 +25969,12 @@
     "price": 1880,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 1880,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スマホ・タブレットスタンド 1,015円～",
@@ -25930,11 +25987,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/honest-online/cabinet/08451362/10212611/main.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/honest-online/usams-smp-stand-s3/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "honest-online:10000774",
-  "item_name": "【46％OFFクーポンで1,015円～】【レビュー数10,000件突破！楽天1位・1年保証】 スマホスタンド タブレットスタンド スマホ スタンド 折りたたみ 360°回転 スマートフォンスタンド 携帯スタンド スマホホルダー iPhone iPad スタンド 卓上 高さ調整",
+  "item_name": "【5のつく日、店内全品50％OFF！】【レビュー数10,000件突破！楽天1位・1年保証】 スマホスタンド タブレットスタンド スマホ スタンド 折りたたみ 360°回転 スマートフォンスタンド 携帯スタンド スマホホルダー iPhone iPad スタンド 卓上 高さ調整",
   "review_count": 11577,
   "review_average": 4.64,
   "last_seen": "2026-11-13 16:59",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "7294e6dd83": {
   "records": [
@@ -26605,6 +26662,12 @@
     "price": 2632,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 2620,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SanDisk Ultra 32GB microSDカード",
@@ -26621,7 +26684,7 @@
   "review_count": 433,
   "review_average": 4.72,
   "last_seen": "2026-11-10 17:26",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "eac1f21429": {
   "records": [
@@ -26741,6 +26804,12 @@
     "t": "2026-11-14 16:37",
     "price": 4980,
     "point": 1
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 4980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Mi Tune05 ワイヤレスイヤホン",
@@ -26757,7 +26826,7 @@
   "review_count": 1064,
   "review_average": 4.37,
   "last_seen": "2026-11-14 16:37",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "0c72811fce": {
   "records": [
@@ -30003,6 +30072,12 @@
     "price": 23980,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 23980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "AOC タブレット M10 10インチ",
@@ -30019,7 +30094,7 @@
   "review_count": 1317,
   "review_average": 4.57,
   "last_seen": "2026-11-06 09:57",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "6b031b86d7": {
   "records": [
@@ -31194,6 +31269,12 @@
     "t": "2026-11-14 16:37",
     "price": 7700,
     "point": 1
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 7700,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Morellato レザー時計ベルト",
@@ -31210,7 +31291,7 @@
   "review_count": 4065,
   "review_average": 4.61,
   "last_seen": "2026-11-14 16:37",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "39040f9d43": {
   "records": [
@@ -31769,23 +31850,28 @@
     "price": 19999,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 19999,
+    "point": 1
    }
   ],
   "product_name": "18.5インチ 120Hz モバイルモニター",
-  "category": "日用品・家電",
+  "category": "ガジェット",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "外出先でも滑らか映像",
-  "deal_reason": "・軽量で持ち運び楽々\n・120Hzで映像がスムーズ\n・フルHDで鮮やか表示",
-  "score": 88,
+  "catch_copy": "外出先でも広画面体験",
+  "deal_reason": "・フルHDで鮮やか映像\n・120Hzで滑らか操作\n・軽量設計で持ち運び楽々",
+  "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/puchirabbit/cabinet/monitor/185/185.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/puchirabbit/1-monitor-e-185/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "puchirabbit:10000070",
   "item_name": "【楽天1位 120Hz】モバイルモニター 18.5インチ ゲーミングモニター フルHD 120Hz 高リフレッシュレート 100%sRGB 非光沢IPS パネル スタンド一体型 Type-C対応 miniHDMI VESA対応 3年保証 モニター サブディスプレイ テレワーク EVICIV",
   "review_count": 284,
   "review_average": 4.56,
-  "last_seen": "2026-11-09 08:43",
-  "last_checked": "2026-11-15 08:55"
+  "last_seen": "2026-11-15 23:42",
+  "last_checked": "2026-11-15 23:42"
  },
  "a638c697ba": {
   "records": [
@@ -34405,6 +34491,12 @@
     "price": 1360,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-15 23:42",
+    "price": 1360,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミネラルウォーター 2L×9本",
@@ -34421,7 +34513,7 @@
   "review_count": 25,
   "review_average": 4.6,
   "last_seen": "2026-11-11 16:45",
-  "last_checked": "2026-11-14 16:37"
+  "last_checked": "2026-11-15 23:42"
  },
  "e38fbdb416": {
   "records": [
@@ -34696,5 +34788,52 @@
   "review_count": 0,
   "review_average": 0,
   "last_seen": "2026-11-15 16:53"
+ },
+ "7be684c1e2": {
+  "records": [
+   {
+    "t": "2026-11-15 23:42",
+    "price": 19899,
+    "point": 1
+   }
+  ],
+  "product_name": "27インチ 180Hz ゲーミングモニター",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "超高速リフレッシュで快適FPS",
+  "deal_reason": "・180Hzで残像感ゼロ\n・1ms応答で瞬時反応\n・VAパネルで高コントラスト",
+  "score": 91,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kksmart/cabinet/10767989/imgrc0130211090.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/kksmart/hg-27h/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "kksmart:10000011",
+  "item_name": "ゲーミングモニター 27インチ【★180Hz/ 165Hz/ 144Hz対応】FHD 1920×1080 VA【1ms応答 2mm狭額縁 8mm薄型】pcモニター パソコンモニター VESA FreeSync/HDR/チルト/イヤホン/スピーカー内蔵 Switch2対応 kksmart HG-27H",
+  "review_count": 160,
+  "review_average": 4.83,
+  "last_seen": "2026-11-15 23:42",
+  "last_checked": "2026-11-15 23:42"
+ },
+ "d62f0464fb": {
+  "records": [
+   {
+    "t": "2026-11-15 23:42",
+    "price": null,
+    "point": null
+   }
+  ],
+  "product_name": "Logitech K380 Bluetooth キーボード",
+  "category": "ガジェット",
+  "slot": "main",
+  "badge": "🔥 本日の目玉",
+  "catch_copy": "軽量で持ち運び楽々",
+  "deal_reason": "・コンパクトサイズでどこでも使用\n・マルチデバイスで切替簡単\n・静音キーで快適タイピング",
+  "score": 88,
+  "image_url": "",
+  "item_url": "",
+  "item_code": "",
+  "item_name": "",
+  "review_count": 0,
+  "review_average": 0,
+  "last_seen": "2026-11-15 23:42"
  }
 }
