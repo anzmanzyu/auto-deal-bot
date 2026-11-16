@@ -1,5 +1,15 @@
 [
   {
+    "date": "2026-11-17",
+    "products": [
+      "Anker Prime Wall Charger (67W, 3 ports, GaN)",
+      "ロジクール ワイヤレスマウス トラックボール M575S",
+      "Anker Nano Power Bank 5000mAh",
+      "Anker USB-C ケーブル 1m 2本セット",
+      "パナソニック エボルタネオ 単3形 8本パック"
+    ]
+  },
+  {
     "date": "2026-11-16",
     "products": [
       "Logitech M650 ワイヤレスマウス",
@@ -315,16 +325,6 @@
       "ワイヤレスマウスセット",
       "単3アルカリ乾電池 40本",
       "QISI 20W USB-C 2ポート充電器"
-    ]
-  },
-  {
-    "date": "2026-10-18",
-    "products": [
-      "2K 260Hz ゲーミングモニター 27インチ",
-      "ドライブレコーダー 前後2カメラ 4K",
-      "PowerArQ Solar 120W 折り畳み",
-      "microSDカード 64GB アダプター付き",
-      "スマホスタンド 2段式"
     ]
   }
 ]
