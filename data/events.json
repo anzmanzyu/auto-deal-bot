@@ -22,5 +22,21 @@
     "end": "2026-11-25T01:59:59+09:00",
     "note": "ショップ買いまわりでポイント倍率アップ。事前エントリーが必要。",
     "url": "https://www.rakuten.co.jp/"
+  },
+  {
+    "name": "Amazon ブラックフライデー 先行セール",
+    "store": "amazon",
+    "start": "2026-11-27T00:00:00+09:00",
+    "end": "2026-11-29T23:59:59+09:00",
+    "note": "本セール前に一部の商品が先行して値下げ。",
+    "url": "https://www.amazon.co.jp/gp/goldbox"
+  },
+  {
+    "name": "Amazon ブラックフライデー",
+    "store": "amazon",
+    "start": "2026-11-30T00:00:00+09:00",
+    "end": "2026-12-07T23:59:59+09:00",
+    "note": "プライム会員以外も参加できる年末の大型セール。",
+    "url": "https://www.amazon.co.jp/gp/goldbox"
   }
 ]
