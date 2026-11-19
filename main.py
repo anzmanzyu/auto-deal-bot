@@ -3466,6 +3466,113 @@ def post_bf_promo_to_threads():
             print(f"BF宣伝 1コメ投稿エラー（{threads_error(e)}）")
 
 
+REPLY_STATE_PATH = "data/reply_state.json"  # コメントへの自動返信の記録（返信済みのコメントID・日ごとの件数）
+REPLY_MAX_PER_DAY = 3  # 定型の返信を出しすぎるとスパム扱いされやすいので、1日この件数まで
+REPLY_LOOKBACK_HOURS = 72  # この時間内に付いたコメントだけに返信する
+REPLY_TEMPLATES = (  # 宣伝・リンクは入れない
+    "コメントありがとうございます！😊 励みになります。",
+    "ありがとうございます🙌 これからも毎日チェックして発信していきます！",
+    "コメント嬉しいです、ありがとうございます！またのぞいてもらえたら嬉しいです😊",
+    "ありがとうございます！気になる商品があったら、いつでも気軽にコメントください🙏",
+    "見ていただいてありがとうございます✨ 参考になったなら嬉しいです！",
+)
+
+
+def threads_get(path, params):
+    res = requests.get(f"https://graph.threads.net/v1.0/{path}", params={**params, "access_token": THREADS_ACCESS_TOKEN}, timeout=20)
+    res.raise_for_status()
+    return res.json()
+
+
+def reply_to_threads_comments():
+    """自分の投稿に付いたコメントに、宣伝なしの短いお礼を返す（1日 REPLY_MAX_PER_DAY 件まで）。
+    質問らしいコメントは定型文で返すと失礼なので、返信せずDiscordで運営者に知らせる"""
+    try:
+        with open(REPLY_STATE_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    if state.get("disabled"):
+        print(f"自動返信: 権限が無いため停止中です（{state.get('reason', '')}）。{REPLY_STATE_PATH} を消すと再開します。")
+        return
+    if state.get("date") != TODAY_DATE:
+        state.update(date=TODAY_DATE, count=0)
+    done = set(state.get("handled", []))
+    if state["count"] >= REPLY_MAX_PER_DAY:
+        print("自動返信: 今日の上限に達しているためスキップします。")
+        return
+    try:
+        me = threads_get("me", {"fields": "id,username"})
+        posts = threads_get("me/threads", {"fields": "id,timestamp", "limit": 25}).get("data", [])
+    except requests.HTTPError as e:
+        if is_permission_error(e):
+            state.update(disabled=True, reason=threads_error(e))
+            with open(REPLY_STATE_PATH, "w", encoding="utf-8") as f:
+                json.dump(state, f, ensure_ascii=False, indent=1)
+            alert_discord("Threadsのコメント自動返信に必要な権限（threads_read_replies）がトークンにありません。"
+                          "トークンを取り直すまで自動返信は止めます。")
+            return
+        raise
+    since = datetime.now(timezone.utc) - timedelta(hours=REPLY_LOOKBACK_HOURS)
+
+    def ts(item):
+        return datetime.strptime(item["timestamp"], "%Y-%m-%dT%H:%M:%S%z")
+
+    comments, answered = [], set()
+    for post in posts:
+        if ts(post) < since - timedelta(days=4):  # 古い投稿にはもうコメントが付きにくい
+            break
+        try:
+            conv = threads_get(f"{post['id']}/conversation", {"fields": "id,text,username,timestamp,replied_to", "limit": 50}).get("data", [])
+        except requests.HTTPError as e:
+            print(f"自動返信: コメント取得エラー（{threads_error(e)}）")
+            continue
+        for item in conv:
+            parent = (item.get("replied_to") or {}).get("id")
+            if item.get("username") == me.get("username"):
+                answered.add(parent)  # 自分（手動の返信も含む）が返したコメントには返さない
+            elif parent == post["id"] and ts(item) >= since:
+                comments.append(item)
+    questions = []
+    templates = list(REPLY_TEMPLATES)
+    start = NOW.toordinal() * 3 + RUN_SLOT
+    for c in sorted(comments, key=ts):
+        if c["id"] in done or c["id"] in answered:
+            continue
+        text = c.get("text") or ""
+        if re.search(r"https?://|www\.", text):  # リンク付きは宣伝・スパムが多いので返さない
+            done.add(c["id"])
+            continue
+        if re.search(r"[?？]|ですか|ますか|どこ|どう|いくら|教えて", text):
+            questions.append(c)
+            done.add(c["id"])
+            continue
+        if state["count"] >= REPLY_MAX_PER_DAY:
+            break
+        reply = templates[(start + state["count"]) % len(templates)]
+        try:
+            threads_publish(threads_base(), {"media_type": "TEXT", "text": reply, "reply_to_id": c["id"]})
+        except requests.HTTPError as e:
+            print(f"自動返信 エラー（{threads_error(e)}）")
+            break
+        done.add(c["id"])
+        state["count"] += 1
+        print(f"Threadsのコメントに返信しました（{state['count']}/{REPLY_MAX_PER_DAY}件目）。")
+        time.sleep(30)  # 連続で返信しない
+    if questions and DISCORD_WEBHOOK_URL:
+        lines = ["💬 **Threadsに質問っぽいコメントが付いています**（自動では返信していません。手で返してください）"]
+        for q in questions[:5]:
+            lines.append(f"・@{q.get('username', '')}「{(q.get('text') or '')[:80]}」")
+        try:
+            requests.post(DISCORD_WEBHOOK_URL, json={"content": "\n".join(lines)[:1990]}, timeout=10)
+        except Exception as e:
+            print(f"Discord通知エラー: {e}")
+    state["handled"] = sorted(done)[-500:]
+    with open(REPLY_STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=1)
+    print(f"自動返信: 新しいコメント {len(comments)}件、質問の通知 {len(questions)}件、今日の返信 {state['count']}件。")
+
+
 def post_to_sns(deals):
     """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
     if os.getenv("SKIP_SNS") == "true":
@@ -3506,6 +3613,11 @@ def post_to_sns(deals):
             post_talk_to_threads()
         except Exception as e:
             print(f"会話型投稿 エラー（{safe_status(e)}）")
+    if THREADS_ACCESS_TOKEN:  # 毎回見て、1日の上限まで返す
+        try:
+            reply_to_threads_comments()
+        except Exception as e:
+            print(f"自動返信 エラー（{safe_status(e)}）")
 
 
 if __name__ == "__main__" and "--indexnow" in sys.argv:
