@@ -2301,6 +2301,7 @@ SALE_GUIDES = [
             ("どんなガジェットが安くなりやすいですか？", "Amazonデバイス（Fire TV Stick・Echo・Kindleなど）、Ankerなどの充電器・モバイルバッテリー、ワイヤレスイヤホン、モニターなどが値下がりしやすい定番です。"),
         ],
         "source": ("ケータイ Watch（2026年11月19日）", "https://k-tai.watch.impress.co.jp/docs/news/2157793.html"),
+        "blog": ("ブラックフライデーでスマホは買うべき？Amazonとキャリアの値引きを現役店長が比較", "https://namiki-log.com/amazon-black-friday-smartphone-2026/"),  # 運営者ブログの関連記事（任意）
     },
     {
         "slug": "rakuten-black-friday", "name": "楽天ブラックフライデー", "year": 2026, "until": "2026-11-26",
@@ -2713,6 +2714,12 @@ def render_sale_page(guide, groups, top_deals):
     today = "".join(f'<li><a href="{root}index.html#deal-{n}" class="hover:text-orange-600 hover:underline underline-offset-2">{html.escape(d["product_name"])}</a></li>'
                     for n, d in enumerate(top_deals[:4], 1))
     src_name, src_url = guide["source"]
+    blog = ""
+    if guide.get("blog"):
+        blog_title, blog_url = guide["blog"]
+        blog = (f'<section class="card p-5 md:p-7"><h2 class="text-lg md:text-xl font-extrabold text-ink">スマホを買うなら</h2>'
+                f'<p class="text-[15px] text-ink-soft leading-relaxed mt-2">iPhoneなどのスマホは、キャリアの値引きと比べると答えが変わります。運営者（携帯ショップ店長）のブログで詳しく比べています。</p>'
+                f'<p class="mt-3"><a href="{html.escape(blog_url)}" class="font-bold text-orange-600 underline underline-offset-2">{html.escape(blog_title)}</a></p></section>')
     return f"""{head_html(title, description, page_url, root, "article", ld_json)}
     {simple_header_html(root)}
     <main class="max-w-3xl mx-auto px-4 pt-6 pb-16 space-y-6">
@@ -2727,6 +2734,7 @@ def render_sale_page(guide, groups, top_deals):
             <table class="w-full text-[15px] mt-3"><tbody>{date_rows}</tbody></table>
             <p class="text-xs text-ink-soft mt-3">過去の日程の出典: <a href="{html.escape(src_url)}" target="_blank" rel="noopener" class="underline">{html.escape(src_name)}</a></p>
         </section>
+        {blog}
         <section>
             <h2 class="text-lg md:text-xl font-extrabold text-ink mb-3">セール前にやっておくこと</h2>
             <ol class="space-y-3">{prep}</ol>
