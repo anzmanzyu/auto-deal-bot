@@ -3392,6 +3392,80 @@ def post_talk_to_threads():
             print(f"会話型投稿 1コメ投稿エラー（{threads_error(e)}）")
 
 
+BF_PROMO_STATE_PATH = "data/bf_promo_state.json"  # BF宣伝を最後に出した日
+BF_BLOG_URL = "https://namiki-log.com/amazon-black-friday-smartphone-2026/"
+BF_BLOG_IMAGE = "https://namiki-log.com/wp-content/uploads/2026/11/black-friday-smartphone-2026-eyecatch.jpg"
+BF_SALE_URL = f"{SITE_URL}sale/black-friday.html"
+# ブラックフライデー期間の宣伝（開始日, 終了日, 文面の候補, 1コメのURL）。日替わりで文面を回す
+BF_PROMO = [
+    ("2026-11-20", "2026-11-26", [
+        "【PR】Amazonブラックフライデーは11月27日(金)から。去年より6日遅い日程です📅\n\nスマホをBFまで待つべきか、キャリアの値引きと比べて携帯ショップ店長が整理しました。\niPhoneはポイントアップの対象外なので要注意です。",
+        "【PR】楽天ブラックフライデーは11/25(水)1:59まで、Amazonは11/27(金)から🛒\n\n今年は楽天が先、Amazonがあと。\nスマホの買い替えはどっちで、いつ買うのがいいか、店長目線でまとめました。",
+        "【PR】ブラックフライデーまでスマホの買い替え、待ったほうが安い？🤔\n\nAmazonの値引きと、キャリアの乗り換え割引を携帯ショップ店長が比べました。\nAmazonは11/27(金)から先行セールです。",
+    ], BF_BLOG_URL),
+    ("2026-11-27", "2026-11-29", [
+        "【PR】Amazonブラックフライデーの先行セールが始まりました🔥（11/29まで）\n\n充電器・イヤホン・モバイルバッテリーなど、いつもの価格と比べて本当に安いかを毎日チェックしています。",
+        "【PR】Amazonブラックフライデー先行セール開催中（11/29(日)まで）\n\nスマホ本体を買うなら、キャリアの値引きとも比べてから。携帯ショップ店長が比べた記事はこちら👇",
+    ], BF_SALE_URL),
+    ("2026-11-30", "2026-12-07", [
+        "【PR】Amazonブラックフライデー本セール開催中🛒（12/7(月)23:59まで）\n\nガジェットの値下げを、いつもの価格と比べて毎日3回まとめています。",
+        "【PR】Amazonブラックフライデーは12/7(月)まで。\n\nスマホはBFで買うべき？キャリアの値引きと比べた携帯ショップ店長の記事です。iPhoneはポイントアップ対象外なので気をつけて。",
+    ], BF_SALE_URL),
+]
+
+
+def bf_promo_today():
+    """今日のBF宣伝の (本文, 1コメのURL)。期間外なら None"""
+    for start, end, texts, link in BF_PROMO:
+        if start <= TODAY_DATE <= end:
+            text = texts[NOW.toordinal() % len(texts)]
+            if "記事" in text:  # 記事を案内する文面はブログへ
+                link = BF_BLOG_URL
+            return text, link
+    return None
+
+
+def post_bf_promo_to_threads():
+    """ブラックフライデー期間中、1日1回（朝の更新で）特集ページか店長ブログの記事を宣伝する"""
+    made = bf_promo_today()
+    if not made:
+        return
+    try:
+        with open(BF_PROMO_STATE_PATH, encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    if state.get("last_date") == TODAY_DATE:
+        print("BF宣伝: 今日は投稿済みのためスキップします。")
+        return
+    text, link = made
+    reply_link = threads_reply_link()
+    url = threads_url(link, "bf")
+    text += "\n\n👇 1コメのリンクから" if reply_link else f"\n\n{url}"
+    image = BF_BLOG_IMAGE if link == BF_BLOG_URL else ""
+    base = threads_base()
+    attempts = ([{"media_type": "IMAGE", "image_url": image, "topic_tag": "ブラックフライデー"}] if image else []) + [
+        {"media_type": "TEXT", "topic_tag": "ブラックフライデー"}, {"media_type": "TEXT"}]
+    post_id = ""
+    for extra in attempts:
+        try:
+            post_id = threads_publish(base, {"text": text[:480], **extra})
+            break
+        except requests.HTTPError as e:
+            print(f"BF宣伝 {extra['media_type']} 投稿エラー（{threads_error(e)}）")
+    if not post_id:
+        raise RuntimeError("BF宣伝に失敗しました")
+    print("ThreadsにBFの宣伝を投稿しました。")
+    with open(BF_PROMO_STATE_PATH, "w", encoding="utf-8") as f:
+        json.dump({"last_date": TODAY_DATE}, f, ensure_ascii=False, indent=1)
+    if reply_link:
+        time.sleep(5)
+        try:
+            threads_publish(base, {"media_type": "TEXT", "text": f"👇 詳しくはこちら\n{url}", "reply_to_id": post_id})
+        except requests.HTTPError as e:
+            print(f"BF宣伝 1コメ投稿エラー（{threads_error(e)}）")
+
+
 def post_to_sns(deals):
     """設定済みのSNSにだけ1件投稿する。失敗してもサイト更新には影響させない"""
     if os.getenv("SKIP_SNS") == "true":
@@ -3417,6 +3491,11 @@ def post_to_sns(deals):
             func(deal)
         except Exception as e:
             print(f"{name} 投稿エラー（{safe_status(e)}）")
+    if THREADS_ACCESS_TOKEN:  # 朝の回で出し、朝の回が飛んだ日は次の回に回す（1日1回）
+        try:
+            post_bf_promo_to_threads()
+        except Exception as e:
+            print(f"BF宣伝 エラー（{safe_status(e)}）")
     if THREADS_ACCESS_TOKEN and RUN_SLOT >= 1:  # 昼の回で紹介し、昼の回が飛んだ日は夕方に回す
         try:
             post_blog_to_threads()
