@@ -3469,7 +3469,7 @@ def post_bf_promo_to_threads():
 REPLY_STATE_PATH = "data/reply_state.json"  # コメントへの自動返信の記録（返信済みのコメントID・日ごとの件数）
 REPLY_MAX_PER_DAY = 3  # 定型の返信を出しすぎるとスパム扱いされやすいので、1日この件数まで
 REPLY_LOOKBACK_HOURS = 72  # この時間内に付いたコメントだけに返信する
-REPLY_TEMPLATES = (  # 宣伝・リンクは入れない
+REPLY_TEMPLATES = (  # AIが使えないときの定型のお礼。宣伝・リンクは入れない
     "コメントありがとうございます！😊 励みになります。",
     "ありがとうございます🙌 これからも毎日チェックして発信していきます！",
     "コメント嬉しいです、ありがとうございます！またのぞいてもらえたら嬉しいです😊",
@@ -3484,9 +3484,65 @@ def threads_get(path, params):
     return res.json()
 
 
+def ai_text(prompt):
+    """短い文章を1つ作る。Gemini → Groq の順に試し、どちらも使えなければ空文字"""
+    if GEMINI_API_KEY:
+        try:
+            res = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}",
+                                json={"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"temperature": 0.7}}, timeout=30)
+            res.raise_for_status()
+            return res.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except Exception as e:
+            print(f"返信文: Gemini エラー（{safe_status(e)}）")
+    if GROQ_API_KEY:
+        headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
+        for model in dict.fromkeys((GROQ_MODEL, "llama-3.3-70b-versatile")):
+            try:
+                res = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, timeout=60,
+                                    json={"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.7})
+                res.raise_for_status()
+                return res.json()["choices"][0]["message"]["content"].strip()
+            except Exception as e:
+                print(f"返信文: Groq {model} エラー（{safe_status(e)}）")
+    return ""
+
+
+def reply_prompt(post_text, comment):
+    return f"""あなたはThreadsでガジェット特価情報と、スマホの買い方の話を発信している携帯ショップ店長「Namiki」本人です。自分の投稿に付いたコメントへの返信を1つ書いてください。
+
+# 自分の投稿
+{post_text[:300]}
+
+# もらったコメント
+{comment[:300]}
+
+# ルール
+- 友だちに返すような、くだけすぎない丁寧語。1〜2文、60文字以内
+- コメントの内容に具体的に触れる。「コメントありがとうございます！」だけの定型文で終わらせない
+- 質問されたら、投稿に書いてあることの範囲で答える。分からないことは分からないと正直に言う
+- 値段・在庫・性能・日程などの事実を新しく作らない
+- URL・ハッシュタグ・宣伝・「プロフ見て」などの誘導は入れない
+- 絵文字は0〜1個
+- 宣伝・スパム・攻撃的・意味の分からないコメントには、返信せず SKIP とだけ書く
+
+返信文だけを出力してください。"""
+
+
+def clean_reply(text):
+    """AIの出力から返信文を取り出す。返信しないときは None、AIが使えなかったときは空文字"""
+    text = re.sub(r"<think>.*?</think>", "", text or "", flags=re.S).strip().strip("「」\"'")
+    if not text:
+        return ""
+    if "SKIP" in text.upper():
+        return None
+    text = re.sub(r"https?://\S+|www\.\S+|[#＃]\S+", "", text).strip()
+    text = (text.splitlines() or [""])[0].strip().strip("「」\"'")
+    return text[:120] or None
+
+
 def reply_to_threads_comments():
-    """自分の投稿に付いたコメントに、宣伝なしの短いお礼を返す（1日 REPLY_MAX_PER_DAY 件まで）。
-    質問らしいコメントは定型文で返すと失礼なので、返信せずDiscordで運営者に知らせる"""
+    """自分の投稿に付いたコメントに、AIで宣伝・リンクなしの短い返信を書いて返す（1日 REPLY_MAX_PER_DAY 件まで）。
+    AIが使えない回は定型のお礼に切り替え、質問らしいコメントには返さずDiscordで運営者に知らせる"""
     try:
         with open(REPLY_STATE_PATH, encoding="utf-8") as f:
             state = json.load(f)
@@ -3503,7 +3559,7 @@ def reply_to_threads_comments():
         return
     try:
         me = threads_get("me", {"fields": "id,username"})
-        posts = threads_get("me/threads", {"fields": "id,timestamp", "limit": 25}).get("data", [])
+        posts = threads_get("me/threads", {"fields": "id,text,timestamp", "limit": 25}).get("data", [])
     except requests.HTTPError as e:
         if is_permission_error(e):
             state.update(disabled=True, reason=threads_error(e))
@@ -3532,7 +3588,7 @@ def reply_to_threads_comments():
             if item.get("username") == me.get("username"):
                 answered.add(parent)  # 自分（手動の返信も含む）が返したコメントには返さない
             elif parent == post["id"] and ts(item) >= since:
-                comments.append(item)
+                comments.append({**item, "post_text": post.get("text") or ""})
     questions = []
     templates = list(REPLY_TEMPLATES)
     start = NOW.toordinal() * 3 + RUN_SLOT
@@ -3543,13 +3599,19 @@ def reply_to_threads_comments():
         if re.search(r"https?://|www\.", text):  # リンク付きは宣伝・スパムが多いので返さない
             done.add(c["id"])
             continue
-        if re.search(r"[?？]|ですか|ますか|どこ|どう|いくら|教えて", text):
-            questions.append(c)
-            done.add(c["id"])
-            continue
         if state["count"] >= REPLY_MAX_PER_DAY:
             break
-        reply = templates[(start + state["count"]) % len(templates)]
+        reply = clean_reply(ai_text(reply_prompt(c["post_text"], text)))
+        if reply is None:  # AIが宣伝・スパムなどと判断した
+            print("自動返信: 返信しないコメントをスキップしました。")
+            done.add(c["id"])
+            continue
+        if not reply:  # AIが使えない回は、質問には返さず通知し、それ以外は定型のお礼
+            if re.search(r"[?？]|ですか|ますか|どこ|どう|いくら|教えて", text):
+                questions.append(c)
+                done.add(c["id"])
+                continue
+            reply = templates[(start + state["count"]) % len(templates)]
         try:
             threads_publish(threads_base(), {"media_type": "TEXT", "text": reply, "reply_to_id": c["id"]})
         except requests.HTTPError as e:
@@ -3560,7 +3622,7 @@ def reply_to_threads_comments():
         print(f"Threadsのコメントに返信しました（{state['count']}/{REPLY_MAX_PER_DAY}件目）。")
         time.sleep(30)  # 連続で返信しない
     if questions and DISCORD_WEBHOOK_URL:
-        lines = ["💬 **Threadsに質問っぽいコメントが付いています**（自動では返信していません。手で返してください）"]
+        lines = ["💬 **Threadsに質問っぽいコメントが付いています**（AIが使えず自動では返信していません。手で返してください）"]
         for q in questions[:5]:
             lines.append(f"・@{q.get('username', '')}「{(q.get('text') or '')[:80]}」")
         try:
