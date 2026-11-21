@@ -1,5 +1,16 @@
 [
   {
+    "date": "2026-11-22",
+    "products": [
+      "Logitech Signature M650 ワイヤレスマウス",
+      "優音 Zero遅延 3in1 テレビスピーカー",
+      "Ortizan X10B 防塵防水 Bluetoothスピーカー",
+      "GPS搭載 11インチ Androidタブレット 128GB",
+      "Anker PowerLine II Type-C 100W 急速充電ケーブル",
+      "Anker USB-C ケーブル 1m 2本セット"
+    ]
+  },
+  {
     "date": "2026-11-21",
     "products": [
       "UGREEN ワイヤレスイヤーカフ イヤホン",
@@ -315,17 +326,6 @@
       "Transcend 256GB スティックSSD ESD310C",
       "32GB microSDカード (ノーブランド)",
       "64GB microSDカード (ノーブランド)"
-    ]
-  },
-  {
-    "date": "2026-10-23",
-    "products": [
-      "JBL ワイヤレスイヤホン WAVE BEAM 2",
-      "AirBass Bluetooth5.3 ワイヤレスイヤホン",
-      "HUAWEI FreeBuds SE 4 ANC ワイヤレスイヤホン",
-      "Mi T5 OWS ワイヤレスイヤホン",
-      "23600mAh PD22.5W 大容量モバイルバッテリー",
-      "LDC 国産 500ml 炭酸水 24本セット"
     ]
   }
 ]
