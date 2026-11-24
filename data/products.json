@@ -4397,9 +4397,10 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/sybr17/cabinet/09936826/2c2u-0.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/sybr17/2c2u/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 08:55",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "sybr17:10000136",
-  "item_name": "延長コード 電源タップ USB 1m 2m 3m 5m コンセント AC2個口 2USB 雷ガード 電源コード アダプタ 充電器 雷サージ マルチタップ テーブルタップ 海外 240V 急速充電 木目 白 黒 USB付 タップ SAYBOUR"
+  "item_name": "延長コード 電源タップ USB 1m 2m 3m 5m コンセント AC2個口 2USB 雷ガード 電源コード アダプタ 充電器 雷サージ マルチタップ テーブルタップ 海外 240V 急速充電 木目 白 黒 USB付 タップ SAYBOUR",
+  "track_miss": 1
  },
  "c64279ea5a": {
   "records": [
@@ -4625,6 +4626,12 @@
     "t": "2026-11-23 18:08",
     "price": 18999,
     "point": 1
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 18999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "240Hz 23.8インチ ゲーミングモニター (黒/白)",
@@ -4637,7 +4644,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/12866454/12866455/imgrc0145076725.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/hg-238h/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-23 18:08",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "qifeng:10000074",
   "item_name": "【3+2年保証・240Hzの速さを体感せよ】黒/白 ゲーミングモニター 240Hz VRR対応 モニター 23.8インチ FHD 1080p 非光沢 IPSパネル pcモニター 1ms応答 240 / 200 / 180 / 120 / 100 / 60Hz対応 狭額縁 パソコンモニター 24インチ Switch/PS4/5/Xbox/DVD/ゲーム機 cocopar",
   "review_count": 1227,
@@ -5096,6 +5103,12 @@
     "price": 8660,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 8660,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SONYセンサー 4Kミラードライブレコーダー 8.6k円",
@@ -5108,7 +5121,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kimiplus/cabinet/08514256/08514257/compass1783063984.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/kimiplus/ad-886-ss/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-10 11:45",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "kimiplus:10000071",
   "item_name": "★楽天1位 ドライブレコーダー ミラー型 前後カメラ ドラレコ 駐車 監視 1296P高画質 2K 1200万画素 SONYセンサー 10インチ タッチパネル ドラレコ 170度広角視野 HDR 赤外線暗視 24時間駐車監視 ループ録画 動体検知 衝撃録画 Gセンサー 録音機能 1年保証 デジタルミラー",
   "review_count": 827,
@@ -5332,6 +5345,12 @@
     "t": "2026-11-23 18:08",
     "price": 16999,
     "point": 1
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 16999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "27インチ 180Hz ゲーミングモニター",
@@ -5344,7 +5363,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10249172/10249174/imgrc0100153303.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/yc-27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-23 18:08",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "qifeng:10000075",
   "item_name": "★180Hz/165Hz/144Hz /100Hz★ モニター 27インチ 1080P フルHD ゲーミングモニター 1ms応答 2mm狭額縁 8mm薄型 pcモニター パソコン モニター VA非光沢 角度調整 VESA スピーカー cocopar HG-27",
   "review_count": 914,
@@ -5809,6 +5828,12 @@
     "price": 1580,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 1580,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミニハンディ扇風機",
@@ -5821,7 +5846,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/aidort/cabinet/1800-1849/1825-zhu.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/aidort/slub-598a2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 21:54",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "aidort:10000722",
   "item_name": "卓上扇風機 ミニ扇風機 首掛けファン ストラップ付き ハンディファン 薄型 オフィスファン 静音強風 コンパクト 省スペース ミニ スマホスタンド機能 2026年最新作 Type-C充電 7枚羽根 風量5段階 バッテリー容量3000mAh 両手解放 熱中症対策【PL保険加入済み製品・安心】"
  },
@@ -6279,6 +6304,12 @@
     "price": 21980,
     "point": 5,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 21980,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "ドライブレコーダー 前後2カメラ 4K",
@@ -6291,7 +6322,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/yumenomori/cabinet/09856724/h36yh10980.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/yumenomori/b1h36dhe/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 23:49",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "yumenomori:10000232",
   "item_name": "3連冠【COUPONで11,980円〜・BL SALE】 ドライブレコーダー ミラー型 前後 2カメラ 4K画質王 GPS追跡 400,000台＋累計販売 4K UHD 800万画素 SONYセンサー WDR タッチパネル式 ドラレコ アプリ連携 GPS 24時間駐車監視 170°広角 ループ録画 衝撃録画 常時録画 動体検知"
  },
@@ -8782,6 +8813,12 @@
     "price": 1499,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 1499,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "RoiCiel 磁気USB充電ケーブル",
@@ -8794,7 +8831,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/roiciel/cabinet/08816048/10418553/10452724/imgrc0195106473.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/roiciel/rc-22-gp03/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-15 08:55",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "roiciel:10000246",
   "item_name": "RoiCiel マグネット 充電ケーブル 磁気リング マグネット ケーブル 絡まない 磁気収納 形状記憶 USB ケーブル マグネット 充電ケーブル 巻き取り 持ち運び USB-A to Lightning USB-A to USB-C Type-C USB-A to Micro Micro-B選べる 急速充電 データ転送 スマホ 磁気 収納",
   "review_count": 1769,
@@ -10385,7 +10422,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3955_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a3955/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-12 10:54",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "anker:10001894",
   "item_name": "Anker Soundcore P40i (Bluetooth 5.3) 【完全ワイヤレスイヤホン/ウルトラノイズキャンセリング 2.0 / マルチポイント接続 / 最大60時間再生 / PSE技術基準適合】",
   "staple": true,
@@ -10607,6 +10644,12 @@
     "price": 69800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 69800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "DEEBOT N20 PRO PLUS ロボット掃除機",
@@ -10619,7 +10662,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/store-ecovacs-japan/cabinet/campaign/261023/dkx55-12ee.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/store-ecovacs-japan/dkx55-12ee/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-25 21:32",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "store-ecovacs-japan:10000405",
   "item_name": "【クーポン利用で28,800円！11/19〜12/15】ロボット掃除機 DEEBOT N20 PRO PLUS エコバックス ECOVACS 吸引 水拭き メーカー保証最大24ヶ月 ecovacs 掃除機 自動掃除機 掃除ロボット ディーボット ロボット掃除機 2025 高性能 お掃除ロボット エコバッグス 母の日",
   "review_count": 2299,
@@ -11752,6 +11795,12 @@
     "price": 12999,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 12999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "VisionOwl 10.5インチ モバイルモニター",
@@ -11766,7 +11815,7 @@
   "review_count": 301,
   "review_average": 4.69,
   "last_seen": "2026-10-19 10:44",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "qifeng:10000130",
   "item_name": "モバイルモニター VisionOwl 10.5インチ 超軽量249g 高輝度450nits 100%sRGB広色域 画像比自動適合 FHD1280P 極細ベゼル モバイルディスプレイ ポータブルモニター 光沢IPSパネル HDR対応 PS4/XBOX/Switch/PC/Macなど対応 XL-105"
  },
@@ -13327,6 +13376,12 @@
     "price": 99706,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 99706,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Plus 405 Combo",
@@ -13341,7 +13396,7 @@
   "review_count": 1428,
   "review_average": 4.45,
   "last_seen": "2026-10-19 10:54",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "irobotstore:10000557",
   "item_name": "【公式】 Roomba Plus 405 Combo + AutoWash ルンバ オンライン限定 アイロボット ロボット掃除機 2025 お掃除ロボット 水拭き 床拭き 拭き掃除 自動ゴミ収集 マッピング 高性能 モップ自動洗浄 全自動 iRobot 日本 国内 正規品 メーカー保証 延長保証 送料無料"
  },
@@ -14023,6 +14078,12 @@
     "price": 4980,
     "point": 5,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 4980,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "CLASSIC スマートウォッチ レディース",
@@ -14037,7 +14098,7 @@
   "review_count": 1842,
   "review_average": 4.39,
   "last_seen": "2026-10-19 10:55",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "unboxroom:10000086",
   "item_name": "スマートウォッチ レディース 通話機能搭載 CLASSIC iPhone Android LINE通知 日本語 生活防水 腕時計 メンズ ラッピング無料 ギフト プレゼント"
  },
@@ -14984,6 +15045,12 @@
     "price": 5999,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 5999,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN ワイヤレスイヤーカフ イヤホン",
@@ -14998,7 +15065,7 @@
   "review_count": 1602,
   "review_average": 4.54,
   "last_seen": "2026-11-21 17:17",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "ugreen-gear:10001200",
   "item_name": "【11/25まで★P2倍＆60%OFFクーポン！】★UGREEN ワイヤレスイヤホン イヤーカフ 空気伝導 Bluetoothイヤホン 耳挟み式 bluetooth5.4 オープンイヤー型 ENCノイズキャンセリング 12mmドライバー 高速充電30時間再生 ノイズ漏れ 軽量 IPX5防水自動ペアリング iPhone Android"
  },
@@ -16912,6 +16979,12 @@
     "price": 3201,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 3201,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ロジクール ワイヤレスキーボード K295",
@@ -16926,7 +16999,7 @@
   "review_count": 1075,
   "review_average": 4.5,
   "last_seen": "2026-11-21 17:17",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "logicool:10000345",
   "item_name": "ロジクール ワイヤレスキーボード K295GP K295OW 静音 耐水 キーボード 無線 Unifying windows chrome K295 国内正規品 2年間無償保証"
  },
@@ -17149,6 +17222,12 @@
     "price": 5280,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 5280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN ワイヤレスキーボード Bluetooth",
@@ -17163,7 +17242,7 @@
   "review_count": 504,
   "review_average": 4.55,
   "last_seen": "2026-11-21 17:17",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "ugreen-gear:10000702",
   "item_name": "UGREEN ワイヤレスキーボード Bluetooth＆2.4G USB-C充電式 静音 薄型 日本語配列 JIS 4台同時接続 マルチデバイス Windows/Mac/iPad/iPhone対応 K552 75163"
  },
@@ -18789,6 +18868,12 @@
     "price": 1250,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 1250,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "単3アルカリ乾電池 40本",
@@ -18803,7 +18888,7 @@
   "review_count": 137,
   "review_average": 4.82,
   "last_seen": "2026-10-19 22:29",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "watch-me:10006181",
   "item_name": "40本セット 単3電池 電池 単3 アルカリ 三菱電機 アルカリ乾電池 単3形 乾電池単3 単3 アルカリ乾電池 防災グッズ 単三 単3電池 LR6N/10S aa 単三電池 単3電池 単三乾電池 電池単三 単3乾電池 乾電池単三 電池単3 電池単三 単3型電池 長持ち アルカリ乾電池1.5V 40個"
  },
@@ -19494,6 +19579,12 @@
     "price": 4730,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 4730,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "JBL GO 4 Bluetoothスピーカー",
@@ -19508,7 +19599,7 @@
   "review_count": 294,
   "review_average": 4.8,
   "last_seen": "2026-11-04 16:30",
-  "last_checked": "2026-11-23 18:08",
+  "last_checked": "2026-11-24 19:56",
   "item_code": "jblstore:10000180",
   "item_name": "★BLACK FRIDAY先着CP＆エントリー10倍★＼楽天1位／【公式】 JBL Bluetoothスピーカー GO 4 | ジェービーエル 防水 スピーカー Bluetooth 5.3 ブルートゥース ポータブルスピーカー ワイヤレス 屋外 アウトドア ビーチ 防塵 高音質 軽量 小型 お風呂 車内 最大7時間再生"
  },
@@ -24735,23 +24826,28 @@
     "price": 2249,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 2249,
+    "point": 1
    }
   ],
-  "product_name": "UGREEN エルゴノミック ワイヤレスマウス 6ボタン 4000DPI",
+  "product_name": "UGREEN 6ボタン ワイヤレスマウス",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "手首に優しい快適操作",
-  "deal_reason": "・長時間バッテリーで疲れにくい\n・6ボタンで作業効率UP\n・静音設計で集中できる",
-  "score": 92,
+  "catch_copy": "コスパ最強の操作感",
+  "deal_reason": "・6ボタンで作業効率UP\n・静音設計で周囲を気にしない\n・2.4GHzで安定接続",
+  "score": 88,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ugreen-gear/cabinet/11871349/90545-1.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ugreen-gear/90545/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "ugreen-gear:10000327",
   "item_name": "【ブラックフライデー30%OFFクーポン】UGREEN 人間工学 ワイヤレスマウス 6ボタン コスパ最高マウス 無線2.4GHz 静音マウス5段階DPI切替 4000DPI ノートPC MacBook Chromebook パソコンなど対応 Mac Windows PC Laptop Macbook多機種対応 ピンク ブラック 出張 マウス",
-  "review_count": 1742,
-  "review_average": 4.55,
-  "last_seen": "2026-11-18 01:51",
-  "last_checked": "2026-11-24 13:47"
+  "review_count": 1749,
+  "review_average": 4.54,
+  "last_seen": "2026-11-24 19:56",
+  "last_checked": "2026-11-24 19:56"
  },
  "77be563202": {
   "records": [
@@ -24966,23 +25062,28 @@
     "price": 3990,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 3990,
+    "point": 1
    }
   ],
-  "product_name": "Anker Soundcore Select 4 Go Bluetoothスピーカー",
+  "product_name": "Anker Soundcore Select 4 Go",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "持ち運び楽々高音質",
-  "deal_reason": "・コンパクトサイズで持ち運び便利\n・20時間再生で長時間使用可\n・クリアなサウンドが楽しめる",
-  "score": 93,
-  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a31x1_normal.jpg?_ex=400x400",
+  "catch_copy": "コンパクトでも迫力サウンド",
+  "deal_reason": "・小型で持ち運び楽々\n・最大20時間再生で長時間使用\n・防水でアウトドアにも最適",
+  "score": 90,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/deal/2611m2/a31x1_11m2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a31x1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "anker:10002132",
   "item_name": "【25%OFFクーポン 11/25まで】Anker Soundcore Select 4 Go bluetooth スピーカー【最大20時間再生 / 5W出力 / パッシブラジエーター搭載 / IP67防塵防水規格 / ワイヤレスステレオ対応】",
-  "review_count": 634,
+  "review_count": 640,
   "review_average": 4.68,
-  "last_seen": "2026-11-18 01:51",
-  "last_checked": "2026-11-24 04:11"
+  "last_seen": "2026-11-24 19:56",
+  "last_checked": "2026-11-24 19:56"
  },
  "a3c915b060": {
   "records": [
@@ -29328,6 +29429,12 @@
     "price": 7900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 7900,
+    "point": 1,
+    "via": "track"
    }
   ],
   "staple": true,
@@ -29343,7 +29450,7 @@
   "score": 0,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/justrich/cabinet/08582740/09324256/fire4k3.jpg?_ex=400x400",
   "last_seen": "2026-10-24 08:10",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "30ae0da1ac": {
   "records": [
@@ -29754,6 +29861,12 @@
     "price": 9900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 9900,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "RELAX マルチレトロ防災ラジオ",
@@ -29770,7 +29883,7 @@
   "review_count": 1341,
   "review_average": 4.6,
   "last_seen": "2026-11-20 17:34",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "76185d3f62": {
   "records": [
@@ -31116,23 +31229,28 @@
     "price": 17600,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 17600,
+    "point": 1
    }
   ],
-  "product_name": "JBL Bluetooth スピーカー CHARGE ESSENTIAL",
+  "product_name": "JBL CHARGE ESSENTIAL",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "パワフルサウンドで浸る",
-  "deal_reason": "・深みある低音が魅力\n・防水設計でアウトドア対応\n・長時間バッテリーで安心",
-  "score": 95,
+  "catch_copy": "パワフルサウンドが長持ち",
+  "deal_reason": "・大容量バッテリーで連続再生\n・防滴設計で屋外でも安心\n・高音質で臨場感UP",
+  "score": 85,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/jblstore/cabinet/07940778/09074442/charge-essential2.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/jblstore/charge-essential2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "jblstore:10000111",
   "item_name": "★BLACK FRIDAY先着CP＆エントリー10倍★【公式限定】JBL Bluetooth スピーカー CHARGE ESSENTIAL 2 | ジェービーエル 高音質 防水 重低音 ポータブルスピーカー ワイヤレススピーカー ポータブル IPX7 モバイルバッテリー機能 スマホ アウトドア キャンプ BBQ キッチン",
-  "review_count": 393,
+  "review_count": 394,
   "review_average": 4.78,
-  "last_seen": "2026-11-18 01:51",
-  "last_checked": "2026-11-24 04:11"
+  "last_seen": "2026-11-24 19:56",
+  "last_checked": "2026-11-24 19:56"
  },
  "5e5b1db5c0": {
   "records": [
@@ -31329,23 +31447,28 @@
     "price": 3900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 3900,
+    "point": 1
    }
   ],
-  "product_name": "Logitech ワイヤレスマウス＆キーボード セット MK295",
+  "product_name": "Logitech MK295 無線マウス+キーボードセット",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "デスクがすっきり静音操作",
-  "deal_reason": "・マウスとキーボードが一体化\n・静音設計で周囲を気にしない\n・USBレシーバーで簡単接続",
-  "score": 90,
+  "catch_copy": "静音で快適操作",
+  "deal_reason": "・コードレスで机がすっきり\n・静かなクリックで集中できる\n・長時間使っても疲れにくい",
+  "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/logicool/cabinet/prd/kb/mk295gp/mk295gp_r1.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/logicool/mk295gp/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "logicool:10000344",
   "item_name": "ロジクール ワイヤレスマウス キーボード セット MK295GP MK295OW 静音 耐水 無線 USB接続 Unifying非対応 MK295 国内正規品 2年間無償保証",
-  "review_count": 751,
-  "review_average": 4.52,
-  "last_seen": "2026-11-18 01:51",
-  "last_checked": "2026-11-24 04:11"
+  "review_count": 754,
+  "review_average": 4.51,
+  "last_seen": "2026-11-24 19:56",
+  "last_checked": "2026-11-24 19:56"
  },
  "ae5b790d37": {
   "records": [
@@ -31868,6 +31991,12 @@
     "price": 1480,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 1480,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ナチュラルミネラルウォーター 2L",
@@ -31884,7 +32013,7 @@
   "review_count": 8574,
   "review_average": 4.78,
   "last_seen": "2026-11-18 17:34",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "fb1194ec64": {
   "records": [
@@ -32071,6 +32200,12 @@
     "price": 2070,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 2070,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "自転車用 スマホホルダー",
@@ -32087,7 +32222,7 @@
   "review_count": 2072,
   "review_average": 4.55,
   "last_seen": "2026-10-31 22:36",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "ba613746fb": {
   "records": [
@@ -32470,6 +32605,12 @@
     "price": 28800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 28800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "NiPoGi Mini PC N3350 8GB/256GB",
@@ -32486,7 +32627,7 @@
   "review_count": 685,
   "review_average": 4.55,
   "last_seen": "2026-11-01 23:14",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "3b75f286e8": {
   "records": [
@@ -35176,6 +35317,12 @@
     "price": 3600,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 3600,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Logitech M350s ワイヤレスマウス",
@@ -35192,7 +35339,7 @@
   "review_count": 360,
   "review_average": 4.54,
   "last_seen": "2026-11-19 10:52",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "ced606edfe": {
   "records": [
@@ -36826,6 +36973,12 @@
     "price": 25980,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 25980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Philips タブレット 10.1インチ T7315",
@@ -36842,7 +36995,7 @@
   "review_count": 2862,
   "review_average": 4.56,
   "last_seen": "2026-11-22 09:21",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "e1349145d0": {
   "records": [
@@ -40750,6 +40903,12 @@
     "price": 2300,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 2300,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "マルチカードリーダー iPhone対応",
@@ -40766,7 +40925,7 @@
   "review_count": 391,
   "review_average": 4.03,
   "last_seen": "2026-11-01 23:14",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "c2a7febc70": {
   "records": [
@@ -41673,6 +41832,12 @@
     "price": 84800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 84800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "カベーニ PRO2 フルHD モバイルプロジェクター",
@@ -41685,11 +41850,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ueno-mono/cabinet/09545219/09629925/imgrc0086021431.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ueno-mono/kabeni-pro2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "ueno-mono:10000046",
-  "item_name": "【BF限定13000円OFF】カベーニPRO2 2026モデル フルHD モバイル プロジェクター 小型 天井 ホームシアター 子供 壁 家庭用 コンパクト プロジェクター Bluetooth WiFi HDMI DVD ビジネス モバイルプロジェクター android 小型プロジェクター 三脚 ホームプロジェクター",
+  "item_name": "【2年～4年半保証】 カベーニPRO2 2026モデル フルHD モバイル プロジェクター 小型 天井 ホームシアター 子供 壁 家庭用 コンパクト プロジェクター Bluetooth WiFi HDMI DVD ビジネス モバイルプロジェクター android 小型プロジェクター 三脚 天井 ホームプロジェクター",
   "review_count": 709,
   "review_average": 4.69,
   "last_seen": "2026-11-03 11:19",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "43fc7983ea": {
   "records": [
@@ -41978,23 +42143,28 @@
     "price": 2680,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 2680,
+    "point": 1
    }
   ],
-  "product_name": "USB Type-C 4K HDMI ハブ",
-  "category": "ガジェット",
+  "product_name": "USB Type-C ハブ 4in1 HDMI PD",
+  "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "多機能でデスクがすっきり",
-  "deal_reason": "・4K HDMI出力で高画質\n・PD対応で充電も同時に",
-  "score": 85,
+  "catch_copy": "これ一つで拡張自在",
+  "deal_reason": "・HDMIで4K映像出力\n・PD対応で充電しながら使用\n・SDカードも同時に読める",
+  "score": 87,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/comfystore/cabinet/07370190/07782411/01.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/comfystore/co-usb-1/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "comfystore:10000041",
   "item_name": "★楽天1位★【6in1】 USB Type-C ハブ HDMI 4K USB3.0 PD87w対応 SD/microSDカードリーダー ドッキングステーション 薄型 軽量アルミ合金 USB変換アダプター MacBook ノートパソコン ノートPC surface iPhone15/15Pro iPad Air5/4 Pro2018/2020/2021/2022 Android対応",
   "review_count": 1016,
   "review_average": 4.5,
-  "last_seen": "2026-11-18 17:34",
-  "last_checked": "2026-11-24 13:47"
+  "last_seen": "2026-11-24 19:56",
+  "last_checked": "2026-11-24 19:56"
  },
  "0c8478c914": {
   "records": [
@@ -44714,6 +44884,12 @@
     "price": 2888,
     "point": 2,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 2888,
+    "point": 2,
+    "via": "track"
    }
   ],
   "product_name": "SanDisk microSDXC 64GB 140MB/s",
@@ -44730,7 +44906,7 @@
   "review_count": 373,
   "review_average": 4.59,
   "last_seen": "2026-11-07 22:56",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "8cfa636946": {
   "records": [
@@ -45191,6 +45367,12 @@
     "price": 2101,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 2101,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Logitech M240 Silent Bluetooth マウス",
@@ -45207,7 +45389,7 @@
   "review_count": 309,
   "review_average": 4.57,
   "last_seen": "2026-11-20 17:34",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "4e699a0d5f": {
   "records": [
@@ -45786,23 +45968,28 @@
     "price": 1360,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 1360,
+    "point": 1
    }
   ],
-  "product_name": "富士ミネラルウォーター 2L×9本",
+  "product_name": "ミネラルウォーター 2L 12本",
   "category": "日用品・家電",
   "slot": "impulse",
   "badge": "🛒 ついで買い定番",
-  "catch_copy": "毎日飲みやすいミネラル水",
-  "deal_reason": "・2リットルでたっぷり飲める\n・ミネラル豊富で健康サポート\n・手軽にストックできるセット",
-  "score": 86,
+  "catch_copy": "毎日飲みやすい大容量",
+  "deal_reason": "・2リットルでたっぷり飲める\n・ラベルレスで収納便利\n・長期保存でも安心",
+  "score": 84,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/irisplaza-r/cabinet/jishahin49/imgrc0102681905.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/irisplaza-r/311139/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "irisplaza-r:10151238",
-  "item_name": "[エントリーで最大ポイント10倍/スタンプラリー]【公式】水 2リットル 9本 天然水 ミネラルウォーター 2L 送料無料 ラベルレス 富士山 バナジウム バナジウム天然水 バナジウム水 富士山の天然水2L",
-  "review_count": 2122,
+  "item_name": "【公式】水 2リットル 9本 天然水 ミネラルウォーター 2L 送料無料 ラベルレス 富士山 バナジウム バナジウム天然水 バナジウム水 富士山の天然水2L",
+  "review_count": 2137,
   "review_average": 4.49,
-  "last_seen": "2026-11-21 17:17",
-  "last_checked": "2026-11-24 13:47"
+  "last_seen": "2026-11-24 19:56",
+  "last_checked": "2026-11-24 19:56"
  },
  "2b6fac3a65": {
   "records": [
@@ -46860,6 +47047,12 @@
     "price": 43780,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 43780,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Mini AutoEmpty ロボット掃除機",
@@ -46876,7 +47069,7 @@
   "review_count": 636,
   "review_average": 4.42,
   "last_seen": "2026-11-13 10:05",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "b2a56166ff": {
   "records": [
@@ -47654,6 +47847,12 @@
     "price": 2280,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 2280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "小型 静音 ワイヤレスマウス",
@@ -47670,7 +47869,7 @@
   "review_count": 394,
   "review_average": 4.34,
   "last_seen": "2026-11-16 16:59",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "8d01152d1f": {
   "records": [
@@ -48140,6 +48339,12 @@
     "price": 1000,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-24 19:56",
+    "price": 1000,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "GaN 急速充電器 20W USB-C",
@@ -48156,7 +48361,7 @@
   "review_count": 745,
   "review_average": 4.62,
   "last_seen": "2026-11-19 10:52",
-  "last_checked": "2026-11-23 18:08"
+  "last_checked": "2026-11-24 19:56"
  },
  "8e670c3162": {
   "records": [
