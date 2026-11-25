@@ -1,5 +1,16 @@
 [
   {
+    "date": "2026-11-26",
+    "products": [
+      "Anker SoundCore 2 ポータブルスピーカー",
+      "Logitech M240 Silent Bluetooth マウス",
+      "FUNLOGY Portable 防水 Bluetoothスピーカー",
+      "Logitech M575SP ワイヤレストラックボールマウス",
+      "Anker PowerCore 10000mAh モバイルバッテリー",
+      "サンペレグリノ 500ml 炭酸水 24本セット"
+    ]
+  },
+  {
     "date": "2026-11-25",
     "products": [
       "JBL LIVE BUDS3 ワイヤレスイヤホン",
@@ -314,17 +325,6 @@
       "Mi T23 OWS イヤーカフ ワイヤレスイヤホン",
       "SanDisk Ultra 32GB microSDHC UHS-1",
       "水想い ナチュラルミネラルウォーター 2L×9本"
-    ]
-  },
-  {
-    "date": "2026-10-27",
-    "products": [
-      "Anker Soundcore 3 Bluetoothスピーカー",
-      "JBL GO ESSENTIAL 2 Bluetoothスピーカー",
-      "Logitech M575SP ワイヤレストラックボールマウス",
-      "Dangbei N2 mini モバイルプロジェクター",
-      "SanDisk 128GB microSDXCカード",
-      "富士山天然水 2L×9本"
     ]
   }
 ]
