@@ -528,6 +528,12 @@
     "t": "2026-11-26 18:31",
     "price": 16800,
     "point": 10
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 16800,
+    "point": 10,
+    "via": "track"
    }
   ],
   "product_name": "WINTEN 15.6インチ モバイルモニター",
@@ -543,7 +549,7 @@
   "item_code": "win10:10009635",
   "review_count": 5188,
   "review_average": 4.61,
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_name": "【期間限定 P10倍】WINTEN モバイルモニター 15.6インチ テレワーク/デュアルモニター/サブモニターに最適！ゲーミング 1080P FHD IPSパネル 軽量 薄型 非光沢 カバー付 ミニPC Switch iPhone Type-C/HDMI接続 [1年保証] WT-156H2-BS 5523"
  },
  "37c70ef5a6": {
@@ -4710,10 +4716,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/sybr17/cabinet/09936826/2c2u-0.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/sybr17/2c2u/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 08:55",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "sybr17:10000136",
   "item_name": "延長コード 電源タップ USB 1m 2m 3m 5m コンセント AC2個口 2USB 雷ガード 電源コード アダプタ 充電器 雷サージ マルチタップ テーブルタップ 海外 240V 急速充電 木目 白 黒 USB付 タップ SAYBOUR",
-  "track_miss": 3
+  "track_miss": 4,
+  "track_off": true
  },
  "c64279ea5a": {
   "records": [
@@ -4963,12 +4970,12 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/12866454/12866455/imgrc0145076725.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/hg-238h/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-23 18:08",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "qifeng:10000074",
   "item_name": "【3+2年保証・240Hzの速さを体感せよ】黒/白 ゲーミングモニター 240Hz VRR対応 モニター 23.8インチ FHD 1080p 非光沢 IPSパネル pcモニター 1ms応答 240 / 200 / 180 / 120 / 100 / 60Hz対応 狭額縁 パソコンモニター 24インチ Switch/PS4/5/Xbox/DVD/ゲーム機 cocopar",
   "review_count": 1227,
   "review_average": 4.73,
-  "track_miss": 1
+  "track_miss": 2
  },
  "7e56692148": {
   "records": [
@@ -5459,6 +5466,12 @@
     "price": 7793,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 7793,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SONYセンサー 4Kミラードライブレコーダー 8.6k円",
@@ -5471,7 +5484,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kimiplus/cabinet/08514256/08514257/compass1783063984.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/kimiplus/ad-886-ss/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-10 11:45",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "kimiplus:10000071",
   "item_name": "★楽天1位 ドライブレコーダー ミラー型 前後カメラ ドラレコ 駐車 監視 1296P高画質 2K 1200万画素 SONYセンサー 10インチ タッチパネル ドラレコ 170度広角視野 HDR 赤外線暗視 24時間駐車監視 ループ録画 動体検知 衝撃録画 Gセンサー 録音機能 1年保証 デジタルミラー",
   "review_count": 827,
@@ -5719,12 +5732,12 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/qifeng/cabinet/10249172/10249174/imgrc0100153303.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/qifeng/yc-27/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-23 18:08",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "qifeng:10000075",
   "item_name": "★180Hz/165Hz/144Hz /100Hz★ モニター 27インチ 1080P フルHD ゲーミングモニター 1ms応答 2mm狭額縁 8mm薄型 pcモニター パソコン モニター VA非光沢 角度調整 VESA スピーカー cocopar HG-27",
   "review_count": 914,
   "review_average": 4.72,
-  "track_miss": 1
+  "track_miss": 2
  },
  "035b070c87": {
   "records": [
@@ -6221,6 +6234,12 @@
     "price": 1580,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1580,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ミニハンディ扇風機",
@@ -6233,7 +6252,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/aidort/cabinet/1800-1849/1825-zhu.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/aidort/slub-598a2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 21:54",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "aidort:10000722",
   "item_name": "卓上扇風機 ミニ扇風機 首掛けファン ストラップ付き ハンディファン 薄型 オフィスファン 静音強風 コンパクト 省スペース ミニ スマホスタンド機能 2026年最新作 Type-C充電 7枚羽根 風量5段階 バッテリー容量3000mAh 両手解放 熱中症対策【PL保険加入済み製品・安心】"
  },
@@ -6716,6 +6735,12 @@
     "price": 19780,
     "point": 5,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 19780,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "ドライブレコーダー 前後2カメラ 4K",
@@ -6728,7 +6753,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/yumenomori/cabinet/09856724/h36yh10980.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/yumenomori/b1h36dhe/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-18 23:49",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "yumenomori:10000232",
   "item_name": "【4K画質王＆GPS追跡】 ドライブレコーダー ミラー型 前後 2カメラ 400,000台＋累計販売 4K UHD 800万画素 SONYセンサー WDR タッチパネル式 ドラレコ アプリ連携 GPS 24時間駐車監視 170°広角 ループ録画 衝撃録画 常時録画 動体検知 上書き録画 煽り運転対策"
  },
@@ -7501,6 +7526,12 @@
     "t": "2026-11-26 18:31",
     "price": 2380,
     "point": 1
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 2380,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スマホスタンド 2段式 アーム",
@@ -7513,7 +7544,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ioroi/cabinet/08743967/08743968/xxkjzjcqths-01i.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ioroi/10000230/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-26 18:31",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "ioroi:10000230",
   "item_name": "スマホ スタンド 【楽天1位・4冠獲得】 スタンド 寝ながら スマホ スタンド アーム スマホスタンド スマホホルダー アームスタンド 2段調節 スマートフォンスタンド iphone スタンド ベッド xperia arrows galaxy android クリップ おしゃれ ベッド 携帯スタンド AKEIE",
   "review_count": 2933,
@@ -9393,6 +9424,12 @@
     "price": 1499,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1499,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "RoiCiel 磁気USB充電ケーブル",
@@ -9405,7 +9442,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/roiciel/cabinet/08816048/10418553/10452724/imgrc0195106473.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/roiciel/rc-22-gp03/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-15 08:55",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "roiciel:10000246",
   "item_name": "RoiCiel マグネット 充電ケーブル 磁気リング マグネット ケーブル 絡まない 磁気収納 形状記憶 USB ケーブル マグネット 充電ケーブル 巻き取り 持ち運び USB-A to Lightning USB-A to USB-C Type-C USB-A to Micro Micro-B選べる 急速充電 データ転送 スマホ 磁気 収納",
   "review_count": 1769,
@@ -11105,7 +11142,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/anker/cabinet/tmb/a3/a3955_normal.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/anker/a3955/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-11-12 10:54",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "anker:10001894",
   "item_name": "Anker Soundcore P40i (Bluetooth 5.3) 【完全ワイヤレスイヤホン/ウルトラノイズキャンセリング 2.0 / マルチポイント接続 / 最大60時間再生 / PSE技術基準適合】",
   "staple": true,
@@ -11345,6 +11382,12 @@
     "price": 69800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 69800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "DEEBOT N20 PRO PLUS ロボット掃除機",
@@ -11357,7 +11400,7 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/store-ecovacs-japan/cabinet/campaign/261023/dkx55-12ee.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/store-ecovacs-japan/dkx55-12ee/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "last_seen": "2026-10-25 21:32",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "store-ecovacs-japan:10000405",
   "item_name": "【クーポン利用で28,800円！11/19〜12/15】ロボット掃除機 DEEBOT N20 PRO PLUS エコバックス ECOVACS 吸引 水拭き メーカー保証最大24ヶ月 ecovacs 掃除機 自動掃除機 掃除ロボット ディーボット ロボット掃除機 2025 高性能 お掃除ロボット エコバッグス 母の日",
   "review_count": 2299,
@@ -12577,10 +12620,10 @@
   "review_count": 301,
   "review_average": 4.69,
   "last_seen": "2026-10-19 10:44",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "qifeng:10000130",
   "item_name": "モバイルモニター VisionOwl 10.5インチ 超軽量249g 高輝度450nits 100%sRGB広色域 画像比自動適合 FHD1280P 極細ベゼル モバイルディスプレイ ポータブルモニター 光沢IPSパネル HDR対応 PS4/XBOX/Switch/PC/Macなど対応 XL-105",
-  "track_miss": 1
+  "track_miss": 2
  },
  "04b814fe88": {
   "records": [
@@ -14267,6 +14310,12 @@
     "price": 99706,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 99706,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Plus 405 Combo",
@@ -14281,7 +14330,7 @@
   "review_count": 1428,
   "review_average": 4.45,
   "last_seen": "2026-10-19 10:54",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "irobotstore:10000557",
   "item_name": "【公式】 Roomba Plus 405 Combo + AutoWash ルンバ オンライン限定 アイロボット ロボット掃除機 2025 お掃除ロボット 水拭き 床拭き 拭き掃除 自動ゴミ収集 マッピング 高性能 モップ自動洗浄 全自動 iRobot 日本 国内 正規品 メーカー保証 延長保証 送料無料"
  },
@@ -15017,6 +15066,12 @@
     "price": 4980,
     "point": 5,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 4980,
+    "point": 5,
+    "via": "track"
    }
   ],
   "product_name": "CLASSIC スマートウォッチ レディース",
@@ -15031,7 +15086,7 @@
   "review_count": 1842,
   "review_average": 4.39,
   "last_seen": "2026-10-19 10:55",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "unboxroom:10000086",
   "item_name": "スマートウォッチ レディース 通話機能搭載 CLASSIC iPhone Android LINE通知 日本語 生活防水 腕時計 メンズ ラッピング無料 ギフト プレゼント"
  },
@@ -15786,6 +15841,12 @@
     "price": 1528,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1528,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "炭酸水 500ml 24本セット",
@@ -15800,9 +15861,9 @@
   "review_count": 4190,
   "review_average": 4.76,
   "last_seen": "2026-11-19 01:24",
-  "last_checked": "2026-11-26 11:51",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "jyonetsubatake:10000152",
-  "item_name": "炭酸水 500ml 24本/48本 ペットボトル プレーン 24本入 1箱/2箱 LDC 国産 山形産 やさしい水の炭酸水 ケース まとめ買い ソーダ ハイボール 割材"
+  "item_name": "＼高評価★4.7以上／ 炭酸水 500ml 24本/48本 ペットボトル プレーン 24本入 1箱/2箱 LDC 国産 山形産 やさしい水の炭酸水 ケース まとめ買い ソーダ ハイボール 割材"
  },
  "b721d24712": {
   "records": [
@@ -18380,6 +18441,12 @@
     "price": 5280,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 5280,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN ワイヤレスキーボード Bluetooth",
@@ -18394,7 +18461,7 @@
   "review_count": 504,
   "review_average": 4.55,
   "last_seen": "2026-11-21 17:17",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "ugreen-gear:10000702",
   "item_name": "UGREEN ワイヤレスキーボード Bluetooth＆2.4G USB-C充電式 静音 薄型 日本語配列 JIS 4台同時接続 マルチデバイス Windows/Mac/iPad/iPhone対応 K552 75163"
  },
@@ -20141,6 +20208,12 @@
     "price": 1250,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1250,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "単3アルカリ乾電池 40本",
@@ -20155,7 +20228,7 @@
   "review_count": 137,
   "review_average": 4.82,
   "last_seen": "2026-10-19 22:29",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_code": "watch-me:10006181",
   "item_name": "40本セット 単3電池 電池 単3 アルカリ 三菱電機 アルカリ乾電池 単3形 乾電池単3 単3 アルカリ乾電池 防災グッズ 単三 単3電池 LR6N/10S aa 単三電池 単3電池 単三乾電池 電池単三 単3乾電池 乾電池単三 電池単3 電池単三 単3型電池 長持ち アルカリ乾電池1.5V 40個"
  },
@@ -24350,6 +24423,12 @@
     "t": "2026-11-26 18:31",
     "price": 3380,
     "point": 1
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 3380,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "スマートブレス 進化版 スマートウォッチ",
@@ -24365,7 +24444,7 @@
   "review_count": 3347,
   "review_average": 4.33,
   "last_seen": "2026-11-26 18:31",
-  "last_checked": "2026-11-26 18:31",
+  "last_checked": "2026-11-27 18:41",
   "item_name": "【楽天1位】進化版 スマートウォッチ Bluetooth通話 1.85インチ大画面 血中酸素 心拍 歩数 カロリー 健康管理 スマートブレスレット リストバンド 腕時計 着信通知 IP67防水 睡眠 Siri 呼吸 生理周期 音楽再生 SOS 長待機 iPhone Android メンズ レディース DM80 送料無料"
  },
  "426eedbf23": {
@@ -26543,6 +26622,12 @@
     "price": 2249,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 2249,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "UGREEN 6ボタン ワイヤレスマウス",
@@ -26559,7 +26644,7 @@
   "review_count": 1749,
   "review_average": 4.54,
   "last_seen": "2026-11-24 19:56",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "77be563202": {
   "records": [
@@ -26801,8 +26886,8 @@
   "review_count": 640,
   "review_average": 4.68,
   "last_seen": "2026-11-24 19:56",
-  "last_checked": "2026-11-26 18:31",
-  "track_miss": 1
+  "last_checked": "2026-11-27 18:41",
+  "track_miss": 2
  },
  "a3c915b060": {
   "records": [
@@ -27529,23 +27614,28 @@
     "price": 6900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 6900,
+    "point": 1
    }
   ],
-  "product_name": "バッファロー WiFi6 ルーター AX3000",
+  "product_name": "バッファロー WiFi 6 ルーター",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "高速安定で快適ネット",
-  "deal_reason": "・3年保証で安心\n・多数のユーザーが支持\n・家庭でも簡単設定",
+  "catch_copy": "高速安定Wi‑Fiで快適",
+  "deal_reason": "・在宅ワークで切れにくい・オンライン会議がスムーズ・初心者でも設定簡単",
   "score": 92,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/justrich/cabinet/09412118/top.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/justrich/1246-001780/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "justrich:10000527",
   "item_name": "【ルーターレビュー数No.1★3年保証】 バッファロー ルーター wifi7 wifi6 無線LAN WiFiルーター WiFi ワイファイ 無線ルーター BUFFALO Wi-Fi ルーター スタンダード バッファロー 中継機 WEX-300HPTX LANケーブル WSR-3000AX4P",
-  "review_count": 3678,
+  "review_count": 3680,
   "review_average": 4.62,
-  "last_seen": "2026-11-21 01:05",
-  "last_checked": "2026-11-27 02:41",
+  "last_seen": "2026-11-27 18:41",
+  "last_checked": "2026-11-27 18:41",
   "staple": true
  },
  "86e1a6b25d": {
@@ -27773,23 +27863,28 @@
     "price": 7980,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 7980,
+    "point": 1
    }
   ],
-  "product_name": "バッファロー Wi‑Fi6 ルーター (IPv6対応)",
+  "product_name": "バッファロー WiFi 6 IPv6 ルーター",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "高速Wi‑Fiで快適ネット",
-  "deal_reason": "・家中どこでも安定接続\n・設定がシンプルで初心者向き\n・3年保証で長く安心",
-  "score": 92,
+  "catch_copy": "IPv6対応で未来のネット",
+  "deal_reason": "・IPv6で高速通信が可能・セキュリティ機能が充実・長期保証で安心",
+  "score": 91,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/pcshop-best/cabinet/compass1731286828.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/pcshop-best/002-0001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "pcshop-best:10000139",
   "item_name": "【最短即日発送】＼3年保証＆ランキング1位／ バッファロー ルーター wifi6 IPv6 無線LAN WiFi 無線LANルーター 無線親機 無線ルーター 楽天ひかり ソフトバンク光 二階建て BUFFALO Wi-Fi WiFiルーター WSR-3000AX4L WSR-3000AX4P_DBK WSR3600BE4P-BK wifi6対応 Wi-Fi7",
-  "review_count": 1908,
+  "review_count": 1929,
   "review_average": 4.66,
-  "last_seen": "2026-11-15 23:42",
-  "last_checked": "2026-11-27 02:41"
+  "last_seen": "2026-11-27 18:41",
+  "last_checked": "2026-11-27 18:41"
  },
  "0ffab5232f": {
   "records": [
@@ -28020,23 +28115,28 @@
     "price": 9000,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 9000,
+    "point": 1
    }
   ],
-  "product_name": "TP-Link AX3000 WiFi6 ルーター",
+  "product_name": "TP-Link AX3000 WiFi 6 ルーター",
   "category": "ガジェット",
   "slot": "main",
   "badge": "⭐ 高評価の人気品",
-  "catch_copy": "高速通信でストレスフリー",
-  "deal_reason": "・高速接続で快適\n・スマートアプリで簡単管理\n・シンプルデザインが魅力",
-  "score": 90,
+  "catch_copy": "高速接続でストレスフリー",
+  "deal_reason": "・ゲームや動画が遅延なし・複数デバイス同時接続OK・省スペースで設置楽",
+  "score": 93,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/tplinkdirect/cabinet/06321509/archer-ax3000.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/tplinkdirect/4895252502688/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "tplinkdirect:10001261",
   "item_name": "【迷ったらこれ！】TP-Link WiFi6 無線LAN ルーター AX3000規格 2402 + 574 Mbps ワイファイルーター IPv6対応 デュアルバンド おすすめ EasyMesh/OneMesh 対応 縦型 高速 安定 二階建 家庭用 簡単操作 テレワーク メーカー保証3年 Archer AX3000/A",
-  "review_count": 1956,
+  "review_count": 1976,
   "review_average": 4.59,
-  "last_seen": "2026-11-21 01:05",
-  "last_checked": "2026-11-27 02:41"
+  "last_seen": "2026-11-27 18:41",
+  "last_checked": "2026-11-27 18:41"
  },
  "038803ec85": {
   "records": [
@@ -31483,6 +31583,12 @@
     "price": 7900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 7900,
+    "point": 1,
+    "via": "track"
    }
   ],
   "staple": true,
@@ -31498,7 +31604,7 @@
   "score": 0,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/justrich/cabinet/08582740/09324256/fire4k3.jpg?_ex=400x400",
   "last_seen": "2026-10-24 08:10",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "30ae0da1ac": {
   "records": [
@@ -31945,6 +32051,12 @@
     "price": 9900,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 9900,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "RELAX マルチレトロ防災ラジオ",
@@ -31961,7 +32073,7 @@
   "review_count": 1341,
   "review_average": 4.6,
   "last_seen": "2026-11-20 17:34",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "76185d3f62": {
   "records": [
@@ -33414,6 +33526,12 @@
     "price": 11000,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 11000,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "JBL CHARGE ESSENTIAL",
@@ -33430,7 +33548,7 @@
   "review_count": 394,
   "review_average": 4.78,
   "last_seen": "2026-11-24 19:56",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "5e5b1db5c0": {
   "records": [
@@ -34245,6 +34363,12 @@
     "price": 1480,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1480,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "ナチュラルミネラルウォーター 2L",
@@ -34261,7 +34385,7 @@
   "review_count": 8574,
   "review_average": 4.78,
   "last_seen": "2026-11-18 17:34",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "fb1194ec64": {
   "records": [
@@ -34466,6 +34590,12 @@
     "price": 2070,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 2070,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "自転車用 スマホホルダー",
@@ -34482,7 +34612,7 @@
   "review_count": 2072,
   "review_average": 4.55,
   "last_seen": "2026-10-31 22:36",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "ba613746fb": {
   "records": [
@@ -34901,6 +35031,12 @@
     "price": 25800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 25800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "NiPoGi Mini PC N3350 8GB/256GB",
@@ -34917,7 +35053,7 @@
   "review_count": 685,
   "review_average": 4.55,
   "last_seen": "2026-11-01 23:14",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "3b75f286e8": {
   "records": [
@@ -37858,6 +37994,12 @@
     "price": 3600,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 3600,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Logitech M350s ワイヤレスマウス",
@@ -37874,7 +38016,7 @@
   "review_count": 360,
   "review_average": 4.54,
   "last_seen": "2026-11-19 10:52",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "ced606edfe": {
   "records": [
@@ -39660,6 +39802,12 @@
     "price": 25980,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 25980,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Philips タブレット 10.1インチ T7315",
@@ -39676,7 +39824,7 @@
   "review_count": 2862,
   "review_average": 4.56,
   "last_seen": "2026-11-22 09:21",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "e1349145d0": {
   "records": [
@@ -43819,6 +43967,12 @@
     "price": 3500,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 3500,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Logitech MK270 ワイヤレスキーボードマウスセット",
@@ -43835,7 +43989,7 @@
   "review_count": 238,
   "review_average": 4.38,
   "last_seen": "2026-11-25 18:52",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "d9ff72de2a": {
   "records": [
@@ -43993,6 +44147,12 @@
     "price": 1147,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1147,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "マルチカードリーダー iPhone対応",
@@ -44009,7 +44169,7 @@
   "review_count": 391,
   "review_average": 4.03,
   "last_seen": "2026-11-01 23:14",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "c2a7febc70": {
   "records": [
@@ -45023,6 +45183,12 @@
     "price": 69800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 69800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "カベーニ PRO2 フルHD モバイルプロジェクター",
@@ -45035,11 +45201,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/ueno-mono/cabinet/09545219/09629925/imgrc0086021431.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/ueno-mono/kabeni-pro2/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "ueno-mono:10000046",
-  "item_name": "【2年～4年半保証】 カベーニPRO2 2026モデル フルHD モバイル プロジェクター 小型 天井 ホームシアター 子供 壁 家庭用 コンパクト プロジェクター Bluetooth WiFi HDMI DVD ビジネス モバイルプロジェクター android 小型プロジェクター 三脚 天井 ホームプロジェクター",
+  "item_name": "【12/4 20時～15000円OFF】 カベーニPRO2 2026モデル フルHD モバイル プロジェクター 小型 ワイヤレス 天井 ホームシアター 壁 家庭用 コンパクト プロジェクター Bluetooth スマホ WiFi HDMI DVD ビジネス モバイルプロジェクター 小型プロジェクター ホームプロジェクター",
   "review_count": 709,
   "review_average": 4.69,
   "last_seen": "2026-11-03 11:19",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "43fc7983ea": {
   "records": [
@@ -45363,6 +45529,12 @@
     "price": 2380,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 2380,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "USB Type-C ハブ 4in1 HDMI PD",
@@ -45379,7 +45551,7 @@
   "review_count": 1016,
   "review_average": 4.5,
   "last_seen": "2026-11-24 19:56",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "0c8478c914": {
   "records": [
@@ -48452,6 +48624,12 @@
     "price": 2888,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 2888,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "SanDisk microSDXC 64GB 140MB/s",
@@ -48468,7 +48646,7 @@
   "review_count": 373,
   "review_average": 4.59,
   "last_seen": "2026-11-07 22:56",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "8cfa636946": {
   "records": [
@@ -48588,6 +48766,12 @@
     "t": "2026-11-26 18:31",
     "price": 13990,
     "point": 2
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 13990,
+    "point": 2,
+    "via": "track"
    }
   ],
   "product_name": "ロボット掃除機 2800Pa 強力吸引",
@@ -48600,11 +48784,11 @@
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/airrobo/cabinet/11888073/p20-g50.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/airrobo/airrobo-p2001/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "airrobo:10000051",
-  "item_name": "【クーポンで割引/ P2倍】ロボット掃除機 自動掃除機 ロボット クリーナー 強力吸引 2800Pa お掃除ロボット 自動ゴミ収集 音量調節 静音 120分間 WiFi アプリ リモコン操作 自動充電 小型 落下防止 衝突センサー ワンルーム ギフト プレゼント",
+  "item_name": "【クーポンで1000円OFF】ロボット掃除機 自動掃除機 ロボット クリーナー 強力吸引 2800Pa お掃除ロボット 自動ゴミ収集 音量調節 静音 120分間 WiFi アプリ リモコン操作 自動充電 小型 落下防止 衝突センサー ワンルーム ギフト プレゼント",
   "review_count": 531,
   "review_average": 4.61,
   "last_seen": "2026-11-26 18:31",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "432a578c19": {
   "records": [
@@ -50954,6 +51138,12 @@
     "price": 43780,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 43780,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Roomba Mini AutoEmpty ロボット掃除機",
@@ -50970,7 +51160,7 @@
   "review_count": 636,
   "review_average": 4.42,
   "last_seen": "2026-11-13 10:05",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "b2a56166ff": {
   "records": [
@@ -51384,6 +51574,12 @@
     "price": 14800,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 14800,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Transcend ESD310 128GB ポータブルSSD",
@@ -51400,7 +51596,7 @@
   "review_count": 21,
   "review_average": 4.62,
   "last_seen": "2026-11-25 18:52",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "c2d9dc0bdf": {
   "records": [
@@ -51695,23 +51891,28 @@
     "price": 19899,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 19899,
+    "point": 1
    }
   ],
   "product_name": "27インチ 180Hz ゲーミングモニター",
   "category": "ガジェット",
   "slot": "main",
   "badge": "🔥 本日の目玉",
-  "catch_copy": "超高速リフレッシュで快適FPS",
-  "deal_reason": "・180Hzで残像感ゼロ\n・1ms応答で瞬時反応\n・VAパネルで高コントラスト",
-  "score": 91,
+  "catch_copy": "超高速リフレッシュで滑らか",
+  "deal_reason": "・180Hzで映像が滑らか・1ms応答で操作遅れなし・デザインもスタイリッシュ",
+  "score": 90,
   "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/kksmart/cabinet/10767989/imgrc0130211090.jpg?_ex=400x400",
   "item_url": "https://item.rakuten.co.jp/kksmart/hg-27h/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
   "item_code": "kksmart:10000011",
   "item_name": "ゲーミングモニター 27インチ【★180Hz/ 165Hz/ 144Hz対応】FHD 1920×1080 VA【1ms応答 2mm狭額縁 8mm薄型】pcモニター パソコンモニター VESA FreeSync/HDR/チルト/イヤホン/スピーカー内蔵 Switch2対応 kksmart HG-27H",
-  "review_count": 160,
-  "review_average": 4.83,
-  "last_seen": "2026-11-15 23:42",
-  "last_checked": "2026-11-27 02:41"
+  "review_count": 162,
+  "review_average": 4.81,
+  "last_seen": "2026-11-27 18:41",
+  "last_checked": "2026-11-27 18:41"
  },
  "d62f0464fb": {
   "records": [
@@ -51887,6 +52088,12 @@
     "price": 2050,
     "point": 1,
     "via": "track"
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 2050,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "小型 静音 ワイヤレスマウス",
@@ -51903,7 +52110,7 @@
   "review_count": 394,
   "review_average": 4.34,
   "last_seen": "2026-11-16 16:59",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "8d01152d1f": {
   "records": [
@@ -53110,6 +53317,12 @@
     "t": "2026-11-26 18:31",
     "price": 3580,
     "point": 1
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 3580,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "Mi Tune03 ワイヤレスイヤホン",
@@ -53126,7 +53339,7 @@
   "review_count": 952,
   "review_average": 4.43,
   "last_seen": "2026-11-26 18:31",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "239c06340a": {
   "records": [
@@ -53134,6 +53347,12 @@
     "t": "2026-11-26 18:31",
     "price": 1760,
     "point": 1
+   },
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1760,
+    "point": 1,
+    "via": "track"
    }
   ],
   "product_name": "キリン 2L×9本 天然水",
@@ -53150,7 +53369,7 @@
   "review_count": 24,
   "review_average": 4.46,
   "last_seen": "2026-11-26 18:31",
-  "last_checked": "2026-11-26 18:31"
+  "last_checked": "2026-11-27 18:41"
  },
  "8a92fb0fdb": {
   "records": [
@@ -53223,5 +53442,53 @@
   "review_average": 4.53,
   "last_seen": "2026-11-27 11:51",
   "last_checked": "2026-11-27 11:51"
+ },
+ "e0dec8e03b": {
+  "records": [
+   {
+    "t": "2026-11-27 18:41",
+    "price": 1499,
+    "point": 1
+   }
+  ],
+  "product_name": "Lamicall スマホスタンド 折りたたみ",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "折りたたみで持ち運び楽々",
+  "deal_reason": "・机上にすっきり収まる・角度調整で見やすさ抜群・軽量で持ち運び便利",
+  "score": 88,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/lomicall/cabinet/dp13/09048920/new1.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/lomicall/dp13/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "lomicall:10000118",
+  "item_name": "【1年保証・楽天1位】スマホスタンド 折りたたみ 全7色 高さ調整 Lamicall スマートフォン スマホホルダー 角度調節 携帯スタンド 置き台 スマホ台 スマホ立て 卓上 デスク 充電 コンパクト iPhone 18 Duo 17 16 15 14 plus pro promax 13 Android Switch Switch2 スイッチ",
+  "review_count": 1777,
+  "review_average": 4.8,
+  "last_seen": "2026-11-27 18:41",
+  "last_checked": "2026-11-27 18:41"
+ },
+ "c1ea47c86e": {
+  "records": [
+   {
+    "t": "2026-11-27 18:41",
+    "price": 2180,
+    "point": 1
+   }
+  ],
+  "product_name": "magsaf 車載ホルダー 磁石式",
+  "category": "日用品・家電",
+  "slot": "impulse",
+  "badge": "🛒 ついで買い定番",
+  "catch_copy": "磁石で簡単取り付け",
+  "deal_reason": "・磁石でどこでも簡単装着・スマホを安定保持・車内での視認性向上",
+  "score": 87,
+  "image_url": "https://thumbnail.image.rakuten.co.jp/@0_mall/creamchic/cabinet/smp/smp_004/smp-0045_00.jpg?_ex=400x400",
+  "item_url": "https://item.rakuten.co.jp/creamchic/gs-smp-0045/?rafcid=wsc_i_is_177e061b-eb39-48c3-b7f7-77763cc32dbf",
+  "item_code": "creamchic:10000255",
+  "item_name": "【11/29まで♪お得な28%オフクーポン】 【楽天1位】 スマホスタンド 車 車載 車載ホルダー 真空吸着 マグネット 吸盤 magsafe スマホホルダー 車 車載ホルダー携帯ホルダー車 超強力 マグセーフ 片手操作 360° 超強磁力 android ダッシュボード ドリンクホルダー",
+  "review_count": 1931,
+  "review_average": 4.45,
+  "last_seen": "2026-11-27 18:41",
+  "last_checked": "2026-11-27 18:41"
  }
 }
